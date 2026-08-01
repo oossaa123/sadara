@@ -1,0 +1,3413 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="لوحة التحكم الإدارية لكلية الصدارة للعلوم الطبية والتقنية - إدارة الطلاب والطلبات والتخصصات.">
+    <title>لوحة التحكم الإدارية | كلية الصدارة</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ==========================================
+           Dashboard Custom Layout
+           ========================================== */
+        body {
+            background-color: var(--bg-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            background: var(--bg-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-left: 1px solid var(--border-color);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                height: auto;
+                position: relative;
+                border-left: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 20px;
+            }
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            text-decoration: none;
+        }
+
+        .sidebar-logo {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid var(--secondary);
+        }
+
+        .sidebar-brand-text h2 {
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .sidebar-brand-text span {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-grow: 1;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 20px;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-link i {
+            font-size: 1.15rem;
+            width: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-link:hover, .sidebar-link.active {
+            color: var(--text-on-primary);
+            background: var(--gradient-primary);
+            box-shadow: var(--shadow-purple-glow);
+        }
+
+        .sidebar-link:hover i {
+            transform: translateX(-5px);
+        }
+
+        .sidebar-link.active::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 15%;
+            height: 70%;
+            width: 5px;
+            background-color: var(--secondary);
+            border-radius: 0 5px 5px 0;
+        }
+
+        .sidebar-footer {
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px;
+            border-radius: 12px;
+            background: rgba(138, 46, 118, 0.05);
+        }
+
+        .admin-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid var(--secondary);
+            object-fit: cover;
+        }
+
+        .admin-info h4 {
+            font-size: 0.95rem;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .admin-info p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+        }
+
+        .main-header-dashboard {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .welcome-section h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-weight: 800;
+        }
+
+        .welcome-section p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Stats Grid */
+        .stats-grid-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card-dashboard {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .stat-card-dashboard:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(138, 46, 118, 0.1);
+            border-color: rgba(138, 46, 118, 0.2);
+        }
+
+        .stat-card-info h3 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin: 0 0 5px;
+            font-weight: 800;
+        }
+
+        .stat-card-info p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .stat-card-icon-wrapper {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.6rem;
+            background: rgba(138, 46, 118, 0.08);
+            color: var(--primary);
+            transition: all 0.4s ease;
+        }
+
+        .stat-card-dashboard:hover .stat-card-icon-wrapper {
+            background: var(--gradient-primary);
+            color: white;
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        /* Analytics Section */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 2fr 1.2fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 1024px) {
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .analytics-card {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 30px;
+            position: relative;
+        }
+
+        .analytics-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .analytics-header h3 {
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin: 0;
+            font-weight: 700;
+        }
+
+        /* Custom SVG Chart CSS */
+        .chart-container {
+            width: 100%;
+            height: 250px;
+            position: relative;
+        }
+
+        .svg-chart {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .chart-grid-line {
+            stroke: var(--border-color);
+            stroke-width: 1;
+            stroke-dasharray: 4 4;
+        }
+
+        .chart-line {
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawLine 2s ease forwards;
+        }
+
+        @keyframes drawLine {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .chart-area {
+            fill: url(#chart-gradient);
+            opacity: 0.15;
+            animation: fadeIn 1.5s ease forwards;
+        }
+
+        .chart-point {
+            fill: var(--secondary);
+            stroke: var(--primary);
+            stroke-width: 3;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .chart-point:hover {
+            r: 8;
+            fill: var(--primary);
+            stroke: var(--secondary);
+        }
+
+        .chart-tooltip {
+            position: absolute;
+            background: rgba(15, 10, 20, 0.85);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border: 1px solid var(--border-color);
+            z-index: 10;
+        }
+
+        /* Department Bar Visualizer */
+        .dept-stat-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .dept-stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .dept-stat-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .dept-stat-name {
+            color: var(--primary);
+        }
+
+        .dept-stat-count {
+            color: var(--secondary);
+        }
+
+        .dept-stat-bar-bg {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .dept-stat-bar-fill {
+            height: 100%;
+            border-radius: 5px;
+            width: 0;
+            transition: width 1.5s cubic-bezier(0.1, 1, 0.1, 1);
+        }
+
+        /* Table Section */
+        .table-card {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 40px;
+            overflow: hidden;
+        }
+
+        .table-header-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .table-header-area h3 {
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin: 0;
+            font-weight: 700;
+        }
+
+        /* Interactive status badge classes */
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-pending {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--secondary);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .status-approved {
+            background: rgba(37, 211, 102, 0.1);
+            color: #27d366;
+            border: 1px solid rgba(37, 211, 102, 0.2);
+            box-shadow: 0 0 10px rgba(37, 211, 102, 0.1);
+        }
+
+        .status-rejected {
+            background: rgba(255, 76, 76, 0.1);
+            color: #ff4c4c;
+            border: 1px solid rgba(255, 76, 76, 0.2);
+        }
+
+        .row-action-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .row-action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .btn-approve:hover {
+            background: #27d366;
+            color: white;
+            border-color: #27d366;
+            box-shadow: 0 0 15px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn-reject:hover {
+            background: #ff4c4c;
+            color: white;
+            border-color: #ff4c4c;
+            box-shadow: 0 0 15px rgba(255, 76, 76, 0.4);
+        }
+
+        /* Row fading transition */
+        .table-row-animate {
+            transition: all 0.6s ease;
+        }
+
+        .row-fade-out {
+            opacity: 0;
+            transform: translateX(-50px);
+            background: rgba(255, 76, 76, 0.05);
+        }
+
+        .row-fade-success {
+            background: rgba(37, 211, 102, 0.05);
+        }
+
+        .btn-secondary {
+            background: rgba(138, 46, 118, 0.08) !important;
+            color: var(--primary) !important;
+            border: 1px solid rgba(138, 46, 118, 0.2) !important;
+        }
+        .btn-secondary:hover {
+            background: rgba(138, 46, 118, 0.15) !important;
+            color: var(--primary) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 12px rgba(138, 46, 118, 0.1) !important;
+        }
+
+        .form-control option {
+            background-color: var(--bg-card) !important;
+            color: var(--text-primary) !important;
+        }
+
+        /* Modal / Add applicant drawer */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s ease;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            width: 90%;
+            max-width: 500px;
+            padding: 35px;
+            transform: scale(0.9);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-header h3 {
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(138, 46, 118, 0.2);
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        /* Specific overrides for login page to keep high contrast */
+        #login-form .form-control {
+            background: rgba(255, 255, 255, 0.08) !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        }
+        #login-form .form-control:focus {
+            background: rgba(255, 255, 255, 0.15) !important;
+            color: #ffffff !important;
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 10px rgba(138, 46, 118, 0.5) !important;
+        }
+
+        /* Toasts Container */
+        .toast-container {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 2000;
+        }
+
+        .toast {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px 25px;
+            color: var(--text-main);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: toastIn 0.4s forwards;
+            border-right: 5px solid var(--primary);
+        }
+
+        .toast-success {
+            border-right-color: #27d366;
+        }
+
+        .toast-warning {
+            border-right-color: #ff4c4c;
+        }
+
+        @keyframes toastIn {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dynamic Glow Orbs -->
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+
+    <div class="dashboard-container">
+        
+        <!-- ==========================================
+           1. Sidebar Area
+           ========================================== -->
+        <aside class="sidebar">
+            <div>
+                <!-- Brand logo -->
+                <a href="../sadara/index.html" class="sidebar-brand">
+                    <img src="assets/logo.jpg" alt="شعار كلية الصدارة" class="sidebar-logo" onerror="this.src='https://placehold.co/100x100?text=الصدارة'">
+                    <div class="sidebar-brand-text">
+                        <h2>كلية الصدارة</h2>
+                        <span>لوحة التحكم الإدارية</span>
+                    </div>
+                </a>
+
+                <!-- Navigation menu -->
+                <nav class="sidebar-menu">
+                    <a href="#" class="sidebar-link active" data-tab="stats-tab">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>لوحة الإحصائيات</span>
+                    </a>
+                    <a href="#" class="sidebar-link" id="btn-show-settings" data-tab="settings-tab">
+                        <i class="fas fa-cog"></i>
+                        <span>إدارة الصفحة الرئيسية</span>
+                    </a>
+                    <a href="#" class="sidebar-link" id="btn-show-add-modal">
+                        <i class="fas fa-user-plus"></i>
+                        <span>تسجيل طالب جديد</span>
+                    </a>
+                    <a href="#" class="sidebar-link" data-tab="depts-tab" id="btn-show-depts">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>إدارة التخصصات</span>
+                    </a>
+                    <a href="#" class="sidebar-link" data-tab="labs-tab" id="btn-show-labs">
+                        <i class="fas fa-microscope"></i>
+                        <span>إدارة المعامل</span>
+                    </a>
+                    <a href="#" class="sidebar-link" data-tab="fees-tab" id="btn-show-fees">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <span>إدارة الرسوم الدراسية</span>
+                    </a>
+                    <a href="#" class="sidebar-link" data-tab="about-tab" id="btn-show-about">
+                        <i class="fas fa-info-circle"></i>
+                        <span>إدارة عن الكلية</span>
+                    </a>
+                    <a href="#" class="sidebar-link" data-tab="contacts-tab" id="btn-show-contacts">
+                        <i class="fas fa-envelope-open-text"></i>
+                        <span>رسائل تواصل معنا</span>
+                    </a>
+                    <a href="#" class="sidebar-link" data-tab="applicants-tab" id="btn-show-applicants">
+                        <i class="fas fa-user-graduate"></i>
+                        <span>الطلاب المتقدمين</span>
+                    </a>
+                    <a href="../sadara/index.html" class="sidebar-link">
+                        <i class="fas fa-globe"></i>
+                        <span>عرض الموقع الرئيسي</span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Profile and settings footer -->
+            <div class="sidebar-footer">
+                <div class="admin-profile">
+                    <img src="assets/images/file.png" alt="مدير النظام" class="admin-avatar" onerror="this.src='https://placehold.co/100x100?text=Admin'">
+                    <div class="admin-info">
+                        <h4>أ.د. فيصل عائض</h4>
+                        <p>عميد الكلية / المدير العام</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ==========================================
+           2. Main Dashboard Area
+           ========================================== -->
+        <main class="main-content">
+            <!-- stats tab content wrapper -->
+            <div id="stats-tab-content">
+                <!-- Dashboard Welcome Header -->
+                <header class="main-header-dashboard">
+                    <div class="welcome-section">
+                        <h1 id="dashboard-welcome-title">مرحباً بك، أ.د. فيصل عائض</h1>
+                    <p>إليك نظرة شاملة على مستجدات وأداء كلية الصدارة اليوم.</p>
+                </div>
+                
+                <div class="header-controls">
+                    <!-- Polished Theme Switcher -->
+                    <div class="theme-switch-wrapper" style="margin-left: 0;">
+                        <label class="theme-toggle-label" id="theme-toggle" aria-label="تبديل الثيم">
+                            <i class="fas fa-sun" style="opacity: 0.8;"></i>
+                            <i class="fas fa-moon" style="opacity: 0.8;"></i>
+                            <span class="theme-toggle-ball"></span>
+                        </label>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" id="btn-quick-add"><i class="fas fa-plus"></i> تسجيل سريع</button>
+                </div>
+            </header>
+
+            <!-- 3. Metrics Counters Row -->
+            <section class="stats-grid-dashboard">
+                
+                <!-- Stat Card 1 -->
+                <div class="stat-card-dashboard">
+                    <div class="stat-card-info">
+                        <h3 id="stat-total-students">1,248</h3>
+                        <p>الطلاب المقبولين</p>
+                    </div>
+                    <div class="stat-card-icon-wrapper">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                </div>
+
+                <!-- Stat Card 2 -->
+                <div class="stat-card-dashboard">
+                    <div class="stat-card-info">
+                        <h3 id="stat-pending-requests">8</h3>
+                        <p>طلبات بانتظار المراجعة</p>
+                    </div>
+                    <div class="stat-card-icon-wrapper" style="color: var(--secondary); background: rgba(212, 175, 55, 0.08);">
+                        <i class="fas fa-file-medical-alt"></i>
+                    </div>
+                </div>
+
+                <!-- Stat Card 3 -->
+                <div class="stat-card-dashboard">
+                    <div class="stat-card-info">
+                        <h3>11</h3>
+                        <p>تخصصاً معتمداً</p>
+                    </div>
+                    <div class="stat-card-icon-wrapper">
+                        <i class="fas fa-scroll"></i>
+                    </div>
+                </div>
+
+                <!-- Stat Card 4 -->
+                <div class="stat-card-dashboard">
+                    <div class="stat-card-info">
+                        <h3>42</h3>
+                        <p>عضو هيئة تدريس</p>
+                    </div>
+                    <div class="stat-card-icon-wrapper" style="color: var(--secondary); background: rgba(212, 175, 55, 0.08);">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- 4. Interactive Charts Area -->
+            <section class="analytics-grid">
+                
+                <!-- Registration Stats Chart -->
+                <div class="analytics-card">
+                    <div class="analytics-header">
+                        <h3>إحصائيات التسجيل الأسبوعية</h3>
+                        <span style="color: var(--text-secondary); font-size: 0.85rem;"><i class="fas fa-calendar-alt"></i> الأيام السبعة الأخيرة</span>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <!-- SVG Line Chart -->
+                        <svg class="svg-chart" viewBox="0 0 600 220">
+                            <defs>
+                                <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="var(--primary)" stop-opacity="0.3"></stop>
+                                    <stop offset="100%" stop-color="var(--primary)" stop-opacity="0"></stop>
+                                </linearGradient>
+                            </defs>
+                            <!-- Grid lines -->
+                            <line class="chart-grid-line" x1="50" y1="30" x2="550" y2="30"></line>
+                            <line class="chart-grid-line" x1="50" y1="80" x2="550" y2="80"></line>
+                            <line class="chart-grid-line" x1="50" y1="130" x2="550" y2="130"></line>
+                            <line class="chart-grid-line" x1="50" y1="180" x2="550" y2="180"></line>
+
+                            <!-- Gradient Area path -->
+                            <path class="chart-area" d="M 50,180 Q 130,80 210,120 T 370,50 T 550,60 L 550,180 Z"></path>
+
+                            <!-- Drawing Line -->
+                            <path class="chart-line" d="M 50,180 Q 130,80 210,120 T 370,50 T 550,60"></path>
+
+                            <!-- Points on Chart -->
+                            <circle class="chart-point" cx="50" cy="180" r="6" data-value="12 طالب" data-day="السبت"></circle>
+                            <circle class="chart-point" cx="130" cy="80" r="6" data-value="45 طالب" data-day="الأحد"></circle>
+                            <circle class="chart-point" cx="210" cy="120" r="6" data-value="32 طالب" data-day="الإثنين"></circle>
+                            <circle class="chart-point" cx="290" cy="90" r="6" data-value="38 طالب" data-day="الثلاثاء"></circle>
+                            <circle class="chart-point" cx="370" cy="50" r="6" data-value="52 طالب" data-day="الأربعاء"></circle>
+                            <circle class="chart-point" cx="460" cy="75" r="6" data-value="41 طالب" data-day="الخميس"></circle>
+                            <circle class="chart-point" cx="550" cy="60" r="6" data-value="48 طالب" data-day="الجمعة"></circle>
+
+                            <!-- Labels -->
+                            <text x="50" y="205" fill="var(--text-secondary)" font-size="10" text-anchor="middle">السبت</text>
+                            <text x="130" y="205" fill="var(--text-secondary)" font-size="10" text-anchor="middle">الأحد</text>
+                            <text x="210" y="205" fill="var(--text-secondary)" font-size="10" text-anchor="middle">الإثنين</text>
+                            <text x="290" y="205" fill="var(--text-secondary)" font-size="10" text-anchor="middle">الثلاثاء</text>
+                            <text x="370" y="205" fill="var(--text-secondary)" font-size="10" text-anchor="middle">الأربعاء</text>
+                            <text x="460" y="205" fill="var(--text-secondary)" font-size="10" text-anchor="middle">الخميس</text>
+                            <text x="550" y="205" fill="var(--text-secondary)" font-size="10" text-anchor="middle">الجمعة</text>
+                        </svg>
+                        <div class="chart-tooltip" id="chart-tooltip"></div>
+                    </div>
+                </div>
+
+                <!-- Registration distribution by division -->
+                <div class="analytics-card">
+                    <div class="analytics-header">
+                        <h3>توزيع الطلاب حسب الأقسام</h3>
+                    </div>
+                    
+                    <div class="dept-stat-list">
+                        <!-- Stat 1 -->
+                        <div class="dept-stat-item">
+                            <div class="dept-stat-info">
+                                <span class="dept-stat-name">صيدلة ومختبرات طبية</span>
+                                <span class="dept-stat-count">480 طالب</span>
+                            </div>
+                            <div class="dept-stat-bar-bg">
+                                <div class="dept-stat-bar-fill" style="width: 78%; background: var(--gradient-primary);"></div>
+                            </div>
+                        </div>
+
+                        <!-- Stat 2 -->
+                        <div class="dept-stat-item">
+                            <div class="dept-stat-info">
+                                <span class="dept-stat-name">فني أسنان رقمي</span>
+                                <span class="dept-stat-count">350 طالب</span>
+                            </div>
+                            <div class="dept-stat-bar-bg">
+                                <div class="dept-stat-bar-fill" style="width: 62%; background: var(--gradient-gold);"></div>
+                            </div>
+                        </div>
+
+                        <!-- Stat 3 -->
+                        <div class="dept-stat-item">
+                            <div class="dept-stat-info">
+                                <span class="dept-stat-name">تقنية معلومات وبرمجيات</span>
+                                <span class="dept-stat-count">290 طالب</span>
+                            </div>
+                            <div class="dept-stat-bar-bg">
+                                <div class="dept-stat-bar-fill" style="width: 48%; background: var(--gradient-primary);"></div>
+                            </div>
+                        </div>
+
+                        <!-- Stat 4 -->
+                        <div class="dept-stat-item">
+                            <div class="dept-stat-info">
+                                <span class="dept-stat-name">إدارة أعمال وتجارة إلكترونية</span>
+                                <span class="dept-stat-count">128 طالب</span>
+                            </div>
+                            <div class="dept-stat-bar-bg">
+                                <div class="dept-stat-bar-fill" style="width: 25%; background: var(--gradient-gold);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- 5. Latest Application Requests Table -->
+            <section class="table-card">
+                <div class="table-header-area">
+                    <div>
+                        <h3>طلبات التسجيل الأخيرة</h3>
+                        <p style="color: var(--text-secondary); margin: 5px 0 0; font-size: 0.85rem;">طلبات تسجيل معلقة واردة من نموذج الموقع بحاجة إلى تدقيق.</p>
+                    </div>
+                    <button class="btn btn-primary btn-sm" id="btn-add-student"><i class="fas fa-plus"></i> إضافة طالب جديد</button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="custom-table" id="applicants-table">
+                        <thead>
+                            <tr>
+                                <th>اسم الطالب</th>
+                                <th>التخصص المطلوب</th>
+                                <th>معدل الثانوية</th>
+                                <th>رقم الهاتف</th>
+                                <th>حالة الطلب</th>
+                                <th>الإجراءات الإدارية</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Request Row 1 -->
+                            <tr class="table-row-animate" id="row-1">
+                                <td style="font-weight: bold; color: var(--primary);">خالد عبد الوهاب المرادي</td>
+                                <td>صيدلة</td>
+                                <td>89.5%</td>
+                                <td>+967 771 234 567</td>
+                                <td>
+                                    <span class="badge-status status-pending">
+                                        <i class="fas fa-spinner fa-spin"></i> قيد المراجعة
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="row-action-btn btn-approve" onclick="manageRequest(1, 'approve', 'خالد عبد الوهاب المرادي')" title="قبول الطلب">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="row-action-btn btn-reject" onclick="manageRequest(1, 'reject', 'خالد عبد الوهاب المرادي')" title="رفض الطلب">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Request Row 2 -->
+                            <tr class="table-row-animate" id="row-2">
+                                <td style="font-weight: bold; color: var(--primary);">هدى أحمد الشرفي</td>
+                                <td>تقنية معلومات (IT)</td>
+                                <td>94.2%</td>
+                                <td>+967 775 987 654</td>
+                                <td>
+                                    <span class="badge-status status-pending">
+                                        <i class="fas fa-spinner fa-spin"></i> قيد المراجعة
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="row-action-btn btn-approve" onclick="manageRequest(2, 'approve', 'هدى أحمد الشرفي')" title="قبول الطلب">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="row-action-btn btn-reject" onclick="manageRequest(2, 'reject', 'هدى أحمد الشرفي')" title="رفض الطلب">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Request Row 3 -->
+                            <tr class="table-row-animate" id="row-3">
+                                <td style="font-weight: bold; color: var(--primary);">علي يحيى الذماري</td>
+                                <td>فني أسنان</td>
+                                <td>81.0%</td>
+                                <td>+967 773 456 789</td>
+                                <td>
+                                    <span class="badge-status status-pending">
+                                        <i class="fas fa-spinner fa-spin"></i> قيد المراجعة
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="row-action-btn btn-approve" onclick="manageRequest(3, 'approve', 'علي يحيى الذماري')" title="قبول الطلب">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="row-action-btn btn-reject" onclick="manageRequest(3, 'reject', 'علي يحيى الذماري')" title="رفض الطلب">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Request Row 4 -->
+                            <tr class="table-row-animate" id="row-4">
+                                <td style="font-weight: bold; color: var(--primary);">بلقيس صالح المطري</td>
+                                <td>قبالة وتوليد</td>
+                                <td>88.4%</td>
+                                <td>+967 770 111 222</td>
+                                <td>
+                                    <span class="badge-status status-pending">
+                                        <i class="fas fa-spinner fa-spin"></i> قيد المراجعة
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="row-action-btn btn-approve" onclick="manageRequest(4, 'approve', 'بلقيس صالح المطري')" title="قبول الطلب">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="row-action-btn btn-reject" onclick="manageRequest(4, 'reject', 'بلقيس صالح المطري')" title="رفض الطلب">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Request Row 5 -->
+                            <tr class="table-row-animate" id="row-5">
+                                <td style="font-weight: bold; color: var(--primary);">مازن محمد الخولاني</td>
+                                <td>مساعد طبي</td>
+                                <td>85.7%</td>
+                                <td>+967 777 999 888</td>
+                                <td>
+                                    <span class="badge-status status-pending">
+                                        <i class="fas fa-spinner fa-spin"></i> قيد المراجعة
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="row-action-btn btn-approve" onclick="manageRequest(5, 'approve', 'مازن محمد الخولاني')" title="قبول الطلب">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="row-action-btn btn-reject" onclick="manageRequest(5, 'reject', 'مازن محمد الخولاني')" title="رفض الطلب">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            </div><!-- End stats-tab-content -->
+
+            <!-- ==========================================
+               Homepage Settings Tab Content
+               ========================================== -->
+            <div id="settings-tab-content" style="display: none;">
+                <header class="main-header-dashboard">
+                    <div class="welcome-section">
+                        <h1>إعدادات الصفحة الرئيسية</h1>
+                        <p>تحديث محتوى وبيانات الصفحة الرئيسية لموقع الكلية بشكل مباشر.</p>
+                    </div>
+                </header>
+
+                <form id="settings-form" class="glass" style="padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); margin-top: 20px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
+                        
+                        <!-- Col 1: Contacts & Socials -->
+                        <div class="settings-section" style="background: var(--bg-body); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); text-align: right;">
+                            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;"><i class="fas fa-address-book"></i> شريط الاتصال العلوي والشبكات</h3>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px;">رقم الهاتف</label>
+                                <input type="text" id="setting-top-phone" class="form-control">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px;">البريد الإلكتروني</label>
+                                <input type="email" id="setting-top-email" class="form-control">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px;">العنوان المختصر</label>
+                                <input type="text" id="setting-top-address" class="form-control">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px;">فيسبوك</label>
+                                <input type="text" id="setting-social-fb" class="form-control">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px;">تويتر</label>
+                                <input type="text" id="setting-social-tw" class="form-control">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px;">لينكد إن</label>
+                                <input type="text" id="setting-social-li" class="form-control">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px;">يوتيوب</label>
+                                <input type="text" id="setting-social-yt" class="form-control">
+                            </div>
+                        </div>
+                        
+                        <!-- Col 2: Hero Section Settings -->
+                        <div class="settings-section" style="background: var(--bg-body); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); text-align: right;">
+                            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;"><i class="fas fa-graduation-cap"></i> قسم الترحيب الرئيسي والعداد</h3>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px;">العبارة الترحيبية (Badge)</label>
+                                <input type="text" id="setting-hero-tag" class="form-control">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px;">العنوان الرئيسي للترحيب</label>
+                                <input type="text" id="setting-hero-title" class="form-control">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px;">العنوان الفرعي للترحيب</label>
+                                <input type="text" id="setting-hero-subtitle" class="form-control">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px;">الوصف الترحيبي</label>
+                                <textarea id="setting-hero-desc" class="form-control" rows="4" style="resize: vertical;"></textarea>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px;">تاريخ نهاية التسجيل (للعداد التنازلي)</label>
+                                <input type="datetime-local" id="setting-countdown-end" class="form-control">
+                            </div>
+                        </div>
+
+                        <!-- Col 3: Statistics Counters -->
+                        <div class="settings-section" style="background: var(--bg-body); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); text-align: right;">
+                            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;"><i class="fas fa-chart-bar"></i> إحصائيات الصفحة الرئيسية</h3>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px;">عدد الطلاب والخريجين</label>
+                                <input type="number" id="setting-stat-students" class="form-control">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px;">عدد التخصصات</label>
+                                <input type="number" id="setting-stat-depts" class="form-control">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px;">نسبة توظيف الخريجين (%)</label>
+                                <input type="number" id="setting-stat-employment" class="form-control" min="0" max="100">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px;">عدد المعامل والمختبرات</label>
+                                <input type="number" id="setting-stat-labs" class="form-control">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div style="margin-top: 30px; display: flex; gap: 15px; justify-content: flex-end;">
+                        <button type="submit" class="btn btn-primary" style="padding: 10px 30px;">حفظ الإعدادات والتحديث فوراً <i class="fas fa-save"></i></button>
+                        <button type="button" id="btn-cancel-settings" class="btn btn-secondary" style="padding: 10px 30px;">إلغاء</button>
+                    </div>
+                </form>
+            </div>
+                    <!-- ==========================================
+               Academic Departments Tab Content
+               ========================================== -->
+            <div id="depts-tab-content" style="display: none;">
+                <header class="main-header-dashboard" style="margin-bottom: 25px;">
+                    <div class="welcome-section">
+                        <h1>إدارة التخصصات الأكاديمية</h1>
+                        <p>إضافة، تعديل، وحذف التخصصات ومساقاتها ومجالات عملها التي تظهر في الموقع الرئيسي.</p>
+                    </div>
+                    <div class="header-controls">
+                        <button class="btn btn-primary" id="btn-add-dept"><i class="fas fa-plus-circle"></i> إضافة تخصص جديد</button>
+                    </div>
+                </header>
+
+                <div class="glass" style="padding: 30px; border-radius: 20px; border: 1px solid var(--border-color);">
+                    <div class="table-responsive">
+                        <table class="custom-table" id="depts-table">
+                            <thead>
+                                <tr>
+                                    <th>التخصص</th>
+                                    <th>الرمز</th>
+                                    <th>القسم</th>
+                                    <th>المدة</th>
+                                    <th>الأيقونة</th>
+                                    <th>العمليات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic departments list will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================
+               Educational Labs Tab Content
+               ========================================== -->
+            <div id="labs-tab-content" style="display: none;">
+                <header class="main-header-dashboard" style="margin-bottom: 25px;">
+                    <div class="welcome-section">
+                        <h1>إدارة المعامل والبيئة التعليمية</h1>
+                        <p>إضافة، تعديل، وحذف المعامل والمختبرات ومواصفاتها وتجهيزاتها التي تظهر في صفحة المعامل والبيئة.</p>
+                    </div>
+                    <div class="header-controls">
+                        <button class="btn btn-primary" id="btn-add-lab"><i class="fas fa-plus-circle"></i> إضافة معمل جديد</button>
+                    </div>
+                </header>
+
+                <div class="glass" style="padding: 30px; border-radius: 20px; border: 1px solid var(--border-color);">
+                    <div class="table-responsive">
+                        <table class="custom-table" id="labs-table">
+                            <thead>
+                                <tr>
+                                    <th>اسم المعمل</th>
+                                    <th>التصنيف</th>
+                                    <th>الوصف والتجهيزات</th>
+                                    <th>المواصفات المميزة</th>
+                                    <th>العمليات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic labs list will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================
+               Tuition Fees Tab Content
+               ========================================== -->
+            <div id="fees-tab-content" style="display: none;">
+                <header class="main-header-dashboard" style="margin-bottom: 25px;">
+                    <div class="welcome-section">
+                        <h1>إدارة الرسوم الدراسية والتسهيلات</h1>
+                        <p>إضافة، تعديل، وحذف الرسوم وتفاصيل الأقساط للتخصصات والبرامج الدراسية المختلفة المتاحة بالكلية.</p>
+                    </div>
+                    <div class="header-controls">
+                        <button class="btn btn-primary" id="btn-add-fee"><i class="fas fa-plus-circle"></i> إضافة رسوم جديدة</button>
+                    </div>
+                </header>
+
+                <div class="glass" style="padding: 30px; border-radius: 20px; border: 1px solid var(--border-color);">
+                    <div class="table-responsive">
+                        <table class="custom-table" id="fees-table">
+                            <thead>
+                                <tr>
+                                    <th>التخصص الدراسي</th>
+                                    <th>الرسوم السنوية الرسمية</th>
+                                    <th>الرسوم بعد الخصم (30%)</th>
+                                    <th>القسط الأول (عند التسجيل)</th>
+                                    <th>خيارات التقسيط المتاحة</th>
+                                    <th>العمليات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic tuition fees list will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================
+               About College Tab Content
+               ========================================== -->
+            <div id="about-tab-content" style="display: none;">
+                <header class="main-header-dashboard" style="margin-bottom: 25px;">
+                    <div class="welcome-section">
+                        <h1>إدارة تعريف وبيانات الكلية</h1>
+                        <p>تعديل محتوى قسم "من نحن"، الرؤية والرسالة والأهداف، وبيانات كلمة العمادة وصورهم التي تظهر بالموقع الرئيسي.</p>
+                    </div>
+                </header>
+
+                <form id="about-form" class="glass" style="padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); margin-top: 20px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
+                        
+                        <!-- Col 1: Who We Are & Images -->
+                        <div class="settings-section" style="background: var(--bg-body); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); text-align: right;">
+                            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;"><i class="fas fa-info-circle"></i> قسم من نحن؟ والصورة التعريفية</h3>
+                            
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">من نحن (الفقرة الأولى)</label>
+                                <textarea id="about-us-p1-input" class="form-control" rows="4" required style="resize: vertical;"></textarea>
+                            </div>
+                            
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">من نحن (الفقرة الثانية)</label>
+                                <textarea id="about-us-p2-input" class="form-control" rows="4" required style="resize: vertical;"></textarea>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">الصورة التوضيحية للكلية</label>
+                                <input type="file" id="about-image-file" class="form-control" accept="image/*" style="padding: 5px; background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color);">
+                                <input type="hidden" id="about-image-url">
+                                <div id="about-image-preview-wrap" style="margin-top: 10px; display: none;">
+                                    <img id="about-image-preview" src="" style="height: 60px; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.05); padding: 2px;">
+                                    <span style="font-size: 0.8rem; color: var(--primary); margin-right: 10px; vertical-align: middle;">تم تحميل الصورة</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Col 2: Vision, Mission & Goals -->
+                        <div class="settings-section" style="background: var(--bg-body); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); text-align: right;">
+                            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;"><i class="fas fa-bullseye"></i> الرؤية والرسالة والأهداف</h3>
+                            
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">رؤيتنا</label>
+                                <textarea id="about-vision-input" class="form-control" rows="4" required style="resize: vertical;"></textarea>
+                            </div>
+                            
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">رسالتنا</label>
+                                <textarea id="about-mission-input" class="form-control" rows="4" required style="resize: vertical;"></textarea>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">أهدافنا الأكاديمية</label>
+                                <textarea id="about-goals-input" class="form-control" rows="4" required style="resize: vertical;"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Col 3: Dean Message -->
+                        <div class="settings-section" style="background: var(--bg-body); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); text-align: right;">
+                            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;"><i class="fas fa-user-tie"></i> كلمة العميد والعمادة</h3>
+                            
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">اسم عميد الكلية</label>
+                                <input type="text" id="dean-name-input" class="form-control" required>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">الصفة / المسمى الوظيفي</label>
+                                <input type="text" id="dean-title-input" class="form-control" required>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">صورة العميد</label>
+                                <input type="file" id="dean-avatar-file" class="form-control" accept="image/*" style="padding: 5px; background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color);">
+                                <input type="hidden" id="dean-avatar-url">
+                                <div id="dean-avatar-preview-wrap" style="margin-top: 10px; display: none;">
+                                    <img id="dean-avatar-preview" src="" style="height: 60px; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.05); padding: 2px;">
+                                    <span style="font-size: 0.8rem; color: var(--primary); margin-right: 10px; vertical-align: middle;">تم تحميل الصورة</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">كلمة العميد (الاقتباس الرئيسي)</label>
+                                <textarea id="dean-message-quote-input" class="form-control" rows="4" required style="resize: vertical;"></textarea>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">كلمة العميد (الفقرة الإضافية/الخاتمة)</label>
+                                <textarea id="dean-message-p2-input" class="form-control" rows="3" required style="resize: vertical;"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div style="margin-top: 30px; display: flex; gap: 15px; justify-content: flex-end;">
+                        <button type="submit" class="btn btn-primary" style="padding: 10px 30px;">حفظ البيانات والتحديث فوراً <i class="fas fa-save"></i></button>
+                        <button type="button" id="btn-cancel-about" class="btn btn-secondary" style="padding: 10px 30px;">إلغاء</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- ==========================================
+               Contact Messages Tab Content
+               ========================================== -->
+            <div id="contacts-tab-content" style="display: none;">
+                <header class="main-header-dashboard" style="margin-bottom: 25px;">
+                    <div class="welcome-section">
+                        <h1>رسائل التواصل الواردة</h1>
+                        <p>عرض وإدارة جميع الرسائل والاستفسارات التي أرسلها الزوار عبر نموذج "تواصل معنا" بالموقع الرئيسي.</p>
+                    </div>
+                    <div class="header-controls">
+                        <span id="contacts-unread-count" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: bold;"><i class="fas fa-envelope"></i> 0 رسالة جديدة</span>
+                    </div>
+                </header>
+
+                <div class="glass" style="padding: 30px; border-radius: 20px; border: 1px solid var(--border-color);">
+                    <div class="table-responsive">
+                        <table class="custom-table" id="contacts-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 30px;"></th>
+                                    <th>المرسل</th>
+                                    <th>البريد / الهاتف</th>
+                                    <th>الموضوع</th>
+                                    <th>نص الرسالة</th>
+                                    <th>التاريخ</th>
+                                    <th>العمليات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic contact messages will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================
+               Applicants Management Tab Content
+               ========================================== -->
+            <div id="applicants-tab-content" style="display: none;">
+                <header class="main-header-dashboard" style="margin-bottom: 25px;">
+                    <div class="welcome-section">
+                        <h1>إدارة الطلاب المتقدمين</h1>
+                        <p>عرض جميع طلبات التسجيل والالتحاق بالكلية، مع إمكانية القبول أو الرفض وحذف الطلبات.</p>
+                    </div>
+                    <div class="header-controls">
+                        <button class="btn btn-primary" id="btn-add-applicant-from-tab"><i class="fas fa-plus-circle"></i> إضافة طالب جديد</button>
+                    </div>
+                </header>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px;">
+                    <div class="glass" style="padding: 18px; border-radius: 14px; text-align: center; border: 1px solid var(--border-color);">
+                        <i class="fas fa-users" style="font-size: 1.5rem; color: var(--primary); margin-bottom: 8px;"></i>
+                        <div id="app-stat-total" style="font-size: 1.8rem; font-weight: bold; color: var(--text-primary);">0</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">إجمالي الطلبات</div>
+                    </div>
+                    <div class="glass" style="padding: 18px; border-radius: 14px; text-align: center; border: 1px solid var(--border-color);">
+                        <i class="fas fa-hourglass-half" style="font-size: 1.5rem; color: #f39c12; margin-bottom: 8px;"></i>
+                        <div id="app-stat-pending" style="font-size: 1.8rem; font-weight: bold; color: #f39c12;">0</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">قيد المراجعة</div>
+                    </div>
+                    <div class="glass" style="padding: 18px; border-radius: 14px; text-align: center; border: 1px solid var(--border-color);">
+                        <i class="fas fa-check-circle" style="font-size: 1.5rem; color: #2ecc71; margin-bottom: 8px;"></i>
+                        <div id="app-stat-approved" style="font-size: 1.8rem; font-weight: bold; color: #2ecc71;">0</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">تم القبول</div>
+                    </div>
+                    <div class="glass" style="padding: 18px; border-radius: 14px; text-align: center; border: 1px solid var(--border-color);">
+                        <i class="fas fa-times-circle" style="font-size: 1.5rem; color: #ff4c4c; margin-bottom: 8px;"></i>
+                        <div id="app-stat-rejected" style="font-size: 1.8rem; font-weight: bold; color: #ff4c4c;">0</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">تم الرفض</div>
+                    </div>
+                </div>
+
+                <div class="glass" style="padding: 30px; border-radius: 20px; border: 1px solid var(--border-color);">
+                    <div class="table-responsive">
+                        <table class="custom-table" id="applicants-full-table">
+                            <thead>
+                                <tr>
+                                    <th>اسم الطالب</th>
+                                    <th>التخصص المطلوب</th>
+                                    <th>معدل الثانوية</th>
+                                    <th>رقم الهاتف</th>
+                                    <th>تاريخ التقديم</th>
+                                    <th>حالة الطلب</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic applicants will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- ==========================================
+       6. Add Applicant Modal Drawer
+       ========================================== -->
+    <div class="modal-overlay" id="add-student-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>إضافة وتسجيل طالب جديد</h3>
+                <button class="modal-close" id="modal-close-btn">&times;</button>
+            </div>
+            
+            <form id="add-student-form">
+                <div class="form-group">
+                    <label for="student-name">اسم الطالب كاملاً</label>
+                    <input type="text" id="student-name" class="form-control" placeholder="مثال: أحمد عبد الله اليماني" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="student-dept">التخصص المطلوب</label>
+                    <select id="student-dept" class="form-control" required>
+                        <option value="صيدلة">صيدلة</option>
+                        <option value="فني أسنان">فني أسنان</option>
+                        <option value="تقنية معلومات (IT)">تقنية معلومات (IT)</option>
+                        <option value="إدارة أعمال وتجارة إلكترونية">إدارة أعمال وتجارة إلكترونية</option>
+                        <option value="قبالة وتوليد">قبالة وتوليد</option>
+                        <option value="مساعد طبي">مساعد طبي</option>
+                        <option value="تمريض عالي">تمريض عالي</option>
+                        <option value="مختبرات">مختبرات</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="student-grade">معدل الثانوية العامة (%)</label>
+                    <input type="number" step="0.1" id="student-grade" class="form-control" placeholder="مثال: 85.5" min="50" max="100" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="student-phone">رقم الهاتف للتواصل</label>
+                    <input type="text" id="student-phone" class="form-control" placeholder="مثال: +967 777 123 456" required>
+                </div>
+
+                <div style="display: flex; gap: 15px; margin-top: 30px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">تسجيل الطلب</button>
+                    <button type="button" class="btn btn-secondary" id="modal-cancel-btn" style="flex: 1;">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add/Edit Department Modal -->
+    <div class="modal-overlay" id="dept-modal">
+        <div class="modal-card" style="max-width: 800px; width: 95%;">
+            <div class="modal-header">
+                <h3 id="dept-modal-title">إضافة تخصص جديد</h3>
+                <button class="modal-close" id="dept-modal-close-btn">&times;</button>
+            </div>
+            
+            <form id="dept-form" style="max-height: 75vh; overflow-y: auto; padding: 5px;">
+                <input type="hidden" id="dept-id">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
+                    <div class="form-group">
+                        <label for="dept-name">اسم التخصص</label>
+                        <input type="text" id="dept-name" class="form-control" placeholder="مثال: فني أسنان" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dept-code">رمز التخصص الفريد (بالإنجليزي للروابط)</label>
+                        <input type="text" id="dept-code" class="form-control" placeholder="مثال: dental-tech" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dept-category">القسم</label>
+                        <select id="dept-category" class="form-control" required>
+                            <option value="medical">التخصصات الطبية والصحية</option>
+                            <option value="tech">التخصصات الإدارية والتقنية والهندسية</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dept-duration">المدة الدراسية</label>
+                        <input type="text" id="dept-duration" class="form-control" placeholder="مثال: 3 سنوات (دبلوم عالي)" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dept-icon-file">أيقونة التخصص (صورة من الجهاز)</label>
+                        <input type="file" id="dept-icon-file" class="form-control" accept="image/*" style="padding: 5px;">
+                        <input type="hidden" id="dept-icon">
+                        <div id="dept-icon-preview-wrap" style="margin-top: 5px; display: none;">
+                            <img id="dept-icon-preview" src="" style="height: 35px; border-radius: 6px; background: rgba(255,255,255,0.1); padding: 2px; vertical-align: middle;">
+                            <span style="font-size: 0.8rem; color: var(--primary);">تم رفع الأيقونة</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="dept-image-file">الصورة التوضيحية (من الجهاز)</label>
+                        <input type="file" id="dept-image-file" class="form-control" accept="image/*" style="padding: 5px;">
+                        <input type="hidden" id="dept-image">
+                        <div id="dept-image-preview-wrap" style="margin-top: 5px; display: none;">
+                            <img id="dept-image-preview" src="" style="height: 35px; border-radius: 6px; background: rgba(255,255,255,0.1); padding: 2px; vertical-align: middle;">
+                            <span style="font-size: 0.8rem; color: var(--primary);">تم رفع الصورة</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label for="dept-description">وصف التخصص</label>
+                    <textarea id="dept-description" class="form-control" rows="3" placeholder="اكتب وصفاً تعريفياً موجزاً للتخصص..." required></textarea>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label for="dept-careers">مجالات العمل المستقبلية</label>
+                    <textarea id="dept-careers" class="form-control" rows="2" placeholder="مثال: معامل تصنيع الأسنان الخاصة، المشافي التخصصية للأسنان..." required></textarea>
+                </div>
+
+                <!-- Dynamic Course Inputs -->
+                <div style="margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h4 style="color: var(--primary); margin: 0;"><i class="fas fa-book"></i> المساقات الدراسية المميزة</h4>
+                        <button type="button" class="btn btn-secondary btn-sm" id="btn-add-course-row" style="padding: 6px 16px; border-radius: 8px; font-size: 0.85rem; cursor: pointer;"><i class="fas fa-plus"></i> إضافة مساق دراسي</button>
+                    </div>
+
+                    <div id="courses-list-container">
+                        <!-- Dynamic Course Rows Inserted Here -->
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 15px; margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">حفظ التخصص</button>
+                    <button type="button" class="btn btn-secondary" id="dept-modal-cancel-btn" style="flex: 1;">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label for="dept-description">وصف التخصص</label>
+                    <textarea id="dept-description" class="form-control" rows="3" placeholder="اكتب وصفاً تعريفياً موجزاً للتخصص..." required></textarea>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label for="dept-careers">مجالات العمل المستقبلية</label>
+                    <textarea id="dept-careers" class="form-control" rows="2" placeholder="مثال: معامل تصنيع الأسنان الخاصة، المشافي التخصصية للأسنان..." required></textarea>
+                </div>
+
+                <!-- Course Table Inputs inside Modal -->
+                <div style="margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                    <h4 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-book"></i> المساقات الدراسية المميزة (3 مساقات رئيسية)</h4>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 5px; font-weight: bold; font-size: 0.85rem; color: var(--text-secondary);">
+                        <div>رمز المساق</div>
+                        <div>اسم المساق الدراسي</div>
+                        <div>نوع التدريب</div>
+                    </div>
+
+                    <!-- Course 1 -->
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px;">
+                        <input type="text" id="course-1-code" class="form-control" placeholder="مثال: DT-101" required>
+                        <input type="text" id="course-1-name" class="form-control" placeholder="مثال: تشريح الأسنان" required>
+                        <input type="text" id="course-1-type" class="form-control" placeholder="مثال: نظري + عملي" required>
+                    </div>
+
+                    <!-- Course 2 -->
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px;">
+                        <input type="text" id="course-2-code" class="form-control" placeholder="مثال: DT-203" required>
+                        <input type="text" id="course-2-name" class="form-control" placeholder="مثال: تصميم الأسنان الرقمي" required>
+                        <input type="text" id="course-2-type" class="form-control" placeholder="مثال: عملي تطبيقي" required>
+                    </div>
+
+                    <!-- Course 3 -->
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
+                        <input type="text" id="course-3-code" class="form-control" placeholder="مثال: DT-205" required>
+                        <input type="text" id="course-3-name" class="form-control" placeholder="مثال: صناعة أطقم الخزف" required>
+                        <input type="text" id="course-3-type" class="form-control" placeholder="مثال: تدريب إكلينيكي" required>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 15px; margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">حفظ التخصص</button>
+                    <button type="button" class="btn btn-secondary" id="dept-modal-cancel-btn" style="flex: 1;">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add/Edit Lab Modal -->
+    <div class="modal-overlay" id="lab-modal">
+        <div class="modal-card" style="max-width: 800px; width: 95%;">
+            <div class="modal-header">
+                <h3 id="lab-modal-title">إضافة معمل جديد</h3>
+                <button class="modal-close" id="lab-modal-close-btn">&times;</button>
+            </div>
+            
+            <form id="lab-form" style="max-height: 75vh; overflow-y: auto; padding: 5px;">
+                <input type="hidden" id="lab-id">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
+                    <div class="form-group">
+                        <label for="lab-name">اسم المعمل</label>
+                        <input type="text" id="lab-name" class="form-control" placeholder="مثال: معمل تصميم الأسنان الرقمي" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lab-category">التصنيف</label>
+                        <select id="lab-category" class="form-control" required>
+                            <option value="medical">معمل طبي</option>
+                            <option value="tech">معمل تقني</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label for="lab-image-file">صورة المعمل التوضيحية (من الجهاز)</label>
+                        <input type="file" id="lab-image-file" class="form-control" accept="image/*" style="padding: 5px;">
+                        <input type="hidden" id="lab-image">
+                        <div id="lab-image-preview-wrap" style="margin-top: 5px; display: none;">
+                            <img id="lab-image-preview" src="" style="height: 50px; border-radius: 6px; background: rgba(255,255,255,0.1); padding: 2px; vertical-align: middle;">
+                            <span style="font-size: 0.8rem; color: var(--primary);">تم رفع الصورة</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label for="lab-description">وصف وتجهيزات المعمل</label>
+                    <textarea id="lab-description" class="form-control" rows="3" placeholder="اكتب تفاصيل التجهيزات المتاحة بالمعمل..." required></textarea>
+                </div>
+
+                <!-- Dynamic Specs/Tadjihzat Inputs -->
+                <div style="margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h4 style="color: var(--primary); margin: 0;"><i class="fas fa-tools"></i> التجهيزات والمواصفات المميزة</h4>
+                        <button type="button" class="btn btn-secondary btn-sm" id="btn-add-spec-row" style="padding: 6px 16px; border-radius: 8px; font-size: 0.85rem; cursor: pointer;"><i class="fas fa-plus"></i> إضافة تجهيز/مواصفة</button>
+                    </div>
+
+                    <div id="specs-list-container">
+                        <!-- Dynamic Spec Rows Inserted Here -->
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 15px; margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">حفظ المعمل</button>
+                    <button type="button" class="btn btn-secondary" id="lab-modal-cancel-btn" style="flex: 1;">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tuition Fee Add/Edit Modal -->
+    <div class="modal-overlay" id="fee-modal">
+        <div class="modal-card" style="max-width: 600px; width: 95%;">
+            <div class="modal-header">
+                <h3 id="fee-modal-title">إضافة رسوم تخصص جديدة</h3>
+                <button class="modal-close" id="fee-modal-close-btn">&times;</button>
+            </div>
+            
+            <form id="fee-form" style="padding: 10px 0 0 0;">
+                <input type="hidden" id="fee-id">
+                
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="fee-dept-name">اسم التخصص الدراسي</label>
+                    <input type="text" id="fee-dept-name" class="form-control" placeholder="مثال: فني أسنان أو تقنية معلومات (IT)" required style="background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color);">
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div class="form-group">
+                        <label for="fee-official">الرسوم السنوية الرسمية</label>
+                        <input type="text" id="fee-official" class="form-control" placeholder="مثال: $1,200" required style="background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color);">
+                    </div>
+                    <div class="form-group">
+                        <label for="fee-discounted">الرسوم بعد الخصم (30%)</label>
+                        <input type="text" id="fee-discounted" class="form-control" placeholder="مثال: $840" required style="background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color);">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                    <div class="form-group">
+                        <label for="fee-installment">القسط الفصلي الأول</label>
+                        <input type="text" id="fee-installment" class="form-control" placeholder="مثال: $420" required style="background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color);">
+                    </div>
+                    <div class="form-group">
+                        <label for="fee-payment-options">خيارات التقسيط المتاحة</label>
+                        <input type="text" id="fee-payment-options" class="form-control" placeholder="مثال: تقسيط شهري ميسر (8 دفعات)" required style="background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color);">
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">حفظ البيانات</button>
+                    <button type="button" class="btn btn-secondary" id="fee-modal-cancel-btn" style="flex: 1;">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Beautiful Glassmorphism Login Overlay -->
+    <div id="login-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(20px); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+        <div class="glass" style="width: 400px; padding: 40px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; background: rgba(25, 16, 24, 0.85);">
+            <img src="assets/logo.jpg" alt="Logo" style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 20px; box-shadow: 0 0 20px var(--primary);">
+            <h2 style="color: #fff; margin-bottom: 10px; font-family: 'Outfit', sans-serif;">تسجيل الدخول للنظام</h2>
+            <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 30px; font-size: 0.9rem;">لوحة التحكم الإدارية لكلية الصدارة</p>
+            <form id="login-form">
+                <div class="form-group" style="text-align: right; margin-bottom: 20px;">
+                    <label style="color: #fff; display: block; margin-bottom: 8px;">اسم المستخدم</label>
+                    <input type="text" id="login-username" class="form-control" required>
+                </div>
+                <div class="form-group" style="text-align: right; margin-bottom: 30px;">
+                    <label style="color: #fff; display: block; margin-bottom: 8px;">كلمة المرور</label>
+                    <input type="password" id="login-password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px;">دخول <i class="fas fa-sign-in-alt"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- ==========================================
+       7. Interactive Admin Logic Script
+       ========================================== -->
+    <script>
+        const API_BASE = (() => {
+            const p = window.location.port;
+            const h = window.location.hostname || '127.0.0.1';
+            // In production (no port) or when running locally on Flask (5000) or Django (5001), use relative paths
+            if (!p || p === '5000' || p === '5001') return '';
+            return `http://${h}:5001`;
+        })();
+        // Global State counts
+        let totalStudents = 1248;
+        let pendingRequests = 5;
+
+        // Elements
+        const statTotalStudents = document.getElementById('stat-total-students');
+        const statPendingRequests = document.getElementById('stat-pending-requests');
+        const modalOverlay = document.getElementById('add-student-modal');
+        const addStudentForm = document.getElementById('add-student-form');
+        const applicantsTableBody = document.querySelector('#applicants-table tbody');
+
+        // Theme Toggle Handler
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        if (themeToggleBtn) {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+            themeToggleBtn.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+        }
+
+        // SVG Chart Tooltip interactivity
+        const chartPoints = document.querySelectorAll('.chart-point');
+        const chartTooltip = document.getElementById('chart-tooltip');
+
+        chartPoints.forEach(point => {
+            point.addEventListener('mouseenter', (e) => {
+                const val = point.getAttribute('data-value');
+                const day = point.getAttribute('data-day');
+                chartTooltip.innerHTML = `<strong>${day}:</strong> ${val}`;
+                chartTooltip.style.opacity = '1';
+                
+                // Position tooltip
+                const rect = point.getBoundingClientRect();
+                const containerRect = point.parentNode.getBoundingClientRect();
+                chartTooltip.style.left = `${rect.left - containerRect.left + 15}px`;
+                chartTooltip.style.top = `${rect.top - containerRect.top - 40}px`;
+            });
+
+            point.addEventListener('mouseleave', () => {
+                chartTooltip.style.opacity = '0';
+            });
+        });
+
+        // Trigger Add Student Modal
+        document.getElementById('btn-add-student').addEventListener('click', () => toggleModal(true));
+        document.getElementById('btn-show-add-modal').addEventListener('click', () => toggleModal(true));
+        document.getElementById('btn-quick-add').addEventListener('click', () => toggleModal(true));
+        document.getElementById('modal-close-btn').addEventListener('click', () => toggleModal(false));
+        document.getElementById('modal-cancel-btn').addEventListener('click', () => toggleModal(false));
+
+        function toggleModal(show) {
+            if (show) {
+                modalOverlay.classList.add('active');
+            } else {
+                modalOverlay.classList.remove('active');
+                addStudentForm.reset();
+            }
+        }
+
+        // Create Custom Toast
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            const iconColor = type === 'success' ? '#27d366' : '#ff4c4c';
+            
+            toast.innerHTML = `
+                <i class="fas ${icon}" style="color: ${iconColor}; font-size: 1.2rem;"></i>
+                <span>${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Remove toast after 4s
+            setTimeout(() => {
+                toast.style.animation = 'toastIn 0.4s reverse forwards';
+                setTimeout(() => toast.remove(), 400);
+            }, 4000);
+        }
+
+        // Tab switching logic
+        const tabLinks = document.querySelectorAll('.sidebar-link[data-tab]');
+        const statsTabContent = document.getElementById('stats-tab-content');
+        const settingsTabContent = document.getElementById('settings-tab-content');
+        const deptsTabContent = document.getElementById('depts-tab-content');
+        const labsTabContent = document.getElementById('labs-tab-content');
+        const feesTabContent = document.getElementById('fees-tab-content');
+        const aboutTabContent = document.getElementById('about-tab-content');
+        const contactsTabContent = document.getElementById('contacts-tab-content');
+        const applicantsTabContent = document.getElementById('applicants-tab-content');
+
+        const allTabContents = [statsTabContent, settingsTabContent, deptsTabContent, labsTabContent, feesTabContent, aboutTabContent, contactsTabContent, applicantsTabContent];
+
+        function hideAllTabs() {
+            allTabContents.forEach(t => { if (t) t.style.display = 'none'; });
+        }
+        
+        tabLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Remove active from all sidebar-links
+                document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                
+                const tab = link.getAttribute('data-tab');
+                hideAllTabs();
+
+                if (tab === 'stats-tab') {
+                    statsTabContent.style.display = 'block';
+                } else if (tab === 'settings-tab') {
+                    settingsTabContent.style.display = 'block';
+                    loadSettingsToForm();
+                } else if (tab === 'depts-tab') {
+                    deptsTabContent.style.display = 'block';
+                    loadDeptsDashboard();
+                } else if (tab === 'labs-tab') {
+                    labsTabContent.style.display = 'block';
+                    loadLabsDashboard();
+                } else if (tab === 'fees-tab') {
+                    feesTabContent.style.display = 'block';
+                    loadFeesDashboard();
+                } else if (tab === 'about-tab') {
+                    aboutTabContent.style.display = 'block';
+                    loadAboutToForm();
+                } else if (tab === 'contacts-tab') {
+                    contactsTabContent.style.display = 'block';
+                    loadContactsDashboard();
+                } else if (tab === 'applicants-tab') {
+                    applicantsTabContent.style.display = 'block';
+                    loadApplicantsDashboard();
+                }
+            });
+        });
+        
+        document.getElementById('btn-cancel-settings').addEventListener('click', () => {
+            // Switch back to stats tab
+            document.querySelector('.sidebar-link[data-tab="stats-tab"]').click();
+        });
+
+        // ==========================================
+        // ==========================================
+        // Department Management CRUD Logic
+        // ==========================================
+        let globalDepts = [];
+
+        // Upload helper function
+        function setupFileUpload(fileInputId, hiddenInputId, previewWrapId, previewImgId) {
+            const fileInput = document.getElementById(fileInputId);
+            const hiddenInput = document.getElementById(hiddenInputId);
+            const previewWrap = document.getElementById(previewWrapId);
+            const previewImg = document.getElementById(previewImgId);
+
+            if (!fileInput) return;
+
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const formData = new FormData();
+                formData.append('file', file);
+
+                showToast('جاري رفع الملف...', 'info');
+
+                fetch(API_BASE + '/api/upload', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
+                    },
+                    body: formData
+                })
+                .then(res => {
+                    if (!res.ok) throw new Error('Upload failed');
+                    return res.json();
+                })
+                .then(data => {
+                    hiddenInput.value = data.url;
+                    previewImg.src = data.url.startsWith('http') ? data.url : (API_BASE + data.url);
+                    previewWrap.style.display = 'block';
+                    showToast('تم رفع الملف بنجاح!', 'success');
+                })
+                .catch(err => {
+                    console.error('File upload error:', err);
+                    showToast('فشل رفع الملف. يرجى إعادة المحاولة.', 'danger');
+                });
+            });
+        }
+
+        setupFileUpload('dept-icon-file', 'dept-icon', 'dept-icon-preview-wrap', 'dept-icon-preview');
+        setupFileUpload('dept-image-file', 'dept-image', 'dept-image-preview-wrap', 'dept-image-preview');
+
+        // Dynamic Course Rows Logic
+        function addCourseRow(code = '', name = '', type = '') {
+            const container = document.getElementById('courses-list-container');
+            if (!container) return;
+
+            const row = document.createElement('div');
+            row.className = 'course-row';
+            row.style = 'display: grid; grid-template-columns: 1fr 2fr 1fr auto; gap: 10px; margin-bottom: 10px; align-items: center;';
+            
+            row.innerHTML = `
+                <input type="text" class="form-control course-code" placeholder="رمز المساق" value="${code}" required>
+                <input type="text" class="form-control course-name" placeholder="اسم المساق" value="${name}" required>
+                <input type="text" class="form-control course-type" placeholder="نوع التدريب" value="${type}" required>
+                <button type="button" class="btn-delete-course-row" title="حذف المساق" style="padding: 8px 12px; background: rgba(255, 76, 76, 0.1); color: #ff4c4c; border: 1px solid #ff4c4c; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            `;
+            
+            row.querySelector('.btn-delete-course-row').addEventListener('click', () => {
+                row.remove();
+            });
+            
+            container.appendChild(row);
+        }
+
+        const addCourseBtn = document.getElementById('btn-add-course-row');
+        if (addCourseBtn) {
+            addCourseBtn.addEventListener('click', () => {
+                addCourseRow();
+            });
+        }
+
+        function loadDeptsDashboard() {
+            fetch(API_BASE + '/api/departments?_t=' + new Date().getTime())
+                .then(res => res.json())
+                .then(depts => {
+                    globalDepts = depts;
+                    const tbody = document.querySelector('#depts-table tbody');
+                    if (!tbody) return;
+
+                    tbody.innerHTML = '';
+                    
+                    if (depts.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-secondary); padding: 20px;">لا توجد تخصصات مضافة حالياً.</td></tr>';
+                        return;
+                    }
+                    
+                    depts.forEach(d => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'table-row-animate';
+                        
+                        const catLabel = d.category === 'medical' ? 'طبي وصحي' : 'إداري وتقني';
+                        const catColor = d.category === 'medical' ? '#27d366' : '#a22ed3';
+
+                        let iconDisplay = '';
+                        if (d.icon && (d.icon.startsWith('/') || d.icon.startsWith('http'))) {
+                            const resolvedIcon = d.icon.startsWith('http') ? d.icon : (API_BASE + d.icon);
+                            iconDisplay = `<img src="${resolvedIcon}" style="width: 28px; height: 28px; object-fit: contain; vertical-align: middle; border-radius: 4px; background: rgba(255,255,255,0.05); padding: 2px;">`;
+                        } else {
+                            iconDisplay = `<i class="fa-solid ${d.icon || 'fa-graduation-cap'}" style="font-size: 1.2rem; color: var(--primary);"></i>`;
+                        }
+                        
+                        tr.innerHTML = `
+                            <td style="font-weight: bold; color: var(--primary);">${d.name}</td>
+                            <td><code>${d.code}</code></td>
+                            <td><span style="color: ${catColor}; font-weight: bold;">${catLabel}</span></td>
+                            <td>${d.duration}</td>
+                            <td>${iconDisplay}</td>
+                            <td>
+                                <button type="button" class="row-action-btn" onclick="editDept(${d.id})" title="تعديل التخصص" style="background: rgba(138, 46, 118, 0.1); color: var(--primary); border: 1px solid var(--primary); margin-left: 5px; cursor: pointer; padding: 5px 8px; border-radius: 6px;">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button type="button" class="row-action-btn" onclick="deleteDept(${d.id})" title="حذف التخصص" style="background: rgba(255, 76, 76, 0.1); color: #ff4c4c; border: 1px solid #ff4c4c; cursor: pointer; padding: 5px 8px; border-radius: 6px;">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                })
+                .catch(err => {
+                    console.error('Error loading depts:', err);
+                    showToast('فشل تحميل قائمة التخصصات.', 'danger');
+                });
+        }
+
+        window.editDept = function(id) {
+            const dept = globalDepts.find(d => d.id === id);
+            if (!dept) return;
+            openDeptModal(dept);
+        }
+
+        window.deleteDept = function(id) {
+            if (!confirm('هل أنت متأكد من حذف هذا التخصص نهائياً؟ سيتم حذفه من الموقع الرئيسي أيضاً.')) {
+                return;
+            }
+            
+            fetch(API_BASE + '/api/departments/' + id, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
+                }
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Delete failed');
+                return res.json();
+            })
+            .then(data => {
+                showToast('تم حذف التخصص بنجاح!', 'success');
+                loadDeptsDashboard();
+            })
+            .catch(err => {
+                console.error(err);
+                showToast('فشل حذف التخصص. يرجى التحقق من الصلاحيات.', 'danger');
+            });
+        }
+
+        const deptModal = document.getElementById('dept-modal');
+        const deptForm = document.getElementById('dept-form');
+
+        const btnAddDept = document.getElementById('btn-add-dept');
+        if (btnAddDept) {
+            btnAddDept.addEventListener('click', () => {
+                openDeptModal(null);
+            });
+        }
+
+        const closeBtn = document.getElementById('dept-modal-close-btn');
+        if (closeBtn) closeBtn.addEventListener('click', closeDeptModal);
+
+        const cancelBtn = document.getElementById('dept-modal-cancel-btn');
+        if (cancelBtn) cancelBtn.addEventListener('click', closeDeptModal);
+
+        function openDeptModal(dept = null) {
+            deptForm.reset();
+            const coursesContainer = document.getElementById('courses-list-container');
+            if (coursesContainer) coursesContainer.innerHTML = '';
+
+            const iconWrap = document.getElementById('dept-icon-preview-wrap');
+            const imgWrap = document.getElementById('dept-image-preview-wrap');
+            if (iconWrap) iconWrap.style.display = 'none';
+            if (imgWrap) imgWrap.style.display = 'none';
+
+            if (dept) {
+                document.getElementById('dept-modal-title').innerText = 'تعديل بيانات التخصص';
+                document.getElementById('dept-id').value = dept.id;
+                document.getElementById('dept-name').value = dept.name;
+                document.getElementById('dept-code').value = dept.code;
+                document.getElementById('dept-category').value = dept.category;
+                document.getElementById('dept-duration').value = dept.duration;
+                document.getElementById('dept-icon').value = dept.icon || '';
+                document.getElementById('dept-image').value = dept.image_url || '';
+                document.getElementById('dept-description').value = dept.description;
+                document.getElementById('dept-careers').value = dept.careers;
+
+                if (dept.icon) {
+                    const iconPreview = document.getElementById('dept-icon-preview');
+                    if (iconPreview) iconPreview.src = dept.icon.startsWith('http') || !dept.icon.startsWith('/') ? dept.icon : (API_BASE + dept.icon);
+                    if (iconWrap) iconWrap.style.display = 'block';
+                }
+                if (dept.image_url) {
+                    const imgPreview = document.getElementById('dept-image-preview');
+                    if (imgPreview) imgPreview.src = dept.image_url.startsWith('http') ? dept.image_url : (API_BASE + dept.image_url);
+                    if (imgWrap) imgWrap.style.display = 'block';
+                }
+
+                const courses = Array.isArray(dept.courses) ? dept.courses : [];
+                if (courses.length > 0) {
+                    courses.forEach(c => addCourseRow(c.code, c.name, c.type));
+                } else {
+                    addCourseRow();
+                }
+            } else {
+                document.getElementById('dept-modal-title').innerText = 'إضافة تخصص جديد';
+                document.getElementById('dept-id').value = '';
+                addCourseRow();
+            }
+            if (deptModal) deptModal.classList.add('active');
+        }
+
+        function closeDeptModal() {
+            if (deptModal) deptModal.classList.remove('active');
+            deptForm.reset();
+        }
+
+        if (deptForm) {
+            deptForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const id = document.getElementById('dept-id').value;
+                const isEdit = !id;
+                
+                const submitBtn = deptForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+                
+                const courses = [];
+                document.querySelectorAll('.course-row').forEach(row => {
+                    const cCode = row.querySelector('.course-code').value.trim();
+                    const cName = row.querySelector('.course-name').value.trim();
+                    const cType = row.querySelector('.course-type').value.trim();
+                    if (cCode || cName || cType) {
+                        courses.push({ code: cCode, name: cName, type: cType });
+                    }
+                });
+                
+                const data = {
+                    name: document.getElementById('dept-name').value.trim(),
+                    code: document.getElementById('dept-code').value.trim(),
+                    category: document.getElementById('dept-category').value,
+                    duration: document.getElementById('dept-duration').value.trim(),
+                    icon: document.getElementById('dept-icon').value.trim(),
+                    image_url: document.getElementById('dept-image').value.trim(),
+                    description: document.getElementById('dept-description').value.trim(),
+                    careers: document.getElementById('dept-careers').value.trim(),
+                    courses: courses
+                };
+                
+                const url = id ? `${API_BASE}/api/departments/${id}` : `${API_BASE}/api/departments`;
+                const method = id ? 'PUT' : 'POST';
+                
+                fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(res => {
+                    if (!res.ok) {
+                        return res.json().then(errData => {
+                            throw new Error(errData.message || 'Save failed');
+                        });
+                    }
+                    return res.json();
+                })
+                .then(resData => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                    showToast(id ? 'تم تحديث التخصص بنجاح!' : 'تم إضافة التخصص الجديد بنجاح!', 'success');
+                    closeDeptModal();
+                    loadDeptsDashboard();
+                })
+                .catch(err => {
+                    console.error(err);
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                    showToast(err.message || 'حدث خطأ أثناء حفظ التخصص.', 'danger');
+                });
+            });
+        }
+
+        // ==========================================
+        // Lab Management CRUD Logic
+        // ==========================================
+        let globalLabs = [];
+
+        setupFileUpload('lab-image-file', 'lab-image', 'lab-image-preview-wrap', 'lab-image-preview');
+
+        // Dynamic Spec Rows Logic
+        function addSpecRow(val = '') {
+            const container = document.getElementById('specs-list-container');
+            if (!container) return;
+
+            const row = document.createElement('div');
+            row.className = 'spec-row';
+            row.style = 'display: grid; grid-template-columns: 1fr auto; gap: 10px; margin-bottom: 10px; align-items: center;';
+            
+            row.innerHTML = `
+                <input type="text" class="form-control spec-value" placeholder="مثال: ماسح ثلاثي الأبعاد" value="${val}" required>
+                <button type="button" class="btn-delete-spec-row" title="حذف المواصفة" style="padding: 8px 12px; background: rgba(255, 76, 76, 0.1); color: #ff4c4c; border: 1px solid #ff4c4c; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            `;
+            
+            row.querySelector('.btn-delete-spec-row').addEventListener('click', () => {
+                row.remove();
+            });
+            
+            container.appendChild(row);
+        }
+
+        const addSpecBtn = document.getElementById('btn-add-spec-row');
+        if (addSpecBtn) {
+            addSpecBtn.addEventListener('click', () => {
+                addSpecRow();
+            });
+        }
+
+        function loadLabsDashboard() {
+            fetch(API_BASE + '/api/labs?_t=' + new Date().getTime())
+                .then(res => res.json())
+                .then(labs => {
+                    globalLabs = labs;
+                    const tbody = document.querySelector('#labs-table tbody');
+                    if (!tbody) return;
+
+                    tbody.innerHTML = '';
+                    
+                    if (labs.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-secondary); padding: 20px;">لا توجد معامل مضافة حالياً.</td></tr>';
+                        return;
+                    }
+                    
+                    labs.forEach(l => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'table-row-animate';
+                        
+                        const catLabel = l.category === 'medical' ? 'معمل طبي' : 'معمل تقني';
+                        const catColor = l.category === 'medical' ? '#27d366' : '#a22ed3';
+
+                        const specs = Array.isArray(l.specs) ? l.specs : [];
+                        const specsBadges = specs.map(s => `<span class="badge" style="background: rgba(var(--primary-rgb), 0.1); color: var(--primary); margin: 2px; padding: 4px 8px; border-radius: 4px; display: inline-block; font-size: 0.8rem;">${s}</span>`).join(' ');
+                        
+                        tr.innerHTML = `
+                            <td style="font-weight: bold; color: var(--primary);">${l.name}</td>
+                            <td><span style="color: ${catColor}; font-weight: bold;">${catLabel}</span></td>
+                            <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${l.description}">${l.description}</td>
+                            <td>${specsBadges}</td>
+                            <td>
+                                <button type="button" class="row-action-btn" onclick="editLab(${l.id})" title="تعديل المعمل" style="background: rgba(138, 46, 118, 0.1); color: var(--primary); border: 1px solid var(--primary); margin-left: 5px; cursor: pointer; padding: 5px 8px; border-radius: 6px;">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button type="button" class="row-action-btn" onclick="deleteLab(${l.id})" title="حذف المعمل" style="background: rgba(255, 76, 76, 0.1); color: #ff4c4c; border: 1px solid #ff4c4c; cursor: pointer; padding: 5px 8px; border-radius: 6px;">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                })
+                .catch(err => {
+                    console.error('Error loading labs:', err);
+                    showToast('فشل تحميل قائمة المعامل.', 'danger');
+                });
+        }
+
+        window.editLab = function(id) {
+            const lab = globalLabs.find(l => l.id === id);
+            if (!lab) return;
+            openLabModal(lab);
+        }
+
+        window.deleteLab = function(id) {
+            if (!confirm('هل أنت متأكد من حذف هذا المعمل نهائياً؟ سيتم حذفه من الموقع الرئيسي أيضاً.')) {
+                return;
+            }
+            
+            fetch(API_BASE + '/api/labs/' + id, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
+                }
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Delete failed');
+                return res.json();
+            })
+            .then(data => {
+                showToast('تم حذف المعمل بنجاح!', 'success');
+                loadLabsDashboard();
+            })
+            .catch(err => {
+                console.error(err);
+                showToast('فشل حذف المعمل. يرجى التحقق من الصلاحيات.', 'danger');
+            });
+        }
+
+        const labModal = document.getElementById('lab-modal');
+        const labForm = document.getElementById('lab-form');
+
+        const btnAddLab = document.getElementById('btn-add-lab');
+        if (btnAddLab) {
+            btnAddLab.addEventListener('click', () => {
+                openLabModal(null);
+            });
+        }
+
+        const labCloseBtn = document.getElementById('lab-modal-close-btn');
+        if (labCloseBtn) labCloseBtn.addEventListener('click', closeLabModal);
+
+        const labCancelBtn = document.getElementById('lab-modal-cancel-btn');
+        if (labCancelBtn) labCancelBtn.addEventListener('click', closeLabModal);
+
+        function openLabModal(lab = null) {
+            labForm.reset();
+            const specsContainer = document.getElementById('specs-list-container');
+            if (specsContainer) specsContainer.innerHTML = '';
+
+            const imgWrap = document.getElementById('lab-image-preview-wrap');
+            if (imgWrap) imgWrap.style.display = 'none';
+
+            if (lab) {
+                document.getElementById('lab-modal-title').innerText = 'تعديل بيانات المعمل';
+                document.getElementById('lab-id').value = lab.id;
+                document.getElementById('lab-name').value = lab.name;
+                document.getElementById('lab-category').value = lab.category;
+                document.getElementById('lab-image').value = lab.image_url || '';
+                document.getElementById('lab-description').value = lab.description;
+
+                if (lab.image_url) {
+                    const imgPreview = document.getElementById('lab-image-preview');
+                    if (imgPreview) imgPreview.src = lab.image_url.startsWith('http') ? lab.image_url : (API_BASE + lab.image_url);
+                    if (imgWrap) imgWrap.style.display = 'block';
+                }
+
+                const specs = Array.isArray(lab.specs) ? lab.specs : [];
+                if (specs.length > 0) {
+                    specs.forEach(s => addSpecRow(s));
+                } else {
+                    addSpecRow();
+                }
+            } else {
+                document.getElementById('lab-modal-title').innerText = 'إضافة معمل جديد';
+                document.getElementById('lab-id').value = '';
+                addSpecRow();
+            }
+            if (labModal) labModal.classList.add('active');
+        }
+
+        function closeLabModal() {
+            if (labModal) labModal.classList.remove('active');
+            labForm.reset();
+        }
+
+        if (labForm) {
+            labForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const id = document.getElementById('lab-id').value;
+                const submitBtn = labForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+                
+                const specs = [];
+                document.querySelectorAll('.spec-row').forEach(row => {
+                    const val = row.querySelector('.spec-value').value.trim();
+                    if (val) {
+                        specs.push(val);
+                    }
+                });
+                
+                const data = {
+                    name: document.getElementById('lab-name').value.trim(),
+                    category: document.getElementById('lab-category').value,
+                    image_url: document.getElementById('lab-image').value.trim(),
+                    description: document.getElementById('lab-description').value.trim(),
+                    specs: specs
+                };
+                
+                const url = id ? `${API_BASE}/api/labs/${id}` : `${API_BASE}/api/labs`;
+                const method = id ? 'PUT' : 'POST';
+                
+                fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(res => {
+                    if (!res.ok) {
+                        return res.json().then(errData => {
+                            throw new Error(errData.message || 'Save failed');
+                        });
+                    }
+                    return res.json();
+                })
+                .then(resData => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                    showToast(id ? 'تم تحديث المعمل بنجاح!' : 'تم إضافة المعمل الجديد بنجاح!', 'success');
+                    closeLabModal();
+                    loadLabsDashboard();
+                })
+                .catch(err => {
+                    console.error(err);
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                    showToast(err.message || 'حدث خطأ أثناء حفظ المعمل.', 'danger');
+                });
+            });
+        }
+
+        // ==========================================
+        // Tuition Fees Management CRUD Logic
+        // ==========================================
+        let globalFees = [];
+
+        window.loadFeesDashboard = function() {
+            const tbody = document.querySelector('#fees-table tbody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 30px;">
+                        <i class="fas fa-spinner fa-spin fa-2x" style="margin-bottom: 10px; color: var(--primary);"></i><br>
+                        جاري تحميل قائمة الرسوم الدراسية...
+                    </td>
+                </tr>
+            `;
+
+            fetch(API_BASE + '/api/fees')
+                .then(res => res.json())
+                .then(fees => {
+                    globalFees = fees;
+                    tbody.innerHTML = '';
+                    if (fees.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 30px;">لا توجد رسوم دراسية مضافة حالياً.</td>
+                            </tr>
+                        `;
+                        return;
+                    }
+
+                    fees.forEach(f => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td style="font-weight: bold; color: var(--primary);">${f.department_name}</td>
+                            <td>${f.official_fee}</td>
+                            <td style="font-weight: bold; color: #2ecc71;">${f.discounted_fee}</td>
+                            <td>${f.installment}</td>
+                            <td>${f.payment_options}</td>
+                            <td>
+                                <button type="button" class="row-action-btn" onclick="editFee(${f.id})" title="تعديل الرسوم" style="background: rgba(138, 46, 118, 0.1); color: var(--primary); border: 1px solid var(--primary); margin-left: 5px; cursor: pointer; padding: 5px 8px; border-radius: 6px;">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button type="button" class="row-action-btn" onclick="deleteFee(${f.id})" title="حذف الرسوم" style="background: rgba(255, 76, 76, 0.1); color: #ff4c4c; border: 1px solid #ff4c4c; cursor: pointer; padding: 5px 8px; border-radius: 6px;">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                })
+                .catch(err => {
+                    console.error('Error loading tuition fees:', err);
+                    showToast('فشل تحميل قائمة الرسوم الدراسية.', 'danger');
+                });
+        }
+
+        window.editFee = function(id) {
+            const fee = globalFees.find(f => f.id === id);
+            if (!fee) return;
+            openFeeModal(fee);
+        }
+
+        window.deleteFee = function(id) {
+            if (!confirm('هل أنت متأكد من حذف رسوم هذا التخصص؟ سيتم حذفها من الموقع الرئيسي أيضاً.')) {
+                return;
+            }
+            
+            fetch(API_BASE + '/api/fees/' + id, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
+                }
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Delete failed');
+                return res.json();
+            })
+            .then(data => {
+                showToast('تم حذف رسوم التخصص بنجاح!', 'success');
+                loadFeesDashboard();
+            })
+            .catch(err => {
+                console.error(err);
+                showToast('فشل حذف الرسوم. يرجى التحقق من الصلاحيات.', 'danger');
+            });
+        }
+
+        const feeModal = document.getElementById('fee-modal');
+        const feeForm = document.getElementById('fee-form');
+
+        const btnAddFee = document.getElementById('btn-add-fee');
+        if (btnAddFee) {
+            btnAddFee.addEventListener('click', () => {
+                openFeeModal(null);
+            });
+        }
+
+        const feeCloseBtn = document.getElementById('fee-modal-close-btn');
+        if (feeCloseBtn) feeCloseBtn.addEventListener('click', closeFeeModal);
+
+        const feeCancelBtn = document.getElementById('fee-modal-cancel-btn');
+        if (feeCancelBtn) feeCancelBtn.addEventListener('click', closeFeeModal);
+
+        function openFeeModal(fee = null) {
+            feeForm.reset();
+            if (fee) {
+                document.getElementById('fee-modal-title').innerText = 'تعديل رسوم التخصص';
+                document.getElementById('fee-id').value = fee.id;
+                document.getElementById('fee-dept-name').value = fee.department_name;
+                document.getElementById('fee-official').value = fee.official_fee;
+                document.getElementById('fee-discounted').value = fee.discounted_fee;
+                document.getElementById('fee-installment').value = fee.installment;
+                document.getElementById('fee-payment-options').value = fee.payment_options;
+            } else {
+                document.getElementById('fee-modal-title').innerText = 'إضافة رسوم تخصص جديدة';
+                document.getElementById('fee-id').value = '';
+            }
+            if (feeModal) feeModal.classList.add('active');
+        }
+
+        function closeFeeModal() {
+            if (feeModal) feeModal.classList.remove('active');
+            feeForm.reset();
+        }
+
+        if (feeForm) {
+            feeForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const id = document.getElementById('fee-id').value;
+                const submitBtn = feeForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+                
+                const data = {
+                    department_name: document.getElementById('fee-dept-name').value.trim(),
+                    official_fee: document.getElementById('fee-official').value.trim(),
+                    discounted_fee: document.getElementById('fee-discounted').value.trim(),
+                    installment: document.getElementById('fee-installment').value.trim(),
+                    payment_options: document.getElementById('fee-payment-options').value.trim()
+                };
+                
+                const url = id ? `${API_BASE}/api/fees/${id}` : `${API_BASE}/api/fees`;
+                const method = id ? 'PUT' : 'POST';
+                
+                fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(res => {
+                    if (!res.ok) {
+                        return res.json().then(errData => {
+                            throw new Error(errData.message || 'Save failed');
+                        });
+                    }
+                    return res.json();
+                })
+                .then(resData => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                    showToast(id ? 'تم تحديث الرسوم الدراسية بنجاح!' : 'تم إضافة الرسوم الدراسية بنجاح!', 'success');
+                    closeFeeModal();
+                    loadFeesDashboard();
+                })
+                .catch(err => {
+                    console.error(err);
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                    showToast(err.message || 'حدث خطأ أثناء حفظ الرسوم.', 'danger');
+                });
+            });
+        }
+
+        // Authentication & Session validation
+        function checkAuth() {
+            const token = localStorage.getItem('sadara_token');
+            const loginOverlay = document.getElementById('login-overlay');
+            if (!token) {
+                loginOverlay.style.display = 'flex';
+                return;
+            }
+            
+            fetch(API_BASE + '/api/auth/me', {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Unauthorized');
+                return res.json();
+            })
+            .then(user => {
+                loginOverlay.style.display = 'none';
+                document.querySelector('.admin-profile h4').innerText = user.full_name;
+                document.getElementById('dashboard-welcome-title').innerText = `مرحباً بك، ${user.full_name}`;
+                fetchDashboardData();
+            })
+            .catch(err => {
+                console.warn('Session expired or invalid', err);
+                localStorage.removeItem('sadara_token');
+                loginOverlay.style.display = 'flex';
+            });
+        }
+
+        // Login form submit handler
+        const loginForm = document.getElementById('login-form');
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value;
+            const submitBtn = loginForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري تسجيل الدخول...';
+            
+            fetch(API_BASE + '/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Invalid credentials');
+                return res.json();
+            })
+            .then(data => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+                localStorage.setItem('sadara_token', data.token);
+                showToast('تم تسجيل الدخول بنجاح! مرحباً بك.', 'success');
+                checkAuth();
+            })
+            .catch(err => {
+                console.error(err);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+                alert('فشل تسجيل الدخول. يرجى التحقق من اسم المستخدم وكلمة المرور.');
+            });
+        });
+
+        // Load DB data for dashboard metrics and applicant tables
+        function fetchDashboardData() {
+            fetch(API_BASE + '/api/applicants?_t=' + new Date().getTime(), {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
+                }
+            })
+            .then(res => res.json())
+            .then(applicants => {
+                applicantsTableBody.innerHTML = '';
+                
+                let pendingCount = 0;
+                let approvedCount = 0;
+                
+                applicants.forEach(app => {
+                    if (app.status === 'pending') pendingCount++;
+                    if (app.status === 'approved') approvedCount++;
+                    
+                    const row = document.createElement('tr');
+                    row.className = 'table-row-animate';
+                    row.id = `row-${app.id}`;
+                    
+                    let statusBadge = '';
+                    let actionButtons = '';
+                    
+                    if (app.status === 'pending') {
+                        statusBadge = `
+                            <span class="badge-status status-pending">
+                                <i class="fas fa-spinner fa-spin"></i> قيد المراجعة
+                            </span>
+                        `;
+                        actionButtons = `
+                            <button class="row-action-btn btn-approve" onclick="manageRequest(${app.id}, 'approve', '${app.name}')" title="قبول الطلب">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button class="row-action-btn btn-reject" onclick="manageRequest(${app.id}, 'reject', '${app.name}')" title="رفض الطلب">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                    } else if (app.status === 'approved') {
+                        statusBadge = `
+                            <span class="badge-status status-approved">
+                                <i class="fas fa-check-circle"></i> تم القبول
+                            </span>
+                        `;
+                        actionButtons = `
+                            <span style="color: #27d366; font-weight: 600; font-size: 0.85rem;"><i class="fas fa-user-check"></i> جاهز للنظام</span>
+                        `;
+                    } else {
+                        statusBadge = `
+                            <span class="badge-status status-rejected" style="background: rgba(255, 76, 76, 0.1); color: #ff4c4c; border: 1px solid rgba(255, 76, 76, 0.2);">
+                                <i class="fas fa-times-circle"></i> تم الرفض
+                            </span>
+                        `;
+                        actionButtons = `
+                            <span style="color: #ff4c4c; font-weight: 600; font-size: 0.85rem;"><i class="fas fa-user-times"></i> مرفوض</span>
+                        `;
+                    }
+                    
+                    row.innerHTML = `
+                        <td style="font-weight: bold; color: var(--primary);">${app.name}</td>
+                        <td>${app.department}</td>
+                        <td>${app.gpa}%</td>
+                        <td>${app.phone}</td>
+                        <td>${statusBadge}</td>
+                        <td>${actionButtons}</td>
+                    `;
+                    
+                    applicantsTableBody.appendChild(row);
+                });
+                
+                statTotalStudents.innerText = (1248 + approvedCount).toLocaleString();
+                statPendingRequests.innerText = pendingCount;
+                
+                totalStudents = 1248 + approvedCount;
+                pendingRequests = pendingCount;
+            })
+            .catch(err => {
+                console.error('Error fetching dashboard data:', err);
+                showToast('فشل تحديث بيانات الإحصائيات والطلبات.', 'danger');
+            });
+        }
+
+        // Manage student requests (Approve / Reject) via API
+        function manageRequest(appId, action, studentName) {
+            const row = document.getElementById(`row-${appId}`);
+            if (!row) return;
+            
+            const newStatus = action === 'approve' ? 'approved' : 'rejected';
+            
+            fetch(API_BASE + `/api/applicants/${appId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
+                },
+                body: JSON.stringify({ status: newStatus })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Failed to update status');
+                return res.json();
+            })
+            .then(data => {
+                if (action === 'approve') {
+                    row.classList.add('row-fade-success');
+                    
+                    const badgeContainer = row.querySelector('td:nth-child(5)');
+                    badgeContainer.innerHTML = `
+                        <span class="badge-status status-approved">
+                            <i class="fas fa-check-circle"></i> تم القبول
+                        </span>
+                    `;
+                    
+                    row.querySelector('td:nth-child(6)').innerHTML = `
+                        <span style="color: #27d366; font-weight: 600; font-size: 0.85rem;"><i class="fas fa-user-check"></i> جاهز للنظام</span>
+                    `;
+                    
+                    totalStudents++;
+                    pendingRequests = Math.max(0, pendingRequests - 1);
+                    statTotalStudents.innerText = totalStudents.toLocaleString();
+                    statPendingRequests.innerText = pendingRequests;
+                    
+                    showToast(`تم قبول ملف الطالب "${studentName}" بنجاح وجارٍ إعداد سجله الأكاديمي.`, 'success');
+                } else {
+                    row.classList.add('row-fade-out');
+                    pendingRequests = Math.max(0, pendingRequests - 1);
+                    statPendingRequests.innerText = pendingRequests;
+                    
+                    showToast(`تم رفض طلب الطالب "${studentName}".`, 'warning');
+                    
+                    setTimeout(() => {
+                        row.remove();
+                    }, 600);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                showToast('فشل تعديل حالة الطلب.', 'danger');
+            });
+        }
+
+        // Form Submit Handler for Registering New Student
+        addStudentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('student-name').value.trim();
+            const dept = document.getElementById('student-dept').value;
+            const grade = parseFloat(document.getElementById('student-grade').value);
+            const phone = document.getElementById('student-phone').value.trim();
+            
+            const submitBtn = addStudentForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري تسجيل الطلب...';
+            
+            fetch(API_BASE + '/api/applicants', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    phone: phone,
+                    gpa: grade,
+                    stream: 'scientific',
+                    department: dept
+                })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Failed to register student');
+                return res.json();
+            })
+            .then(data => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+                
+                toggleModal(false);
+                showToast(`تم تقديم طلب تسجيل الطالب "${name}" بنجاح!`, 'success');
+                
+                fetchDashboardData();
+            })
+            .catch(err => {
+                console.error(err);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+                showToast('حدث خطأ أثناء تسجيل الطالب.', 'danger');
+            });
+        });
+
+        // Settings load settings from DB to Form inputs
+        function loadSettingsToForm() {
+            fetch(API_BASE + '/api/settings?_t=' + new Date().getTime())
+                .then(res => res.json())
+                .then(settings => {
+                    document.getElementById('setting-top-phone').value = settings.top_phone || '';
+                    document.getElementById('setting-top-email').value = settings.top_email || '';
+                    document.getElementById('setting-top-address').value = settings.top_address || '';
+                    document.getElementById('setting-social-fb').value = settings.social_facebook || '';
+                    document.getElementById('setting-social-tw').value = settings.social_twitter || '';
+                    document.getElementById('setting-social-li').value = settings.social_linkedin || '';
+                    document.getElementById('setting-social-yt').value = settings.social_youtube || '';
+                    
+                    document.getElementById('setting-hero-tag').value = settings.hero_tag || '';
+                    document.getElementById('setting-hero-title').value = settings.hero_title || '';
+                    document.getElementById('setting-hero-subtitle').value = settings.hero_subtitle || '';
+                    document.getElementById('setting-hero-desc').value = settings.hero_desc || '';
+                    
+                    if (settings.countdown_end) {
+                        document.getElementById('setting-countdown-end').value = settings.countdown_end.slice(0, 16);
+                    }
+                    
+                    document.getElementById('setting-stat-students').value = settings.stat_students || '5000';
+                    document.getElementById('setting-stat-depts').value = settings.stat_depts || '11';
+                    document.getElementById('setting-stat-employment').value = settings.stat_employment || '98';
+                    document.getElementById('setting-stat-labs').value = settings.stat_labs || '16';
+                })
+                .catch(err => {
+                    console.error('Error fetching settings for form:', err);
+                    showToast('فشل تحميل الإعدادات من الخادم.', 'danger');
+                });
+        }
+
+        // Settings Save to DB Form submit handler
+        const settingsForm = document.getElementById('settings-form');
+        settingsForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const submitBtn = settingsForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري حفظ التعديلات...';
+            
+            const data = {
+                top_phone: document.getElementById('setting-top-phone').value.trim(),
+                top_email: document.getElementById('setting-top-email').value.trim(),
+                top_address: document.getElementById('setting-top-address').value.trim(),
+                social_facebook: document.getElementById('setting-social-fb').value.trim(),
+                social_twitter: document.getElementById('setting-social-tw').value.trim(),
+                social_linkedin: document.getElementById('setting-social-li').value.trim(),
+                social_youtube: document.getElementById('setting-social-yt').value.trim(),
+                hero_tag: document.getElementById('setting-hero-tag').value.trim(),
+                hero_title: document.getElementById('setting-hero-title').value.trim(),
+                hero_subtitle: document.getElementById('setting-hero-subtitle').value.trim(),
+                hero_desc: document.getElementById('setting-hero-desc').value.trim(),
+                countdown_end: document.getElementById('setting-countdown-end').value,
+                stat_students: document.getElementById('setting-stat-students').value,
+                stat_depts: document.getElementById('setting-stat-depts').value,
+                stat_employment: document.getElementById('setting-stat-employment').value,
+                stat_labs: document.getElementById('setting-stat-labs').value
+            };
+            
+            fetch(API_BASE + '/api/settings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
+                },
+                body: JSON.stringify(data)
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Failed to save settings');
+                return res.json();
+            })
+            .then(data => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+                showToast('تم حفظ إعدادات الصفحة الرئيسية وتحديث الموقع فوراً!', 'success');
+                document.querySelector('.sidebar-link[data-tab="stats-tab"]').click();
+            })
+            .catch(err => {
+                console.error(err);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+                showToast('حدث خطأ أثناء حفظ الإعدادات، يرجى التحقق من تسجيل الدخول.', 'danger');
+            });
+        });
+
+        // ==========================================
+        // About College Management Logic
+        // ==========================================
+        window.loadAboutToForm = function() {
+            fetch(API_BASE + '/api/settings?_t=' + new Date().getTime())
+                .then(res => res.json())
+                .then(settings => {
+                    document.getElementById('about-us-p1-input').value = settings.about_us_p1 || '';
+                    document.getElementById('about-us-p2-input').value = settings.about_us_p2 || '';
+                    
+                    const aboutImgUrl = settings.about_image || '';
+                    document.getElementById('about-image-url').value = aboutImgUrl;
+                    if (aboutImgUrl) {
+                        document.getElementById('about-image-preview').src = aboutImgUrl.startsWith('http') ? aboutImgUrl : (API_BASE + aboutImgUrl);
+                        document.getElementById('about-image-preview-wrap').style.display = 'block';
+                    } else {
+                        document.getElementById('about-image-preview-wrap').style.display = 'none';
+                    }
+
+                    document.getElementById('about-vision-input').value = settings.about_vision || '';
+                    document.getElementById('about-mission-input').value = settings.about_mission || '';
+                    document.getElementById('about-goals-input').value = settings.about_goals || '';
+                    
+                    document.getElementById('dean-name-input').value = settings.dean_name || '';
+                    document.getElementById('dean-title-input').value = settings.dean_title || '';
+                    
+                    const deanAvatarUrl = settings.dean_avatar || '';
+                    document.getElementById('dean-avatar-url').value = deanAvatarUrl;
+                    if (deanAvatarUrl) {
+                        document.getElementById('dean-avatar-preview').src = deanAvatarUrl.startsWith('http') ? deanAvatarUrl : (API_BASE + deanAvatarUrl);
+                        document.getElementById('dean-avatar-preview-wrap').style.display = 'block';
+                    } else {
+                        document.getElementById('dean-avatar-preview-wrap').style.display = 'none';
+                    }
+
+                    document.getElementById('dean-message-quote-input').value = settings.dean_message_quote || '';
+                    document.getElementById('dean-message-p2-input').value = settings.dean_message_p2 || '';
+                })
+                .catch(err => {
+                    console.error('Error fetching about settings for form:', err);
+                    showToast('فشل تحميل بيانات الكلية من الخادم.', 'danger');
+                });
+        }
+
+        // Setup uploads for about tab
+        setupFileUpload('about-image-file', 'about-image-url', 'about-image-preview-wrap', 'about-image-preview');
+        setupFileUpload('dean-avatar-file', 'dean-avatar-url', 'dean-avatar-preview-wrap', 'dean-avatar-preview');
+
+        // Form submit
+        const aboutForm = document.getElementById('about-form');
+        if (aboutForm) {
+            aboutForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const submitBtn = aboutForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري حفظ التغييرات...';
+                
+                const data = {
+                    about_us_p1: document.getElementById('about-us-p1-input').value.trim(),
+                    about_us_p2: document.getElementById('about-us-p2-input').value.trim(),
+                    about_image: document.getElementById('about-image-url').value.trim(),
+                    about_vision: document.getElementById('about-vision-input').value.trim(),
+                    about_mission: document.getElementById('about-mission-input').value.trim(),
+                    about_goals: document.getElementById('about-goals-input').value.trim(),
+                    dean_name: document.getElementById('dean-name-input').value.trim(),
+                    dean_title: document.getElementById('dean-title-input').value.trim(),
+                    dean_avatar: document.getElementById('dean-avatar-url').value.trim(),
+                    dean_message_quote: document.getElementById('dean-message-quote-input').value.trim(),
+                    dean_message_p2: document.getElementById('dean-message-p2-input').value.trim()
+                };
+                
+                fetch(API_BASE + '/api/settings', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(res => {
+                    if (!res.ok) throw new Error('Failed to save about settings');
+                    return res.json();
+                })
+                .then(data => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                    showToast('تم حفظ بيانات "عن الكلية" وتحديث الموقع الرئيسي بنجاح!', 'success');
+                    document.querySelector('.sidebar-link[data-tab="stats-tab"]').click();
+                })
+                .catch(err => {
+                    console.error(err);
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                    showToast('حدث خطأ أثناء حفظ بيانات الكلية.', 'danger');
+                });
+            });
+        }
+
+        const btnCancelAbout = document.getElementById('btn-cancel-about');
+        if (btnCancelAbout) {
+            btnCancelAbout.addEventListener('click', () => {
+                document.querySelector('.sidebar-link[data-tab="stats-tab"]').click();
+            });
+        }
+
+        // ==========================================
+        // Contact Messages Management Logic
+        // ==========================================
+        window.loadContactsDashboard = function() {
+            const tbody = document.querySelector('#contacts-table tbody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 30px;">
+                        <i class="fas fa-spinner fa-spin fa-2x" style="margin-bottom: 10px; color: var(--primary);"></i><br>
+                        جاري تحميل الرسائل...
+                    </td>
+                </tr>
+            `;
+
+            fetch(API_BASE + '/api/contact', {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
+                }
+            })
+            .then(res => res.json())
+            .then(messages => {
+                tbody.innerHTML = '';
+                
+                let unreadCount = 0;
+                messages.forEach(m => { if (!m.is_read) unreadCount++; });
+                
+                const unreadEl = document.getElementById('contacts-unread-count');
+                if (unreadEl) unreadEl.innerHTML = `<i class="fas fa-envelope"></i> ${unreadCount} رسالة جديدة`;
+                
+                if (messages.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 30px;">
+                                <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 10px; opacity: 0.5;"></i><br>
+                                لا توجد رسائل واردة حالياً.
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                messages.forEach(m => {
+                    const tr = document.createElement('tr');
+                    tr.style.background = m.is_read ? '' : 'rgba(138, 46, 118, 0.04)';
+                    tr.innerHTML = `
+                        <td style="text-align: center;">
+                            ${m.is_read 
+                                ? '<i class="fas fa-envelope-open" style="color: var(--text-muted); opacity: 0.5;"></i>' 
+                                : '<i class="fas fa-envelope" style="color: var(--primary); font-size: 1.1rem;"></i>'}
+                        </td>
+                        <td style="font-weight: bold; color: var(--primary);">${m.name}</td>
+                        <td>
+                            <div style="font-size: 0.85rem;">${m.email}</div>
+                            ${m.phone ? `<div style="font-size: 0.8rem; color: var(--text-muted);">${m.phone}</div>` : ''}
+                        </td>
+                        <td style="font-weight: 600;">${m.subject}</td>
+                        <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.85rem; color: var(--text-secondary);" title="${m.message}">${m.message}</td>
+                        <td style="font-size: 0.8rem; color: var(--text-muted); white-space: nowrap;">${m.created_at}</td>
+                        <td>
+                            ${!m.is_read ? `
+                                <button type="button" class="row-action-btn" onclick="markContactRead(${m.id})" title="تعيين كمقروءة" style="background: rgba(46,204,113,0.1); color: #2ecc71; border: 1px solid #2ecc71; cursor: pointer; padding: 5px 8px; border-radius: 6px; margin-left: 5px;">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            ` : ''}
+                            <button type="button" class="row-action-btn" onclick="deleteContact(${m.id})" title="حذف الرسالة" style="background: rgba(255, 76, 76, 0.1); color: #ff4c4c; border: 1px solid #ff4c4c; cursor: pointer; padding: 5px 8px; border-radius: 6px;">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(err => {
+                console.error('Error loading contact messages:', err);
+                showToast('فشل تحميل الرسائل.', 'danger');
+            });
+        }
+
+        window.markContactRead = function(id) {
+            fetch(API_BASE + '/api/contact/' + id, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
+                },
+                body: JSON.stringify({ is_read: true })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Failed');
+                return res.json();
+            })
+            .then(() => {
+                showToast('تم تعيين الرسالة كمقروءة.', 'success');
+                loadContactsDashboard();
+            })
+            .catch(err => {
+                console.error(err);
+                showToast('فشل تحديث حالة الرسالة.', 'danger');
+            });
+        }
+
+        window.deleteContact = function(id) {
+            if (!confirm('هل أنت متأكد من حذف هذه الرسالة نهائياً؟')) return;
+            
+            fetch(API_BASE + '/api/contact/' + id, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
+                }
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Failed');
+                return res.json();
+            })
+            .then(() => {
+                showToast('تم حذف الرسالة بنجاح.', 'success');
+                loadContactsDashboard();
+            })
+            .catch(err => {
+                console.error(err);
+                showToast('فشل حذف الرسالة.', 'danger');
+            });
+        }
+
+        // ==========================================
+        // Applicants Full Management Logic
+        // ==========================================
+        window.loadApplicantsDashboard = function() {
+            const tbody = document.querySelector('#applicants-full-table tbody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 30px;">
+                        <i class="fas fa-spinner fa-spin fa-2x" style="margin-bottom: 10px; color: var(--primary);"></i><br>
+                        جاري تحميل قائمة الطلاب المتقدمين...
+                    </td>
+                </tr>
+            `;
+
+            fetch(API_BASE + '/api/applicants?_t=' + new Date().getTime(), {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
+                }
+            })
+            .then(res => res.json())
+            .then(applicants => {
+                tbody.innerHTML = '';
+                
+                let totalCount = applicants.length;
+                let pendingCount = 0, approvedCount = 0, rejectedCount = 0;
+                
+                applicants.forEach(app => {
+                    if (app.status === 'pending') pendingCount++;
+                    else if (app.status === 'approved') approvedCount++;
+                    else rejectedCount++;
+                });
+                
+                const elTotal = document.getElementById('app-stat-total');
+                const elPend = document.getElementById('app-stat-pending');
+                const elAppr = document.getElementById('app-stat-approved');
+                const elRej = document.getElementById('app-stat-rejected');
+                if (elTotal) elTotal.innerText = totalCount;
+                if (elPend) elPend.innerText = pendingCount;
+                if (elAppr) elAppr.innerText = approvedCount;
+                if (elRej) elRej.innerText = rejectedCount;
+                
+                if (applicants.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 30px;">لا توجد طلبات تسجيل حالياً.</td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                applicants.forEach(app => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'table-row-animate';
+                    
+                    let statusBadge = '';
+                    let actionButtons = '';
+                    
+                    if (app.status === 'pending') {
+                        statusBadge = `<span class="badge-status status-pending"><i class="fas fa-hourglass-half"></i> قيد المراجعة</span>`;
+                        actionButtons = `
+                            <button class="row-action-btn btn-approve" onclick="manageApplicantTab(${app.id}, 'approve')" title="قبول الطلب" style="background: rgba(46,204,113,0.1); color: #2ecc71; border: 1px solid #2ecc71; cursor: pointer; padding: 5px 8px; border-radius: 6px; margin-left: 5px;">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button class="row-action-btn btn-reject" onclick="manageApplicantTab(${app.id}, 'reject')" title="رفض الطلب" style="background: rgba(255,76,76,0.1); color: #ff4c4c; border: 1px solid #ff4c4c; cursor: pointer; padding: 5px 8px; border-radius: 6px; margin-left: 5px;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                    } else if (app.status === 'approved') {
+                        statusBadge = `<span class="badge-status status-approved"><i class="fas fa-check-circle"></i> تم القبول</span>`;
+                        actionButtons = `<span style="color: #2ecc71; font-weight: 600; font-size: 0.8rem;"><i class="fas fa-user-check"></i> مقبول</span>`;
+                    } else {
+                        statusBadge = `<span class="badge-status status-rejected" style="background: rgba(255,76,76,0.1); color: #ff4c4c; border: 1px solid rgba(255,76,76,0.2);"><i class="fas fa-times-circle"></i> تم الرفض</span>`;
+                        actionButtons = `<span style="color: #ff4c4c; font-weight: 600; font-size: 0.8rem;"><i class="fas fa-user-times"></i> مرفوض</span>`;
+                    }
+                    
+                    // Add delete button for all statuses
+                    actionButtons += `
+                        <button class="row-action-btn" onclick="deleteApplicantTab(${app.id})" title="حذف الطلب" style="background: rgba(255,76,76,0.05); color: #ff4c4c; border: 1px solid rgba(255,76,76,0.3); cursor: pointer; padding: 5px 8px; border-radius: 6px; margin-right: 5px;">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    `;
+                    
+                    const createdAt = app.created_at ? new Date(app.created_at).toLocaleDateString('ar-YE', { year: 'numeric', month: 'short', day: 'numeric' }) : '-';
+                    
+                    tr.innerHTML = `
+                        <td style="font-weight: bold; color: var(--primary);">${app.name}</td>
+                        <td>${app.department}</td>
+                        <td>${app.gpa}%</td>
+                        <td style="direction: ltr; text-align: right;">${app.phone}</td>
+                        <td style="font-size: 0.8rem; color: var(--text-muted); white-space: nowrap;">${createdAt}</td>
+                        <td>${statusBadge}</td>
+                        <td>${actionButtons}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(err => {
+                console.error('Error loading applicants:', err);
+                showToast('فشل تحميل قائمة الطلاب.', 'danger');
+            });
+        }
+
+        window.manageApplicantTab = function(appId, action) {
+            const newStatus = action === 'approve' ? 'approved' : 'rejected';
+            
+            fetch(API_BASE + `/api/applicants/${appId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
+                },
+                body: JSON.stringify({ status: newStatus })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Failed');
+                return res.json();
+            })
+            .then(() => {
+                showToast(action === 'approve' ? 'تم قبول الطالب بنجاح!' : 'تم رفض الطلب.', action === 'approve' ? 'success' : 'danger');
+                loadApplicantsDashboard();
+                fetchDashboardData(); // Also refresh the stats tab
+            })
+            .catch(err => {
+                console.error(err);
+                showToast('فشل تحديث حالة الطلب.', 'danger');
+            });
+        }
+
+        window.deleteApplicantTab = function(appId) {
+            if (!confirm('هل أنت متأكد من حذف هذا الطلب نهائياً؟')) return;
+            
+            fetch(API_BASE + `/api/applicants/${appId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
+                }
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Failed');
+                return res.json();
+            })
+            .then(() => {
+                showToast('تم حذف طلب الطالب بنجاح.', 'success');
+                loadApplicantsDashboard();
+                fetchDashboardData();
+            })
+            .catch(err => {
+                console.error(err);
+                showToast('فشل حذف الطلب.', 'danger');
+            });
+        }
+
+        // Wire up "Add Applicant" button from the applicants tab
+        const btnAddFromTab = document.getElementById('btn-add-applicant-from-tab');
+        if (btnAddFromTab) {
+            btnAddFromTab.addEventListener('click', () => {
+                toggleModal(true);
+            });
+        }
+
+        // Initialize Authentication Check
+        checkAuth();
+    </script>
+</body>
+</html>

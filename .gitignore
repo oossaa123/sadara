@@ -1,0 +1,23 @@
+# Virtual environments
+venv/
+backend/venv/
+.venv/
+env/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Databases
+backend/sadara.db
+
+# Media uploads (user-generated content)
+backend/media/
+backend/media/*
+
+# OS specific files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

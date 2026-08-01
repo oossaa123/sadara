@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <script>
+        // Apply theme instantly before rendering to prevent FOUC (Flash of Unstyled Content)
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = savedTheme === 'dark' || (!savedTheme && systemPrefersDark) ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="تعرف على رؤية ورسالة وأهداف كلية الصدارة للعلوم الطبية والتقنية - طموحنا الريادة والتميز الأكاديمي.">
+    <title>عن الكلية | كلية الصدارة للعلوم الطبية والتقنية</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- ==========================================
+       1. Top Info Bar
+       ========================================== -->
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="top-bar-info">
+                <span><i class="fas fa-phone"></i> <span id="top-phone">+967 777 777 777</span></span>
+                <span><i class="fas fa-envelope"></i> <span id="top-email">info@alsadara.edu.ye</span></span>
+                <span><i class="fas fa-map-marker-alt"></i> <span id="top-address">صنعاء، اليمن</span></span>
+            </div>
+            <div class="top-bar-socials">
+                <a href="#" id="top-fb" aria-label="فيسبوك"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" id="top-tw" aria-label="تويتر"><i class="fab fa-twitter"></i></a>
+                <a href="#" id="top-li" aria-label="لينكد إن"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" id="top-yt" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+       2. Main Navigation Header
+       ========================================== -->
+    <header class="main-header" id="header">
+        <div class="container header-content">
+            <a href="index.html" class="logo-area">
+                <img src="assets/logo.jpg" alt="شعار كلية الصدارة" class="logo-img" onerror="this.src='https://placehold.co/100x100?text=الصدارة'">
+                <div class="logo-text">
+                    <h1>كلية الصدارة</h1>
+                    <span>للعلوم الطبية والتقنية</span>
+                </div>
+            </a>
+            <nav class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">الرئيسية</a>
+                <a href="about.html" class="nav-link active">عن الكلية</a>
+                <a href="departments.html" class="nav-link">التخصصات</a>
+                <a href="virtual-tour.html" class="nav-link">المعامل والبيئة</a>
+                <a href="training-careers.html" class="nav-link">التدريب والتوظيف</a>
+                <a href="admission.html" class="nav-link">القبول والتسجيل</a>
+                <a href="contact.html" class="nav-link">تواصل معنا</a>
+            </nav>
+            <div class="header-actions">
+                <div class="theme-switch-wrapper">
+                    <label class="theme-toggle-label" id="theme-toggle" aria-label="تبديل الثيم">
+                        <i class="fas fa-sun"></i>
+                        <i class="fas fa-moon"></i>
+                        <span class="theme-toggle-ball"></span>
+                    </label>
+                </div>
+                <a href="admission.html" class="btn btn-primary header-btn btn-sm">سجل الآن <i class="fas fa-arrow-left"></i></a>
+                <button class="menu-toggle" id="menu-toggle" aria-label="فتح القائمة">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==========================================
+       3. Page Banner
+       ========================================== -->
+    <section class="page-banner">
+        <div class="container">
+            <h1>عن كلية الصدارة</h1>
+            <div class="breadcrumbs">
+                <a href="index.html">الرئيسية</a>
+                <span><i class="fas fa-chevron-left"></i></span>
+                <span>عن الكلية</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       4. About Info (الرؤية والرسالة والعميد)
+       ========================================== -->
+    <section class="section-padding" style="position: relative; overflow: hidden;">
+        <div class="glow-orb glow-orb-1"></div>
+        <div class="glow-orb glow-orb-2"></div>
+        <div class="container grid grid-2col" style="gap: 50px; align-items: center;">
+            <div class="animate-on-scroll">
+                <span class="badge badge-primary">نبذة تعريفية</span>
+                <h2 style="font-size: 2.2rem; color: var(--primary); margin-bottom: 20px;">من نحن؟</h2>
+                <p id="about-us-p1" style="color: var(--text-secondary); margin-bottom: 25px;">
+                    كلية الصدارة للعلوم الطبية والتقنية هي صرح تعليمي رائد مرخص ومعتمد من وزارة التعليم الفني والتدريب المهني. تأسست الكلية لتلبي الحاجة المتزايدة للتعليم التطبيقي عالي الجودة والتدريب الاحترافي، لتواكب التطور التكنولوجي والطبي السريع عالمياً.
+                </p>
+                <p id="about-us-p2" style="color: var(--text-secondary); margin-bottom: 25px;">
+                    نلتزم بتخريج كوادر تمتلك المعرفة النظرية المتطورة والمهارة العملية الدقيقة التي تتطلبها مؤسسات الرعاية الصحية والقطاعات التكنولوجية والإدارية محلياً ودولياً.
+                </p>
+            </div>
+            <div class="animate-on-scroll modern-img-frame">
+                <img id="about-image" src="assets/images/hero.png" alt="كلية الصدارة">
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       5. Vision, Mission & Goals (الرؤية والرسالة والأهداف)
+       ========================================== -->
+    <section class="section-padding" style="background-color: var(--accent-bg);">
+        <div class="container">
+            <div class="grid grid-3col" style="gap: 30px;">
+                <!-- Vision -->
+                <div class="glass glass-padding" style="text-align: center;">
+                    <div class="why-item-icon" style="margin: 0 auto 20px;"><i class="fas fa-eye"></i></div>
+                    <h3 style="color: var(--primary); margin-bottom: 15px;">رؤيتنا</h3>
+                    <p id="about-vision" style="color: var(--text-secondary); font-size: 0.95rem;">
+                        أن نكون الوجهة الأكاديمية المفضلة إقليمياً لإعداد قادة الرعاية الصحية وخبراء التكنولوجيا، وأن نقود التميز والريادة في قطاع التعليم المهني التطبيقي.
+                    </p>
+                </div>
+
+                <!-- Mission -->
+                <div class="glass glass-padding" style="text-align: center;">
+                    <div class="why-item-icon" style="margin: 0 auto 20px;"><i class="fas fa-bullseye"></i></div>
+                    <h3 style="color: var(--primary); margin-bottom: 15px;">رسالتنا</h3>
+                    <p id="about-mission" style="color: var(--text-secondary); font-size: 0.95rem;">
+                        تقديم برامج تعليمية مميزة تجمع بين المناهج النظرية المبتكرة والتدريب العملي المكثف في بيئة تدعم الإبداع والتطور المستمر لبناء كفاءات تلبي الاحتياجات التنافسية لسوق العمل.
+                    </p>
+                </div>
+
+                <!-- Goals -->
+                <div class="glass glass-padding" style="text-align: center;">
+                    <div class="why-item-icon" style="margin: 0 auto 20px;"><i class="fas fa-flag"></i></div>
+                    <h3 style="color: var(--primary); margin-bottom: 15px;">أهدافنا الأكاديمية</h3>
+                    <p id="about-goals" style="color: var(--text-secondary); font-size: 0.95rem;">
+                        تطوير مهارات الطلاب الذاتية والمهنية، بناء شراكات وثيقة مع قطاعات الأعمال والمستشفيات للتوظيف، وتجهيز معامل تفاعلية تمثل أحدث ما توصلت إليه التقنيات.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       6. Dean's Message (كلمة العميد)
+       ========================================== -->
+    <section class="section-padding" style="position: relative; overflow: hidden;">
+        <div class="glow-orb glow-orb-1"></div>
+        <div class="container grid grid-2col-reverse" style="gap: 50px; align-items: center;">
+            <div class="text-center animate-on-scroll">
+                <div class="dean-avatar-wrapper">
+                    <img id="dean-avatar" src="assets/images/file.png" alt="عميد كلية الصدارة" class="dean-avatar">
+                </div>
+                <h4 id="dean-name" style="color: var(--primary); font-size: 1.25rem;">أ.د. فيصل عائض</h4>
+                <p id="dean-title" style="color: var(--secondary); font-weight: bold;">عميد الكلية</p>
+            </div>
+            <div class="animate-on-scroll">
+                <span class="badge badge-primary">رسالة ترحيبية</span>
+                <h2 style="color: var(--primary); margin-bottom: 20px;">كلمة عمادة الكلية</h2>
+                <p id="dean-message-quote" style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 15px; font-style: italic;">
+                    "أبنائي وبناتي الطلبة، يسعدني أن أرحب بكم في رحاب كلية الصدارة للعلوم الطبية والتقنية. إن قراركم بالالتحاق بالكلية هو خطوة أولى نحو مستقبل مهني مشرق ومضمون. نحن هنا لسنا فقط لنعلمكم، بل لنلهمكم ونمكنكم من اكتساب المهارات والخبرات التي تجعلكم فخورين بأنفسكم، ومطلبًا أساسيًا لكافة مشافي ومؤسسات وشركات الوطن."
+                </p>
+                <p id="dean-message-p2" style="color: var(--text-secondary); line-height: 1.8;">
+                    نسخر كل طاقاتنا لتوفير معامل مجهزة وتدريب إكلينيكي ممتاز في المستشفيات الحكومية لضمان ريادتكم وصدارتكم دائماً.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       7. Footer Section
+       ========================================== -->
+    <footer class="footer">
+        <div class="container footer-grid grid">
+            <div class="footer-col footer-about">
+                <div class="logo-area" style="margin-bottom: 20px;">
+                    <img src="assets/logo.jpg" alt="شعار كلية الصدارة" class="logo-img" onerror="this.src='https://placehold.co/100x100?text=الصدارة'">
+                    <div class="logo-text">
+                        <h1 style="color: var(--light);">كلية الصدارة</h1>
+                        <span style="color: var(--secondary);">للعلوم الطبية والتقنية</span>
+                    </div>
+                </div>
+                <p>مؤسسة أكاديمية رائدة تهدف إلى تمكين الشباب بالمهارات الطبية والتقنية والهندسية اللازمة لسد الفجوة في سوق العمل.</p>
+            </div>
+            <div class="footer-col">
+                <h3>روابط سريعة</h3>
+                <div class="footer-links">
+                    <a href="index.html"><i class="fas fa-chevron-left"></i> الرئيسية</a>
+                    <a href="about.html"><i class="fas fa-chevron-left"></i> عن الكلية</a>
+                    <a href="departments.html"><i class="fas fa-chevron-left"></i> التخصصات</a>
+                    <a href="virtual-tour.html"><i class="fas fa-chevron-left"></i> البيئة التعليمية</a>
+                    <a href="training-careers.html"><i class="fas fa-chevron-left"></i> التدريب والتوظيف</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>اتصل بنا</h3>
+                <p style="margin-bottom: 10px;"><i class="fas fa-phone-alt"></i> <span id="footer-phone">+967 777 777 777</span></p>
+                <p style="margin-bottom: 10px;"><i class="fas fa-envelope"></i> <span id="footer-email">info@alsadara.edu.ye</span></p>
+                <p><i class="fas fa-map-marker-alt"></i> <span id="footer-address">صنعاء - شارع الستين</span></p>
+            </div>
+            <div class="footer-col">
+                <h3>موقع الكلية</h3>
+                <div class="footer-map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3848.4069632873133!2d44.2081577!3d15.3188554!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1603db026ff8c42b%3A0xe54d9b231ff6f12e!2z2LTYp9ix2Lkg2KfZhNiz2KrZitmGIC0g2LXYp9mG2Yc!5e0!3m2!1sar!2s!4v1700000000000!5m2!1sar!2s" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; 2026 كلية الصدارة للعلوم الطبية والتقنية. جميع الحقوق محفوظة.</p>
+            <div class="footer-bottom-links">
+                <a href="#">سياسة الخصوصية</a>
+                <a href="#">شروط وأحكام التسجيل</a>
+                <a href="../dashbord/index.html"><i class="fas fa-lock"></i> لوحة التحكم الإدارية</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Action -->
+    <div class="floating-actions">
+        <a href="https://wa.me/967777777777" id="footer-whatsapp" class="float-btn float-whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <button class="float-btn float-totop" id="float-totop"><i class="fas fa-chevron-up"></i></button>
+    </div>
+
+    <script src="js/main.js?v=2.0.0"></script>
+</body>
+</html>

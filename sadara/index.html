@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <script>
+        // Apply theme instantly before rendering to prevent FOUC (Flash of Unstyled Content)
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = savedTheme === 'dark' || (!savedTheme && systemPrefersDark) ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="كلية الصدارة للعلوم الطبية والتقنية - بوابتك نحو التميز الأكاديمي والمهني. سجل الآن في أرقى التخصصات الطبية، الهندسية، والتقنية.">
+    <meta name="keywords" content="كلية الصدارة, علوم طبية, تقنية معلومات, تمريض, صيدلة, فني أسنان, هندسة ديكور, محاسبة, إدارة أعمال">
+    <meta name="author" content="كلية الصدارة">
+    <title>كلية الصدارة للعلوم الطبية والتقنية | التميز والريادة الأكاديمية</title>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="كلية الصدارة للعلوم الطبية والتقنية">
+    <meta property="og:description" content="سجل الآن في التخصصات الأكثر طلباً في سوق العمل. كادر تعليمي متميز ومعامل مجهزة بأحدث التقنيات.">
+    <meta property="og:image" content="assets/images/hero.png">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Prefetch navigation pages for instant transitions -->
+    <link rel="prefetch" href="about.html">
+    <link rel="prefetch" href="departments.html">
+    <link rel="prefetch" href="admission.html">
+    <link rel="prefetch" href="contact.html">
+    <link rel="prefetch" href="virtual-tour.html">
+    <link rel="prefetch" href="training-careers.html">
+</head>
+<body>
+
+    <!-- ==========================================
+       1. Top Info Bar
+       ========================================== -->
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="top-bar-info">
+                <span><i class="fas fa-phone"></i> <span id="top-phone">+967 777 777 777</span></span>
+                <span><i class="fas fa-envelope"></i> <span id="top-email">info@alsadara.edu.ye</span></span>
+                <span><i class="fas fa-map-marker-alt"></i> <span id="top-address">صنعاء، اليمن</span></span>
+            </div>
+            <div class="top-bar-socials">
+                <a href="#" id="top-fb" aria-label="فيسبوك"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" id="top-tw" aria-label="تويتر"><i class="fab fa-twitter"></i></a>
+                <a href="#" id="top-li" aria-label="لينكد إن"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" id="top-yt" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+       2. Main Navigation Header
+       ========================================== -->
+    <header class="main-header" id="header">
+        <div class="container header-content">
+            <!-- Logo Area -->
+            <a href="index.html" class="logo-area">
+                <img src="assets/logo.jpg" alt="شعار كلية الصدارة" class="logo-img" onerror="this.src='https://placehold.co/100x100?text=الصدارة'">
+                <div class="logo-text">
+                    <h1>كلية الصدارة</h1>
+                    <span>للعلوم الطبية والتقنية</span>
+                </div>
+            </a>
+
+            <!-- Nav Menu -->
+            <nav class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link active">الرئيسية</a>
+                <a href="about.html" class="nav-link">عن الكلية</a>
+                <a href="departments.html" class="nav-link">التخصصات</a>
+                <a href="virtual-tour.html" class="nav-link">المعامل والبيئة</a>
+                <a href="training-careers.html" class="nav-link">التدريب والتوظيف</a>
+                <a href="admission.html" class="nav-link">القبول والتسجيل</a>
+                <a href="contact.html" class="nav-link">تواصل معنا</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="header-actions">
+                <!-- Polished Toggle Theme Switcher -->
+                <div class="theme-switch-wrapper">
+                    <label class="theme-toggle-label" id="theme-toggle" aria-label="تبديل الثيم">
+                        <i class="fas fa-sun" style="opacity: 0.8;"></i>
+                        <i class="fas fa-moon" style="opacity: 0.8;"></i>
+                        <span class="theme-toggle-ball"></span>
+                    </label>
+                </div>
+                <a href="admission.html" class="btn btn-primary header-btn btn-sm">سجل الآن <i class="fas fa-arrow-left"></i></a>
+                <button class="menu-toggle" id="menu-toggle" aria-label="فتح القائمة">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==========================================
+       3. Hero Section
+       ========================================== -->
+    <section class="hero" id="hero">
+        <div class="glow-orb glow-orb-1"></div>
+        <div class="glow-orb glow-orb-2"></div>
+        <div class="shape-1"></div>
+        <div class="shape-2"></div>
+        <div class="container hero-grid">
+            <!-- Hero Content -->
+            <div class="hero-content">
+                <span class="badge badge-gold hero-tag" id="hero-tag"><i class="fas fa-graduation-cap"></i> القبول والتسجيل مفتوح للعام الدراسي الجديد 2026/2027</span>
+                <h2 id="hero-title">كلية الصدارة للعلوم الطبية والتقنية <br><span id="hero-subtitle">صدارة التعليم لمستقبل واعد</span></h2>
+                <p class="hero-desc" id="hero-desc">
+                    نحن في كلية الصدارة نسعى لتوفير بيئة تعليمية أكاديمية متطورة تدمج بين الجانب النظري المبتكر والتطبيق العملي المكثف في أحدث المختبرات والمنشآت لتخريج نخبة من الكفاءات الطبية والتقنية.
+                </p>
+                <div class="hero-btns">
+                    <a href="admission.html" class="btn btn-primary">سجل اهتمامك الآن <i class="fas fa-paper-plane"></i></a>
+                    <a href="departments.html" class="btn btn-outline">استكشف التخصصات <i class="fas fa-layer-group"></i></a>
+                </div>
+
+                <!-- Urgency Countdown Banner -->
+                <div class="countdown-box">
+                    <div class="countdown-title">
+                        <i class="fas fa-clock fa-spin"></i> ينتهي التسجيل المبكر والخصومات خلال:
+                    </div>
+                    <div class="countdown-timers">
+                        <div class="timer-item">
+                            <div class="timer-num" id="days">00</div>
+                            <div class="timer-label">أيام</div>
+                        </div>
+                        <div class="timer-item">
+                            <div class="timer-num" id="hours">00</div>
+                            <div class="timer-label">ساعات</div>
+                        </div>
+                        <div class="timer-item">
+                            <div class="timer-num" id="minutes">00</div>
+                            <div class="timer-label">دقائق</div>
+                        </div>
+                        <div class="timer-item">
+                            <div class="timer-num" id="seconds">00</div>
+                            <div class="timer-label">ثواني</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Image Visual with 3D Effect Card -->
+            <div class="hero-visual">
+                <div class="hero-img-wrapper modern-img-frame">
+                    <img src="assets/images/hero.png" alt="كلية الصدارة للعلوم الطبية والتقنية" style="width: 100%;">
+                </div>
+                <!-- Mini Stats Float Card -->
+                <div class="hero-visual-card">
+                    <div class="hero-visual-card-info">
+                        <div class="hero-visual-icon">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <div class="hero-visual-text">
+                            <h4>شهادة معتمدة</h4>
+                            <p>مرخصة محلياً وموثقة دولياً</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       4. Stats Counter Section
+       ========================================== -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="glass stats-grid grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-number" id="stat-students" data-target="5000" data-suffix="+">0</div>
+                    <div class="stat-label">طالب وخريج متميز</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-book-open"></i></div>
+                    <div class="stat-number" id="stat-depts" data-target="11" data-suffix=" تخصص">0</div>
+                    <div class="stat-label">أرقى التخصصات الحيوية</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-user-tie"></i></div>
+                    <div class="stat-number" id="stat-employment" data-target="98" data-suffix="%">0</div>
+                    <div class="stat-label">نسبة التوظيف للخريجين</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-flask"></i></div>
+                    <div class="stat-number" id="stat-labs" data-target="16" data-suffix=" معمل">0</div>
+                    <div class="stat-label">مختبر ومعمل تطبيقي حديث</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       5. Specialties & Departments Section
+       ========================================== -->
+    <section class="departments-section section-padding" id="departments">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <span class="badge badge-primary">البرامج الأكاديمية</span>
+                <h2>تخصصات <span>كلية الصدارة</span></h2>
+                <p>نقدم برامج دراسية متكاملة تلبي شغف طلابنا وتلائم متمتطلبات سوق العمل مع صور توضيحية وتواصل مباشر عبر واتساب.</p>
+            </div>
+
+            <!-- Tab Navigation Buttons -->
+            <div class="dept-tabs animate-on-scroll">
+                <button class="tab-btn active" data-tab="medical-tab">
+                    <i class="fas fa-stethoscope"></i> التخصصات الطبية والصحية
+                </button>
+                <button class="tab-btn" data-tab="tech-tab">
+                    <i class="fas fa-laptop-code"></i> التخصصات الإدارية والتقنية والهندسية
+                </button>
+            </div>
+
+            <!-- Medical Tab Panel -->
+            <div class="dept-panel active" id="medical-tab">
+                <!-- Loading skeleton -->
+                <div class="dept-skeleton-grid" id="medical-skeleton">
+                    <div class="dept-skeleton-card"></div>
+                    <div class="dept-skeleton-card"></div>
+                    <div class="dept-skeleton-card"></div>
+                </div>
+            </div>
+
+            <!-- Technical/Admin Tab Panel -->
+            <div class="dept-panel" id="tech-tab">
+                <!-- Loading skeleton -->
+                <div class="dept-skeleton-grid" id="tech-skeleton">
+                    <div class="dept-skeleton-card"></div>
+                    <div class="dept-skeleton-card"></div>
+                    <div class="dept-skeleton-card"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       6. Why Choose Us (لماذا نحن)
+       ========================================== -->
+    <section class="why-section section-padding" id="why-us">
+        <div class="container why-grid grid">
+            <!-- Visual Column (Image overlay) -->
+            <div class="why-visual-wrapper animate-on-scroll">
+                <img src="assets/images/hero.png" alt="التعلم العملي في كلية الصدارة" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+
+            <!-- Content Column -->
+            <div class="why-content animate-on-scroll">
+                <span class="badge badge-gold">لماذا تختارنا؟</span>
+                <h2 style="font-size: 2.3rem; color: var(--primary); margin-bottom: 25px;">ما يميز تجربة التعليم في <span style="color: var(--secondary);">كلية الصدارة</span></h2>
+                <p style="color: var(--text-secondary); margin-bottom: 35px;">
+                    نحن لا نكتفي بتقديم المناهج الدراسية، بل نصنع تجربة تعليمية فريدة تهدف لتمكين الطالب وجعله الخيار الأول للجهات التوظيفية بمجرد تخرجه.
+                </p>
+
+                <div class="why-points">
+                    <div class="glass why-item">
+                        <div class="why-item-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                        <h4>نخبة الأكاديميين</h4>
+                        <p>كادر تعليمي ذو خبرة أكاديمية ومهنية طويلة يرافقك خطوة بخطوة.</p>
+                    </div>
+                    <div class="glass why-item">
+                        <div class="why-item-icon"><i class="fas fa-microscope"></i></div>
+                        <h4>معامل ومختبرات متطورة</h4>
+                        <p>بيئة عملية تحاكي تماماً بيئات العمل الحقيقية في المشافي والشركات.</p>
+                    </div>
+                    <div class="glass why-item">
+                        <div class="why-item-icon"><i class="fas fa-award"></i></div>
+                        <h4>شهادات وتراخيص رسمية</h4>
+                        <p>برامجنا معتمدة من وزارة التعليم الفني والتدريب المهني.</p>
+                    </div>
+                    <div class="glass why-item">
+                        <div class="why-item-icon"><i class="fas fa-wallet"></i></div>
+                        <h4>تسهيلات ورسوم ميسرة</h4>
+                        <p>أنظمة سداد مرنة وتقسيط ميسر للرسوم لضمان استمرار تعليمك.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       7. Student Testimonials (قالوا عن الصدارة)
+       ========================================== -->
+    <section class="testimonials-section section-padding" id="testimonials">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <span class="badge badge-primary">قصص النجاح</span>
+                <h2>قالوا عن <span>كلية الصدارة</span></h2>
+                <p>نعتز بشهادات طلابنا وخريجينا الذين انطلقوا في مساراتهم المهنية بنجاح وثقة.</p>
+            </div>
+
+            <div class="carousel-container animate-on-scroll">
+                <!-- Controls -->
+                <button class="carousel-btn carousel-btn-prev" aria-label="السابق"><i class="fas fa-chevron-right"></i></button>
+                <button class="carousel-btn carousel-btn-next" aria-label="التالي"><i class="fas fa-chevron-left"></i></button>
+                
+                <div class="carousel-track-container">
+                    <div class="carousel-track">
+                        <!-- Testimonial 1 -->
+                        <div class="testimonial-card">
+                            <div class="testimonial-quote">
+                                "الدراسة في كلية الصدارة كانت نقطة تحول حقيقية في حياتي المهنية. التطبيق العملي والتدريب الميداني المكثف جعلني مستعدة لسوق العمل مباشرة فور تخرجي، وأنا أعمل الآن في صيدلية مشفى معتمد."
+                            </div>
+                            <div class="student-info">
+                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200" alt="طالبة في كلية الصدارة" class="student-img" onerror="this.src='https://placehold.co/100x100?text=أروى'">
+                                <h4 class="student-name">أروى محمد</h4>
+                                <span class="student-dept">خريجة قسم الصيدلة</span>
+                            </div>
+                        </div>
+
+                        <!-- Testimonial 2 -->
+                        <div class="testimonial-card">
+                            <div class="testimonial-quote">
+                                "المعامل المجهزة بالكامل والأساتذة المتميزين في قسم تقنية المعلومات ساعدوني كثيراً في بناء مشاريع برمجية حقيقية وتطبيقية. تمكنت من الحصول على وظيفة مطور برمجيات حتى قبل تخرجي الرسمي."
+                            </div>
+                            <div class="student-info">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200" alt="طالب في كلية الصدارة" class="student-img" onerror="this.src='https://placehold.co/100x100?text=عمر'">
+                                <h4 class="student-name">عمر أحمد</h4>
+                                <span class="student-dept">خريج قسم تقنية المعلومات (IT)</span>
+                            </div>
+                        </div>
+
+                        <!-- Testimonial 3 -->
+                        <div class="testimonial-card">
+                            <div class="testimonial-quote">
+                                "لم تكن الدراسة مجرد تلقين للمناهج، بل كانت تدريباً تفاعلياً على أحدث تقنيات تصميم الأسنان CAD/CAM. الدعم الذي وجدته من إدارة الكلية ساعدني لتأسيس معمل أسنان خاص بي."
+                            </div>
+                            <div class="student-info">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200" alt="طالب فني أسنان" class="student-img" onerror="this.src='https://placehold.co/100x100?text=أحمد'">
+                                <h4 class="student-name">أحمد خالد</h4>
+                                <span class="student-dept">خريج قسم فني أسنان</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Dots -->
+                <div class="carousel-dots"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       8. Quick Admission Form Section
+       ========================================== -->
+    <section class="admission-section section-padding" id="admission">
+        <div class="container admission-grid grid">
+            <!-- Content Left -->
+            <div class="admission-content animate-on-scroll">
+                <h2>ابدأ رحلتك نحو القمة الآن</h2>
+                <p>عملية التسجيل لدينا سهلة ومباشرة. قم بتعبئة هذا النموذج السريع، وسيتواصل معك مستشار القبول والتسجيل خلال 24 ساعة للإجابة على جميع استفساراتك وتأكيد قبولك المبدئي.</p>
+                
+                <div class="steps-timeline">
+                    <div class="step-item">
+                        <div class="step-num">١</div>
+                        <div class="step-text">
+                            <h4>تعبئة الطلب السريع</h4>
+                            <p>أدخل بياناتك الأساسية واختيار التخصص المناسب لشغفك ورغبتك.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-num">٢</div>
+                        <div class="step-text">
+                            <h4>التواصل والاستشارة الأكاديمية</h4>
+                            <p>سيقوم منسق القبول بالاتصال بك لتوضيح المستندات المطلوبة ونظام الرسوم والتقسيط.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-num">٣</div>
+                        <div class="step-text">
+                            <h4>حجز المقعد وتأكيد القبول</h4>
+                            <p>قم بزيارة مقر الكلية لاستكمال ملفك واستلام بطاقتك الجامعية للبدء فوراً.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Right -->
+            <div class="admission-form-wrapper glass animate-on-scroll" style="border-radius: var(--radius-lg);">
+                <h3 style="font-family: var(--font-primary); font-size: 1.8rem; margin-bottom: 25px; text-align: center; color: var(--light);">نموذج طلب الالتحاق السريع</h3>
+                
+                <form id="quick-admission-form">
+                    <div class="form-group">
+                        <label for="student-name" class="form-label">الاسم الكامل للطالب</label>
+                        <input type="text" id="student-name" class="form-control" placeholder="أدخل اسمك رباعياً" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="student-phone" class="form-label">رقم الهاتف / الواتساب</label>
+                            <input type="tel" id="student-phone" class="form-control" placeholder="مثال: 777777777" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="student-gpa" class="form-label">معدل الثانوية العامة (%)</label>
+                            <input type="number" step="0.01" min="50" max="100" id="student-gpa" class="form-control" placeholder="مثال: 85.5" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="student-stream" class="form-label">مسار الثانوية العامة</label>
+                            <select id="student-stream" class="form-control" required>
+                                <option value="" disabled selected>اختر المسار...</option>
+                                <option value="scientific">علمي</option>
+                                <option value="literary">أدبي</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="student-dept" class="form-label">التخصص المطلوب</label>
+                            <select id="student-dept" class="form-control" required>
+                                <option value="" disabled selected>اختر التخصص...</option>
+                                <optgroup label="التخصصات الطبية والصحية">
+                                    <option value="dental">فني أسنان</option>
+                                    <option value="surgery">فني عمليات وتعقيم</option>
+                                    <option value="assistant">مساعد طبيب</option>
+                                    <option value="nursing">تمريض عالي</option>
+                                    <option value="pharmacy">صيدلة</option>
+                                    <option value="labs">مختبرات</option>
+                                    <option value="midwifery">قبالة وتوليد</option>
+                                </optgroup>
+                                <optgroup label="التخصصات الإدارية والتقنية والهندسية">
+                                    <option value="ecommerce">إدارة أعمال وتجارة إلكترونية</option>
+                                    <option value="accounting">محاسبة مالية</option>
+                                    <option value="it">تقنية معلومات (IT)</option>
+                                    <option value="decor">هندسة ديكور</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 10px; font-size: 1.1rem; padding: 16px;">إرسال طلب التسجيل <i class="fas fa-paper-plane"></i></button>
+                    
+                    <!-- Alert Message -->
+                    <div class="form-alert" id="form-success-alert">
+                        <i class="fas fa-check-circle"></i> تم إرسال طلبك بنجاح! سيتواصل معك مستشار القبول والتسجيل خلال 24 ساعة.
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       9. FAQ Section
+       ========================================== -->
+    <section class="faq-section section-padding" id="faq">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <span class="badge badge-primary">الأسئلة المتكررة</span>
+                <h2>لديك <span>أي استفسار؟</span></h2>
+                <p>إليك إجابات سريعة للأسئلة الشائعة التي يطرحها الطلاب حول التسجيل والدراسة بالكلية.</p>
+            </div>
+
+            <div class="faq-container animate-on-scroll">
+                <!-- FAQ Item 1 -->
+                <div class="faq-item glass">
+                    <div class="faq-header">
+                        <h4>هل شهادات الكلية معتمدة رسمياً؟</h4>
+                        <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                    <div class="faq-content">
+                        <div class="faq-content-inner">
+                            نعم، جميع تخصصات ومناهج كلية الصدارة مرخصة ومعتمدة رسمياً من قبل وزارة التعليم الفني والتدريب المهني، وهي مؤهلة للتوظيف المباشر وموثقة للتقديم خارج الوطن.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="faq-item glass">
+                    <div class="faq-header">
+                        <h4>ما هي الوثائق المطلوبة عند التسجيل النهائي بالكلية؟</h4>
+                        <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                    <div class="faq-content">
+                        <div class="faq-content-inner">
+                            الوثائق المطلوبة هي: أصل شهادة الثانوية العامة مع صورة طبق الأصل، وصورة من البطاقة الشخصية أو جواز السفر، وعدد 6 صور شخصية حديثة مقاس 4×6 بخلفية بيضاء.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="faq-item glass">
+                    <div class="faq-header">
+                        <h4>هل تدعم الكلية نظام تقسيط الرسوم الدراسية؟</h4>
+                        <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                    <div class="faq-content">
+                        <div class="faq-content-inner">
+                            نعم بكل تأكيد، تيسيراً على أبنائنا الطلاب، تعتمد الكلية نظام أقساط مريح وموزع على مدار العام الدراسي، بالإضافة إلى خصومات خاصة للمتميزين والتسجيل المبكر.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="faq-item glass">
+                    <div class="faq-header">
+                        <h4>أين يتم توفير التدريب العملي الميداني للطلاب؟</h4>
+                        <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                    <div class="faq-content">
+                        <div class="faq-content-inner">
+                            ترتبط كلية الصدارة باتفاقيات شراكة وتدريب ميداني مع كبريات المستشفيات الحكومية والخاصة لتخصصات العلوم الطبية، ومع كبريات شركات التقنية والمكاتب الهندسية لتخصصات التكنولوجيا والديكور لضمان جاهزية الطلاب لممارسة المهنة فوراً.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       10. Partners of Success
+       ========================================== -->
+    <section class="partners-section">
+        <div class="container">
+            <h4 style="text-align: center; color: var(--text-muted); font-family: var(--font-primary); font-size: 1rem; margin-bottom: 30px; letter-spacing: 1px;">شركاء التدريب والتوظيف المعتمدون</h4>
+            <div class="partners-slider">
+                <div class="partner-logo" title="مستشفى الثورة العام"><i class="fa-solid fa-hospital"></i></div>
+                <div class="partner-logo" title="وزارة الصحة العامة"><i class="fa-solid fa-house-medical"></i></div>
+                <div class="partner-logo" title="النقابة الطبية العامة"><i class="fa-solid fa-user-doctor"></i></div>
+                <div class="partner-logo" title="الشركات البرمجية المعتمدة"><i class="fa-solid fa-laptop-code"></i></div>
+                <div class="partner-logo" title="وزارة التعليم المهني"><i class="fa-solid fa-graduation-cap"></i></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       11. Footer Section & Contacts
+       ========================================== -->
+    <footer class="footer" id="contact">
+        <div class="container footer-grid grid">
+            <!-- Col 1: About -->
+            <div class="footer-col footer-about">
+                <div class="logo-area" style="margin-bottom: 20px;">
+                    <img src="assets/logo.jpg" alt="شعار كلية الصدارة" class="logo-img" style="border-color: var(--secondary);" onerror="this.src='https://placehold.co/100x100?text=الصدارة'">
+                    <div class="logo-text">
+                        <h1 style="color: var(--light);">كلية الصدارة</h1>
+                        <span style="color: var(--secondary);">للعلوم الطبية والتقنية</span>
+                    </div>
+                </div>
+                <p>مؤسسة أكاديمية رائدة تهدف إلى تمكين الشباب بالمهارات الطبية والتقنية والهندسية اللازمة لسد الفجوة في سوق العمل المحلي والإقليمي وفق أعلى مقاييس الجودة التعليمية.</p>
+                <div class="top-bar-socials" style="margin-top: 15px;">
+                    <a href="#" style="background: rgba(255,255,255,0.05); width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--light); transition: var(--transition-fast);"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" style="background: rgba(255,255,255,0.05); width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--light); transition: var(--transition-fast);"><i class="fab fa-twitter"></i></a>
+                    <a href="#" style="background: rgba(255,255,255,0.05); width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--light); transition: var(--transition-fast);"><i class="fab fa-instagram"></i></a>
+                    <a href="#" style="background: rgba(255,255,255,0.05); width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--light); transition: var(--transition-fast);"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <!-- Col 2: Quick Links -->
+            <div class="footer-col">
+                <h3>روابط سريعة</h3>
+                <div class="footer-links">
+                    <a href="index.html"><i class="fas fa-chevron-left"></i> الصفحة الرئيسية</a>
+                    <a href="about.html"><i class="fas fa-chevron-left"></i> عن الكلية</a>
+                    <a href="departments.html"><i class="fas fa-chevron-left"></i> التخصصات الدراسية</a>
+                    <a href="virtual-tour.html"><i class="fas fa-chevron-left"></i> الجولة الافتراضية للمعامل</a>
+                    <a href="training-careers.html"><i class="fas fa-chevron-left"></i> التدريب والتوظيف</a>
+                </div>
+            </div>
+
+            <!-- Col 3: Contact details -->
+            <div class="footer-col">
+                <h3>معلومات التواصل</h3>
+                <div class="footer-contact-item">
+                    <div class="footer-contact-icon"><i class="fas fa-phone-alt"></i></div>
+                    <div class="footer-contact-text">
+                        <h5>اتصل بنا</h5>
+                        <p id="footer-phone">+967 777 777 777</p>
+                    </div>
+                </div>
+                <div class="footer-contact-item">
+                    <div class="footer-contact-icon"><i class="fab fa-whatsapp"></i></div>
+                    <div class="footer-contact-text">
+                        <h5>واتساب القبول والتسجيل</h5>
+                        <p id="footer-whatsapp">+967 777 777 777</p>
+                    </div>
+                </div>
+                <div class="footer-contact-item">
+                    <div class="footer-contact-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="footer-contact-text">
+                        <h5>البريد الإلكتروني</h5>
+                        <p id="footer-email">admission@alsadara.edu.ye</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Col 4: Map Location -->
+            <div class="footer-col">
+                <h3>موقع الكلية</h3>
+                <div class="footer-contact-item">
+                    <div class="footer-contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="footer-contact-text">
+                        <h5>العنوان بالتفصيل</h5>
+                        <p id="footer-address">صنعاء - شارع الستين الجنوبي - جوار مستشفى السبعين</p>
+                    </div>
+                </div>
+                <div class="footer-map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3848.4069632873133!2d44.2081577!3d15.3188554!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1603db026ff8c42b%3A0xe54d9b231ff6f12e!2z2LTYp9ix2Lkg2KfZhNiz2KrZitmGIC0g2LXYp9mG2Yc!5e0!3m2!1sar!2s!4v1700000000000!5m2!1sar!2s" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="container footer-bottom">
+            <p>&copy; 2026 كلية الصدارة للعلوم الطبية والتقنية. جميع الحقوق محفوظة.</p>
+            <div class="footer-bottom-links">
+                <a href="#">سياسة الخصوصية</a>
+                <a href="#">شروط وأحكام التسجيل</a>
+                <a href="../dashbord/index.html"><i class="fas fa-lock"></i> لوحة التحكم الإدارية</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+       12. Floating Action Widgets
+       ========================================== -->
+    <div class="floating-actions">
+        <!-- Floating WhatsApp -->
+        <a href="https://wa.me/967777777777?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20%D9%83%D9%84%D9%8A%D8%A9%20%D8%A7%D9%84%D8%B5%D8%AF%D8%A7%D8%B1%D8%A9%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%B4%D8%B1%D9%88%D8%B7%20%D9%88%D8%A5%D8%AC%D8%B1%D8%A7%D8%A1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%AA%D8%B3%D8%AC%D9%8A%D9%84." 
+           class="float-btn float-whatsapp" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           aria-label="تواصل عبر واتساب">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <!-- Back to Top Button -->
+        <button class="float-btn float-totop" id="float-totop" aria-label="العودة لأعلى الصفحة">
+            <i class="fas fa-chevron-up"></i>
+        </button>
+    </div>
+
+    <!-- Main JavaScript File -->
+    <script src="js/main.js?v=2.0.0"></script>
+</body>
+</html>
