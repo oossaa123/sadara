@@ -802,11 +802,8 @@
                 box-shadow: -5px 0 25px rgba(0,0,0,0.3);
                 border-left: 1px solid var(--border-color);
                 border-bottom: none;
-                padding-top: 60px; /* Leave space for close button */
-                display: flex !important;
-                flex-direction: column;
-                justify-content: flex-start !important;
-                gap: 25px;
+                padding: 60px 20px 30px 20px; /* Top space for close btn, horizontal padding */
+                display: block !important;
                 overflow-y: auto; /* Enable scroll for all sidebar links on short screens */
             }
 
@@ -814,9 +811,8 @@
                 right: 0 !important;
             }
 
-            .sidebar > div,
-            .sidebar-footer {
-                flex-shrink: 0 !important;
+            .sidebar > div {
+                margin-bottom: 30px;
             }
         }
     </style>
