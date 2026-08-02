@@ -1884,6 +1884,7 @@ img {
         position: fixed;
         top: 85px;
         right: -100%;
+        left: auto !important;
         width: 80%;
         max-width: 320px;
         height: calc(100vh - 85px);
@@ -1894,10 +1895,12 @@ img {
         transition: var(--transition);
         border-left: 1px solid var(--border-color);
         z-index: 998;
+        display: flex !important;
+        overflow-y: auto;
     }
     
     .nav-menu.active {
-        right: 0;
+        right: 0 !important;
     }
     
     .nav-link {

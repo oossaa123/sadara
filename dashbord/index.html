@@ -755,6 +755,7 @@
                 position: fixed;
                 top: 0;
                 right: -290px; /* Hidden on the right */
+                left: auto !important;
                 width: 280px;
                 height: 100vh;
                 z-index: 9999;
@@ -763,10 +764,14 @@
                 border-left: 1px solid var(--border-color);
                 border-bottom: none;
                 padding-top: 60px; /* Leave space for close button */
+                display: flex !important;
+                flex-direction: column;
+                justify-content: space-between;
+                overflow-y: auto; /* Enable scroll for all sidebar links on short screens */
             }
 
             .sidebar.active {
-                right: 0;
+                right: 0 !important;
             }
         }
     </style>
