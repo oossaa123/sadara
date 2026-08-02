@@ -804,12 +804,18 @@
                 padding-top: 60px; /* Leave space for close button */
                 display: flex !important;
                 flex-direction: column;
-                justify-content: space-between;
+                justify-content: flex-start !important;
+                gap: 25px;
                 overflow-y: auto; /* Enable scroll for all sidebar links on short screens */
             }
 
             .sidebar.active {
                 right: 0 !important;
+            }
+
+            .sidebar > div,
+            .sidebar-footer {
+                flex-shrink: 0 !important;
             }
         }
     </style>
