@@ -444,6 +444,10 @@ img {
     padding: 8px 0;
 }
 
+.nav-link i {
+    display: none;
+}
+
 .nav-link::after {
     content: '';
     position: absolute;
@@ -1894,6 +1898,23 @@ img {
     
     .nav-menu.active {
         right: 0;
+    }
+    
+    .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        padding: 12px 0;
+        border-bottom: 1px dashed var(--border-color);
+    }
+    
+    .nav-link i {
+        display: inline-block;
+        font-size: 1.1rem;
+        color: var(--primary);
+        width: 24px;
+        text-align: center;
     }
     
     .header-actions {
