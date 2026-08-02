@@ -1879,39 +1879,35 @@ img {
     .menu-toggle {
         display: block !important;
         flex-shrink: 0;
-    }
-    
-    .header-content {
-        flex-wrap: nowrap;
+        min-width: 40px;
+        min-height: 40px;
+        font-size: 1.8rem;
+        color: var(--primary);
+        background: transparent;
+        border: none;
+        cursor: pointer;
     }
     
     .nav-menu {
+        display: none !important;
         position: fixed;
         top: 85px;
-        right: -100%;
+        right: 0;
         left: auto !important;
         width: 80%;
         max-width: 320px;
         height: calc(100vh - 85px);
         background: var(--bg-card);
-        flex-direction: column;
         padding: 40px;
         box-shadow: var(--shadow-lg);
-        transition: var(--transition);
         border-left: 1px solid var(--border-color);
         z-index: 998;
-        display: flex !important;
         overflow-y: auto;
-        /* Prevent nav-menu from taking flex space in header */
-        flex: 0 0 0px !important;
-        min-width: 0 !important;
-        padding: 40px;
-        visibility: hidden;
     }
     
     .nav-menu.active {
-        right: 0 !important;
-        visibility: visible;
+        display: flex !important;
+        flex-direction: column;
     }
     
     .nav-link {
@@ -1932,15 +1928,14 @@ img {
     }
     
     .header-actions {
-        margin-right: auto; /* Push actions to the left */
-        flex-shrink: 0;
         display: flex;
         align-items: center;
         gap: 12px;
+        flex-shrink: 0;
     }
     
     .header-btn {
-        display: none; /* Hide CTA button in header, show in menu or rely on hero */
+        display: none !important;
     }
     
     .stats-grid {
