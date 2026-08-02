@@ -676,9 +676,128 @@
                 opacity: 1;
             }
         }
+
+        /* Mobile Top Bar */
+        .mobile-header-dashboard {
+            display: none;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .dashboard-menu-toggle {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+
+        .dashboard-menu-toggle:hover {
+            background: rgba(138, 46, 118, 0.08);
+        }
+
+        .sidebar-close-btn {
+            display: none;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            cursor: pointer;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        @media (max-width: 1024px) {
+            .mobile-header-dashboard {
+                display: flex;
+            }
+
+            .sidebar-close-btn {
+                display: block;
+            }
+
+            .sidebar-overlay {
+                display: block;
+            }
+
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                right: -290px; /* Hidden on the right */
+                width: 280px;
+                height: 100vh;
+                z-index: 9999;
+                transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                box-shadow: -5px 0 25px rgba(0,0,0,0.3);
+                border-left: 1px solid var(--border-color);
+                border-bottom: none;
+                padding-top: 60px; /* Leave space for close button */
+            }
+
+            .sidebar.active {
+                right: 0;
+            }
+        }
     </style>
 </head>
 <body>
+
+    <!-- Mobile Dashboard Top Bar -->
+    <div class="mobile-header-dashboard">
+        <button class="dashboard-menu-toggle" id="dashboard-menu-toggle" aria-label="فتح القائمة">
+            <i class="fas fa-bars"></i>
+        </button>
+        <a href="../sadara/index.html" class="sidebar-brand" style="margin-bottom: 0; gap: 10px;">
+            <img src="assets/logo.jpg" alt="شعار كلية الصدارة" class="sidebar-logo" style="width: 35px; height: 35px;" onerror="this.src='https://placehold.co/100x100?text=الصدارة'">
+            <div class="sidebar-brand-text">
+                <h2 style="font-size: 1rem; margin: 0; font-weight: 800;">كلية الصدارة</h2>
+                <span style="font-size: 0.65rem;">لوحة التحكم الإدارية</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
     <!-- Dynamic Glow Orbs -->
     <div class="glow-orb glow-orb-1"></div>
@@ -690,6 +809,7 @@
            1. Sidebar Area
            ========================================== -->
         <aside class="sidebar">
+            <button class="sidebar-close-btn" id="sidebar-close-btn" aria-label="إغلاق القائمة"><i class="fas fa-times"></i></button>
             <div>
                 <!-- Brand logo -->
                 <a href="../sadara/index.html" class="sidebar-brand">
@@ -1763,7 +1883,7 @@
 
     <!-- Beautiful Glassmorphism Login Overlay -->
     <div id="login-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(20px); z-index: 9999; display: flex; align-items: center; justify-content: center;">
-        <div class="glass" style="width: 400px; padding: 40px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; background: rgba(25, 16, 24, 0.85);">
+        <div class="glass" style="width: 90%; max-width: 400px; padding: 40px 20px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; background: rgba(25, 16, 24, 0.85);">
             <img src="assets/logo.jpg" alt="Logo" style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 20px; box-shadow: 0 0 20px var(--primary);">
             <h2 style="color: #fff; margin-bottom: 10px; font-family: 'Outfit', sans-serif;">تسجيل الدخول للنظام</h2>
             <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 30px; font-size: 0.9rem;">لوحة التحكم الإدارية لكلية الصدارة</p>
@@ -1822,6 +1942,36 @@
                 localStorage.setItem('theme', newTheme);
             });
         }
+
+        // Sidebar Mobile Toggle
+        const dashboardMenuToggle = document.getElementById('dashboard-menu-toggle');
+        const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
+        const sidebar = document.querySelector('.sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+        }
+
+        function closeSidebar() {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        }
+
+        if (dashboardMenuToggle) {
+            dashboardMenuToggle.addEventListener('click', toggleSidebar);
+        }
+        if (sidebarCloseBtn) {
+            sidebarCloseBtn.addEventListener('click', closeSidebar);
+        }
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', closeSidebar);
+        }
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', closeSidebar);
+        });
 
         // SVG Chart Tooltip interactivity
         const chartPoints = document.querySelectorAll('.chart-point');

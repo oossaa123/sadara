@@ -2060,6 +2060,14 @@ img {
     }
 
     /* Header Compact Mode for Mobile Viewports */
+    .logo-area {
+        gap: 8px;
+    }
+
+    .header-actions {
+        gap: 10px;
+    }
+
     .logo-img {
         height: 48px;
         width: 48px;
