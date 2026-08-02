@@ -477,17 +477,55 @@
             transform: scale(1.1);
         }
 
-        .btn-approve:hover {
-            background: #27d366;
-            color: white;
-            border-color: #27d366;
-            box-shadow: 0 0 15px rgba(37, 211, 102, 0.4);
+        .btn-edit {
+            background: rgba(138, 46, 118, 0.1) !important;
+            color: var(--primary) !important;
+            border-color: var(--primary) !important;
+            margin: 0 4px;
+        }
+        .btn-edit:hover {
+            background: var(--primary) !important;
+            color: white !important;
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 15px rgba(162, 46, 211, 0.4);
         }
 
+        .btn-delete {
+            background: rgba(255, 76, 76, 0.1) !important;
+            color: #ff4c4c !important;
+            border-color: #ff4c4c !important;
+            margin: 0 4px;
+        }
+        .btn-delete:hover {
+            background: #ff4c4c !important;
+            color: white !important;
+            border-color: #ff4c4c !important;
+            box-shadow: 0 0 15px rgba(255, 76, 76, 0.4);
+        }
+
+        .btn-approve {
+            background: rgba(46, 204, 113, 0.1) !important;
+            color: #2ecc71 !important;
+            border-color: #2ecc71 !important;
+            margin: 0 4px;
+        }
+        .btn-approve:hover {
+            background: #2ecc71 !important;
+            color: white !important;
+            border-color: #2ecc71 !important;
+            box-shadow: 0 0 15px rgba(46, 204, 119, 0.4);
+        }
+
+        .btn-reject {
+            background: rgba(255, 76, 76, 0.1) !important;
+            color: #ff4c4c !important;
+            border-color: #ff4c4c !important;
+            margin: 0 4px;
+        }
         .btn-reject:hover {
-            background: #ff4c4c;
-            color: white;
-            border-color: #ff4c4c;
+            background: #ff4c4c !important;
+            color: white !important;
+            border-color: #ff4c4c !important;
             box-shadow: 0 0 15px rgba(255, 76, 76, 0.4);
         }
 
@@ -2210,10 +2248,10 @@
                             <td>${d.duration}</td>
                             <td>${iconDisplay}</td>
                             <td>
-                                <button type="button" class="row-action-btn" onclick="editDept(${d.id})" title="تعديل التخصص" style="background: rgba(138, 46, 118, 0.1); color: var(--primary); border: 1px solid var(--primary); margin-left: 5px; cursor: pointer; padding: 5px 8px; border-radius: 6px;">
+                                <button type="button" class="row-action-btn btn-edit" onclick="editDept(${d.id})" title="تعديل التخصص">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button type="button" class="row-action-btn" onclick="deleteDept(${d.id})" title="حذف التخصص" style="background: rgba(255, 76, 76, 0.1); color: #ff4c4c; border: 1px solid #ff4c4c; cursor: pointer; padding: 5px 8px; border-radius: 6px;">
+                                <button type="button" class="row-action-btn btn-delete" onclick="deleteDept(${d.id})" title="حذف التخصص">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </td>
@@ -2463,10 +2501,10 @@
                             <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${l.description}">${l.description}</td>
                             <td>${specsBadges}</td>
                             <td>
-                                <button type="button" class="row-action-btn" onclick="editLab(${l.id})" title="تعديل المعمل" style="background: rgba(138, 46, 118, 0.1); color: var(--primary); border: 1px solid var(--primary); margin-left: 5px; cursor: pointer; padding: 5px 8px; border-radius: 6px;">
+                                <button type="button" class="row-action-btn btn-edit" onclick="editLab(${l.id})" title="تعديل المعمل">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button type="button" class="row-action-btn" onclick="deleteLab(${l.id})" title="حذف المعمل" style="background: rgba(255, 76, 76, 0.1); color: #ff4c4c; border: 1px solid #ff4c4c; cursor: pointer; padding: 5px 8px; border-radius: 6px;">
+                                <button type="button" class="row-action-btn btn-delete" onclick="deleteLab(${l.id})" title="حذف المعمل">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </td>
@@ -2670,10 +2708,10 @@
                             <td>${f.installment}</td>
                             <td>${f.payment_options}</td>
                             <td>
-                                <button type="button" class="row-action-btn" onclick="editFee(${f.id})" title="تعديل الرسوم" style="background: rgba(138, 46, 118, 0.1); color: var(--primary); border: 1px solid var(--primary); margin-left: 5px; cursor: pointer; padding: 5px 8px; border-radius: 6px;">
+                                <button type="button" class="row-action-btn btn-edit" onclick="editFee(${f.id})" title="تعديل الرسوم">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button type="button" class="row-action-btn" onclick="deleteFee(${f.id})" title="حذف الرسوم" style="background: rgba(255, 76, 76, 0.1); color: #ff4c4c; border: 1px solid #ff4c4c; cursor: pointer; padding: 5px 8px; border-radius: 6px;">
+                                <button type="button" class="row-action-btn btn-delete" onclick="deleteFee(${f.id})" title="حذف الرسوم">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </td>
@@ -3325,11 +3363,11 @@
                         <td style="font-size: 0.8rem; color: var(--text-muted); white-space: nowrap;">${m.created_at}</td>
                         <td>
                             ${!m.is_read ? `
-                                <button type="button" class="row-action-btn" onclick="markContactRead(${m.id})" title="تعيين كمقروءة" style="background: rgba(46,204,113,0.1); color: #2ecc71; border: 1px solid #2ecc71; cursor: pointer; padding: 5px 8px; border-radius: 6px; margin-left: 5px;">
+                                <button type="button" class="row-action-btn btn-approve" onclick="markContactRead(${m.id})" title="تعيين كمقروءة">
                                     <i class="fas fa-check"></i>
                                 </button>
                             ` : ''}
-                            <button type="button" class="row-action-btn" onclick="deleteContact(${m.id})" title="حذف الرسالة" style="background: rgba(255, 76, 76, 0.1); color: #ff4c4c; border: 1px solid #ff4c4c; cursor: pointer; padding: 5px 8px; border-radius: 6px;">
+                            <button type="button" class="row-action-btn btn-delete" onclick="deleteContact(${m.id})" title="حذف الرسالة">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </td>
@@ -3451,10 +3489,10 @@
                     if (app.status === 'pending') {
                         statusBadge = `<span class="badge-status status-pending"><i class="fas fa-hourglass-half"></i> قيد المراجعة</span>`;
                         actionButtons = `
-                            <button class="row-action-btn btn-approve" onclick="manageApplicantTab(${app.id}, 'approve')" title="قبول الطلب" style="background: rgba(46,204,113,0.1); color: #2ecc71; border: 1px solid #2ecc71; cursor: pointer; padding: 5px 8px; border-radius: 6px; margin-left: 5px;">
+                            <button class="row-action-btn btn-approve" onclick="manageApplicantTab(${app.id}, 'approve')" title="قبول الطلب">
                                 <i class="fas fa-check"></i>
                             </button>
-                            <button class="row-action-btn btn-reject" onclick="manageApplicantTab(${app.id}, 'reject')" title="رفض الطلب" style="background: rgba(255,76,76,0.1); color: #ff4c4c; border: 1px solid #ff4c4c; cursor: pointer; padding: 5px 8px; border-radius: 6px; margin-left: 5px;">
+                            <button class="row-action-btn btn-reject" onclick="manageApplicantTab(${app.id}, 'reject')" title="رفض الطلب">
                                 <i class="fas fa-times"></i>
                             </button>
                         `;
@@ -3468,7 +3506,7 @@
                     
                     // Add delete button for all statuses
                     actionButtons += `
-                        <button class="row-action-btn" onclick="deleteApplicantTab(${app.id})" title="حذف الطلب" style="background: rgba(255,76,76,0.05); color: #ff4c4c; border: 1px solid rgba(255,76,76,0.3); cursor: pointer; padding: 5px 8px; border-radius: 6px; margin-right: 5px;">
+                        <button class="row-action-btn btn-delete" onclick="deleteApplicantTab(${app.id})" title="حذف الطلب">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     `;
