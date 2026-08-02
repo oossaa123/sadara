@@ -1877,7 +1877,12 @@ img {
     }
     
     .menu-toggle {
-        display: block;
+        display: block !important;
+        flex-shrink: 0;
+    }
+    
+    .header-content {
+        flex-wrap: nowrap;
     }
     
     .nav-menu {
@@ -1897,10 +1902,16 @@ img {
         z-index: 998;
         display: flex !important;
         overflow-y: auto;
+        /* Prevent nav-menu from taking flex space in header */
+        flex: 0 0 0px !important;
+        min-width: 0 !important;
+        padding: 40px;
+        visibility: hidden;
     }
     
     .nav-menu.active {
         right: 0 !important;
+        visibility: visible;
     }
     
     .nav-link {
@@ -1922,6 +1933,10 @@ img {
     
     .header-actions {
         margin-right: auto; /* Push actions to the left */
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
     }
     
     .header-btn {
