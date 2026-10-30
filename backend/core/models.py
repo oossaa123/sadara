@@ -55,7 +55,7 @@ class Department(models.Model):
         return f"{self.name} ({self.category})"
 
 def seed_db():
-    import bcrypt
+    """Create missing public defaults explicitly; never fabricate student records."""
     
     # Seed default homepage settings if not already present
     default_settings = {
@@ -77,49 +77,19 @@ def seed_db():
         'social_youtube': '#',
         'about_us_p1': 'كلية الصدارة للعلوم الطبية والتقنية هي صرح تعليمي رائد مرخص ومعتمد من وزارة التعليم الفني والتدريب المهني. تأسست الكلية لتلبي الحاجة المتزايدة للتعليم التطبيقي عالي الجودة والتدريب الاحترافي، لتواكب التطور التكنولوجي والطبي السريع عالمياً.',
         'about_us_p2': 'نلتزم بتخريج كوادر تمتلك المعرفة النظرية المتطورة والمهارة العملية الدقيقة التي تتطلبها مؤسسات الرعاية الصحية والقطاعات التكنولوجية والإدارية محلياً ودولياً.',
-        'about_image': '/media/hero.png',
+        'about_image': '/assets/images/hero.png',
         'about_vision': 'أن نكون الوجهة الأكاديمية المفضلة إقليمياً لإعداد قادة الرعاية الصحية وخبراء التكنولوجيا، وأن نقود التميز والريادة في قطاع التعليم المهني التطبيقي.',
         'about_mission': 'تقديم برامج تعليمية مميزة تجمع بين المناهج النظرية المبتكرة والتدريب العملي المكثف في بيئة تدعم الإبداع والتطور المستمر لبناء كفاءات تلبي الاحتياجات التنافسية لسوق العمل.',
         'about_goals': 'تطور مهارات الطلاب الذاتية والمهنية، بناء شراكات وثيقة مع قطاعات الأعمال والمستشفيات للتوظيف، وتجهيز معامل تفاعلية تمثل أحدث ما توصلت إليه التقنيات.',
         'dean_name': 'أ.د. فيصل عائض',
         'dean_title': 'عميد الكلية',
-        'dean_avatar': '/media/file.png',
+        'dean_avatar': '/assets/images/file.png',
         'dean_message_quote': 'أبنائي وبناتي الطلبة، يسعدني أن أرحب بكم في رحاب كلية الصدارة للعلوم الطبية والتقنية. إن قراركم بالالتحاق بالكلية هو خطوة أولى نحو مستقبل مهني مشرق ومضمون. نحن هنا لسنا فقط لنعلمكم، بل لنلهمكم ونمكنكم من اكتساب المهارات والخبرات التي تجعلكم فخورين بأنفسكم، ومطلبًا أساسيًا لكافة مشافي ومؤسسات وشركات الوطن.',
         'dean_message_p2': 'نسخر كل طاقاتنا لتوفير معامل مجهزة وتدريب إكلينيكي ممتاز في المستشفيات الحكومية لضمان ريادتكم وصدارتكم دائماً.'
     }
     
     for key, val in default_settings.items():
         Setting.objects.get_or_create(key=key, defaults={'value': val})
-
-    # Seed default applicants to match front-end demo data
-    default_applicants = [
-        ('خالد عبد الوهاب المرادي', '+967 771 234 567', 89.5, 'scientific', 'صيدلة'),
-        ('هدى أحمد الشرفي', '+967 775 987 654', 94.2, 'scientific', 'تقنية معلومات (IT)'),
-        ('علي يحيى الذماري', '+967 773 456 789', 81.0, 'scientific', 'فني أسنان'),
-        ('بلقيس صالح المطري', '+967 770 111 222', 88.4, 'scientific', 'قبالة وتوليد'),
-        ('مازن محمد الخولاني', '+967 777 999 888', 85.7, 'scientific', 'مساعد طبيب')
-    ]
-    
-    if Applicant.objects.count() == 0:
-        for name, phone, gpa, stream, dept in default_applicants:
-            Applicant.objects.create(
-                name=name,
-                phone=phone,
-                gpa=gpa,
-                stream=stream,
-                department=dept,
-                status='pending'
-            )
-            
-    # Seed default admin user (username: admin, password: admin_sadara_2026)
-    if not User.objects.filter(username='admin').exists():
-        hashed = bcrypt.hashpw('admin_sadara_2026'.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-        User.objects.create(
-            username='admin',
-            password_hash=hashed,
-            full_name='أ.د. فيصل عائض',
-            role='superuser'
-        )
 
     # Seed default departments
     if Department.objects.count() == 0:
@@ -391,7 +361,6 @@ def seed_db():
         for fee_data in default_fees:
             TuitionFee.objects.create(**fee_data)
 
-    print("Database seeding completed.")
 
 class Lab(models.Model):
     name = models.CharField(max_length=255)

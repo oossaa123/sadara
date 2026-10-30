@@ -1,7 +1,5 @@
-from django.contrib import admin
 from django.urls import path
 from core import views
-from core.models import seed_db
 
 urlpatterns = [
     # Static files and page serving to mimic original Flask logic
@@ -15,6 +13,7 @@ urlpatterns = [
     path('', views.serve_root),
 
     # Authentication API endpoints
+    path('api/health', views.health),
     path('api/auth/login', views.login),
     path('api/auth/me', views.get_me),
 
@@ -45,9 +44,3 @@ urlpatterns = [
     path('api/contact', views.api_contact_messages),
     path('api/contact/<int:msg_id>', views.api_contact_message_detail),
 ]
-
-# Attempt database seeding on startup
-try:
-    seed_db()
-except Exception as e:
-    print(f"Warning: Database seeding skipped or failed (this is normal during migrations): {e}")

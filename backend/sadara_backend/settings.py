@@ -17,17 +17,28 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 import os
+from django.core.exceptions import ImproperlyConfigured
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-&%=09%3n9_p@j^77b&c-8n+apqr@da91t^%a@-06xs7d2#&132')
+SECRET_KEY = os.environ.get('SECRET_KEY') or 'django-insecure-local-development-sadara-change-for-production'
+JWT_SECRET = os.environ.get('JWT_SECRET') or SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True').lower() in ('true', '1', 't')
 
-ALLOWED_HOSTS = ['*']
+if not DEBUG and SECRET_KEY.startswith('django-insecure-'):
+    raise ImproperlyConfigured('Set SECRET_KEY before running with DEBUG=False.')
+
+ALLOWED_HOSTS = [host.strip() for host in os.environ.get(
+    'ALLOWED_HOSTS', 'localhost,127.0.0.1,[::1]'
+).split(',') if host.strip()]
+if os.environ.get('RAILWAY_PUBLIC_DOMAIN'):
+    ALLOWED_HOSTS.append(os.environ['RAILWAY_PUBLIC_DOMAIN'].strip())
+if os.environ.get('RAILWAY_PROJECT_ID'):
+    ALLOWED_HOSTS.append('healthcheck.railway.app')
 
 
 # Application definition
@@ -80,11 +91,15 @@ WSGI_APPLICATION = 'sadara_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'sadara.db',
+        'NAME': os.environ.get('SADARA_DB_PATH', str(BASE_DIR / 'sadara.db')),
+        'OPTIONS': {'timeout': 20},
     }
 }
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [origin.strip() for origin in os.environ.get(
+    'CORS_ALLOWED_ORIGINS',
+    'http://localhost:5500,http://127.0.0.1:5500,http://localhost:3000,http://127.0.0.1:3000'
+).split(',') if origin.strip()]
 
 
 # Password validation
@@ -109,9 +124,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ar'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Aden'
 
 USE_I18N = True
 
@@ -124,4 +139,4 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = Path(os.environ.get('SADARA_MEDIA_ROOT', str(BASE_DIR / 'media')))

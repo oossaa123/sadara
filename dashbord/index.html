@@ -5,827 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="لوحة التحكم الإدارية لكلية الصدارة للعلوم الطبية والتقنية - إدارة الطلاب والطلبات والتخصصات.">
     <title>لوحة التحكم الإدارية | كلية الصدارة</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* ==========================================
-           Dashboard Custom Layout
-           ========================================== */
-        body {
-            background-color: var(--bg-dark);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+    <link rel="stylesheet" href="css/style.css?v=3.0.0">
 
-        .dashboard-container {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            min-height: 100vh;
-            position: relative;
-            z-index: 2;
-        }
-
-        @media (max-width: 1024px) {
-            .dashboard-container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Sidebar Styling */
-        .sidebar {
-            background: var(--bg-glass);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border-left: 1px solid var(--border-color);
-            padding: 30px 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            z-index: 100;
-        }
-
-        .sidebar-brand {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 40px;
-            text-decoration: none;
-        }
-
-        .sidebar-logo {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            border: 2px solid var(--secondary);
-        }
-
-        .sidebar-brand-text h2 {
-            font-size: 1.25rem;
-            color: var(--primary);
-            margin: 0;
-            font-weight: 800;
-        }
-
-        .sidebar-brand-text span {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        .sidebar-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            flex-grow: 1;
-        }
-
-        .sidebar-link {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 14px 20px;
-            border-radius: 12px;
-            color: var(--text-secondary);
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .sidebar-link i {
-            font-size: 1.15rem;
-            width: 20px;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .sidebar-link:hover, .sidebar-link.active {
-            color: var(--text-on-primary);
-            background: var(--gradient-primary);
-            box-shadow: var(--shadow-purple-glow);
-        }
-
-        .sidebar-link:hover i {
-            transform: translateX(-5px);
-        }
-
-        .sidebar-link.active::before {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 15%;
-            height: 70%;
-            width: 5px;
-            background-color: var(--secondary);
-            border-radius: 0 5px 5px 0;
-        }
-
-        .sidebar-footer {
-            border-top: 1px solid var(--border-color);
-            padding-top: 20px;
-            margin-top: 20px;
-        }
-
-        .admin-profile {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 10px;
-            border-radius: 12px;
-            background: rgba(138, 46, 118, 0.05);
-        }
-
-        .admin-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            border: 2px solid var(--secondary);
-            object-fit: cover;
-        }
-
-        .admin-info h4 {
-            font-size: 0.95rem;
-            color: var(--primary);
-            margin: 0;
-        }
-
-        .admin-info p {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin: 0;
-        }
-
-        /* Main Content Styling */
-        .main-content {
-            padding: 40px;
-            overflow-y: auto;
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                padding: 20px;
-            }
-        }
-
-        .main-header-dashboard {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .welcome-section h1 {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 5px;
-            font-weight: 800;
-        }
-
-        .welcome-section p {
-            color: var(--text-secondary);
-            margin: 0;
-        }
-
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        /* Stats Grid */
-        .stats-grid-dashboard {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
-        .stat-card-dashboard {
-            background: var(--bg-glass);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .stat-card-dashboard:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(138, 46, 118, 0.1);
-            border-color: rgba(138, 46, 118, 0.2);
-        }
-
-        .stat-card-info h3 {
-            font-size: 2.2rem;
-            color: var(--primary);
-            margin: 0 0 5px;
-            font-weight: 800;
-        }
-
-        .stat-card-info p {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            margin: 0;
-            font-weight: 600;
-        }
-
-        .stat-card-icon-wrapper {
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.6rem;
-            background: rgba(138, 46, 118, 0.08);
-            color: var(--primary);
-            transition: all 0.4s ease;
-        }
-
-        .stat-card-dashboard:hover .stat-card-icon-wrapper {
-            background: var(--gradient-primary);
-            color: white;
-            transform: scale(1.1) rotate(10deg);
-        }
-
-        /* Analytics Section */
-        .analytics-grid {
-            display: grid;
-            grid-template-columns: 2fr 1.2fr;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        @media (max-width: 1024px) {
-            .analytics-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .analytics-card {
-            background: var(--bg-glass);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 30px;
-            position: relative;
-        }
-
-        .analytics-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .analytics-header h3 {
-            font-size: 1.25rem;
-            color: var(--primary);
-            margin: 0;
-            font-weight: 700;
-        }
-
-        /* Custom SVG Chart CSS */
-        .chart-container {
-            width: 100%;
-            height: 250px;
-            position: relative;
-        }
-
-        .svg-chart {
-            width: 100%;
-            height: 100%;
-            overflow: visible;
-        }
-
-        .chart-grid-line {
-            stroke: var(--border-color);
-            stroke-width: 1;
-            stroke-dasharray: 4 4;
-        }
-
-        .chart-line {
-            fill: none;
-            stroke: var(--primary);
-            stroke-width: 4;
-            stroke-linecap: round;
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-            animation: drawLine 2s ease forwards;
-        }
-
-        @keyframes drawLine {
-            to { stroke-dashoffset: 0; }
-        }
-
-        .chart-area {
-            fill: url(#chart-gradient);
-            opacity: 0.15;
-            animation: fadeIn 1.5s ease forwards;
-        }
-
-        .chart-point {
-            fill: var(--secondary);
-            stroke: var(--primary);
-            stroke-width: 3;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .chart-point:hover {
-            r: 8;
-            fill: var(--primary);
-            stroke: var(--secondary);
-        }
-
-        .chart-tooltip {
-            position: absolute;
-            background: rgba(15, 10, 20, 0.85);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            border: 1px solid var(--border-color);
-            z-index: 10;
-        }
-
-        /* Department Bar Visualizer */
-        .dept-stat-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .dept-stat-item {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .dept-stat-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .dept-stat-name {
-            color: var(--primary);
-        }
-
-        .dept-stat-count {
-            color: var(--secondary);
-        }
-
-        .dept-stat-bar-bg {
-            height: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-        }
-
-        .dept-stat-bar-fill {
-            height: 100%;
-            border-radius: 5px;
-            width: 0;
-            transition: width 1.5s cubic-bezier(0.1, 1, 0.1, 1);
-        }
-
-        /* Table Section */
-        .table-card {
-            background: var(--bg-glass);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 30px;
-            margin-bottom: 40px;
-            overflow: hidden;
-        }
-
-        .table-header-area {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .table-header-area h3 {
-            font-size: 1.25rem;
-            color: var(--primary);
-            margin: 0;
-            font-weight: 700;
-        }
-
-        /* Interactive status badge classes */
-        .badge-status {
-            padding: 6px 12px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .status-pending {
-            background: rgba(212, 175, 55, 0.1);
-            color: var(--secondary);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-        }
-
-        .status-approved {
-            background: rgba(37, 211, 102, 0.1);
-            color: #27d366;
-            border: 1px solid rgba(37, 211, 102, 0.2);
-            box-shadow: 0 0 10px rgba(37, 211, 102, 0.1);
-        }
-
-        .status-rejected {
-            background: rgba(255, 76, 76, 0.1);
-            color: #ff4c4c;
-            border: 1px solid rgba(255, 76, 76, 0.2);
-        }
-
-        .row-action-btn {
-            width: 34px;
-            height: 34px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-secondary);
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .row-action-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .btn-edit {
-            background: rgba(138, 46, 118, 0.1) !important;
-            color: var(--primary) !important;
-            border-color: var(--primary) !important;
-            margin: 0 4px;
-        }
-        .btn-edit:hover {
-            background: var(--primary) !important;
-            color: white !important;
-            border-color: var(--primary) !important;
-            box-shadow: 0 0 15px rgba(162, 46, 211, 0.4);
-        }
-
-        .btn-delete {
-            background: rgba(255, 76, 76, 0.1) !important;
-            color: #ff4c4c !important;
-            border-color: #ff4c4c !important;
-            margin: 0 4px;
-        }
-        .btn-delete:hover {
-            background: #ff4c4c !important;
-            color: white !important;
-            border-color: #ff4c4c !important;
-            box-shadow: 0 0 15px rgba(255, 76, 76, 0.4);
-        }
-
-        .btn-approve {
-            background: rgba(46, 204, 113, 0.1) !important;
-            color: #2ecc71 !important;
-            border-color: #2ecc71 !important;
-            margin: 0 4px;
-        }
-        .btn-approve:hover {
-            background: #2ecc71 !important;
-            color: white !important;
-            border-color: #2ecc71 !important;
-            box-shadow: 0 0 15px rgba(46, 204, 119, 0.4);
-        }
-
-        .btn-reject {
-            background: rgba(255, 76, 76, 0.1) !important;
-            color: #ff4c4c !important;
-            border-color: #ff4c4c !important;
-            margin: 0 4px;
-        }
-        .btn-reject:hover {
-            background: #ff4c4c !important;
-            color: white !important;
-            border-color: #ff4c4c !important;
-            box-shadow: 0 0 15px rgba(255, 76, 76, 0.4);
-        }
-
-        /* Row fading transition */
-        .table-row-animate {
-            transition: all 0.6s ease;
-        }
-
-        .row-fade-out {
-            opacity: 0;
-            transform: translateX(-50px);
-            background: rgba(255, 76, 76, 0.05);
-        }
-
-        .row-fade-success {
-            background: rgba(37, 211, 102, 0.05);
-        }
-
-        .btn-secondary {
-            background: rgba(138, 46, 118, 0.08) !important;
-            color: var(--primary) !important;
-            border: 1px solid rgba(138, 46, 118, 0.2) !important;
-        }
-        .btn-secondary:hover {
-            background: rgba(138, 46, 118, 0.15) !important;
-            color: var(--primary) !important;
-            transform: translateY(-2px) !important;
-            box-shadow: 0 4px 12px rgba(138, 46, 118, 0.1) !important;
-        }
-
-        .form-control option {
-            background-color: var(--bg-card) !important;
-            color: var(--text-primary) !important;
-        }
-
-        /* Modal / Add applicant drawer */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.4s ease;
-            z-index: 1000;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .modal-card {
-            background: var(--bg-glass);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            width: 90%;
-            max-width: 500px;
-            padding: 35px;
-            transform: scale(0.9);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-        }
-
-        .modal-overlay.active .modal-card {
-            transform: scale(1);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .modal-header h3 {
-            font-size: 1.4rem;
-            color: var(--primary);
-            margin: 0;
-            font-weight: 700;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 1.3rem;
-            cursor: pointer;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--primary);
-            font-size: 0.95rem;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            background: var(--bg-card);
-            color: var(--text-primary);
-            transition: all 0.3s ease;
-            outline: none;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 10px rgba(138, 46, 118, 0.2);
-            background: var(--bg-card);
-            color: var(--text-primary);
-        }
-
-        /* Specific overrides for login page to keep high contrast */
-        #login-form .form-control {
-            background: rgba(255, 255, 255, 0.08) !important;
-            color: #ffffff !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
-        }
-        #login-form .form-control:focus {
-            background: rgba(255, 255, 255, 0.15) !important;
-            color: #ffffff !important;
-            border-color: var(--primary) !important;
-            box-shadow: 0 0 10px rgba(138, 46, 118, 0.5) !important;
-        }
-
-        /* Toasts Container */
-        .toast-container {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 2000;
-        }
-
-        .toast {
-            background: var(--bg-glass);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 15px 25px;
-            color: var(--text-main);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            transform: translateY(20px);
-            opacity: 0;
-            animation: toastIn 0.4s forwards;
-            border-right: 5px solid var(--primary);
-        }
-
-        .toast-success {
-            border-right-color: #27d366;
-        }
-
-        .toast-warning {
-            border-right-color: #ff4c4c;
-        }
-
-        @keyframes toastIn {
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        /* Mobile Top Bar */
-        .mobile-header-dashboard {
-            display: none;
-            background: var(--bg-glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
-            padding: 12px 20px;
-            position: sticky;
-            top: 0;
-            z-index: 999;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-        }
-
-        .dashboard-menu-toggle {
-            background: none;
-            border: none;
-            color: var(--primary);
-            font-size: 1.4rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            transition: background 0.3s;
-        }
-
-        .dashboard-menu-toggle:hover {
-            background: rgba(138, 46, 118, 0.08);
-        }
-
-        .sidebar-close-btn {
-            display: none;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 1.25rem;
-            cursor: pointer;
-        }
-
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            z-index: 9998;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-
-        .sidebar-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        @media (max-width: 1024px) {
-            .mobile-header-dashboard {
-                display: flex;
-            }
-
-            .sidebar-close-btn {
-                display: block;
-            }
-
-            .sidebar-overlay {
-                display: block;
-            }
-
-            .dashboard-container {
-                grid-template-columns: 1fr;
-                z-index: auto !important;
-            }
-
-            .sidebar {
-                position: fixed;
-                top: 0;
-                right: -290px; /* Hidden on the right */
-                left: auto !important;
-                width: 280px;
-                height: 100vh;
-                z-index: 9999;
-                transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-                box-shadow: -5px 0 25px rgba(0,0,0,0.3);
-                border-left: 1px solid var(--border-color);
-                border-bottom: none;
-                padding: 60px 20px 30px 20px; /* Top space for close btn, horizontal padding */
-                display: block !important;
-                overflow-y: auto; /* Enable scroll for all sidebar links on short screens */
-            }
-
-            .sidebar.active {
-                right: 0 !important;
-            }
-
-            .sidebar > div {
-                margin-bottom: 30px;
-            }
-        }
-    </style>
 </head>
 <body>
 
     <!-- Mobile Dashboard Top Bar -->
     <div class="mobile-header-dashboard">
-        <button class="dashboard-menu-toggle" id="dashboard-menu-toggle" aria-label="فتح القائمة">
-            <i class="fas fa-bars"></i>
+        <button class="dashboard-menu-toggle" id="dashboard-menu-toggle" aria-label="فتح القائمة" aria-expanded="false" aria-controls="dashboard-sidebar">
+            <i class="fas fa-bars"><svg viewBox="0 0 448 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" /></svg></i>
         </button>
-        <a href="../sadara/index.html" class="sidebar-brand" style="margin-bottom: 0; gap: 10px;">
-            <img src="assets/logo.jpg" alt="شعار كلية الصدارة" class="sidebar-logo" style="width: 35px; height: 35px;" onerror="this.src='https://placehold.co/100x100?text=الصدارة'">
+        <a href="/" class="sidebar-brand" style="margin-bottom: 0; gap: 10px;">
+            <img src="assets/logo.jpg" alt="شعار كلية الصدارة" class="sidebar-logo" style="width: 35px; height: 35px;">
             <div class="sidebar-brand-text">
                 <h2 style="font-size: 1rem; margin: 0; font-weight: 800;">كلية الصدارة</h2>
                 <span style="font-size: 0.65rem;">لوحة التحكم الإدارية</span>
@@ -840,16 +31,16 @@
     <div class="glow-orb glow-orb-2"></div>
 
     <div class="dashboard-container">
-        
+
         <!-- ==========================================
            1. Sidebar Area
            ========================================== -->
-        <aside class="sidebar">
-            <button class="sidebar-close-btn" id="sidebar-close-btn" aria-label="إغلاق القائمة"><i class="fas fa-times"></i></button>
+        <aside class="sidebar" id="dashboard-sidebar">
+            <button class="sidebar-close-btn" id="sidebar-close-btn" aria-label="إغلاق القائمة"><i class="fas fa-times"><svg viewBox="0 0 384 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" /></svg></i></button>
             <div>
                 <!-- Brand logo -->
-                <a href="../sadara/index.html" class="sidebar-brand">
-                    <img src="assets/logo.jpg" alt="شعار كلية الصدارة" class="sidebar-logo" onerror="this.src='https://placehold.co/100x100?text=الصدارة'">
+                <a href="/" class="sidebar-brand">
+                    <img src="assets/logo.jpg" alt="شعار كلية الصدارة" class="sidebar-logo">
                     <div class="sidebar-brand-text">
                         <h2>كلية الصدارة</h2>
                         <span>لوحة التحكم الإدارية</span>
@@ -859,43 +50,43 @@
                 <!-- Navigation menu -->
                 <nav class="sidebar-menu">
                     <a href="#" class="sidebar-link active" data-tab="stats-tab">
-                        <i class="fas fa-chart-pie"></i>
+                        <i class="fas fa-chart-pie"><svg viewBox="0 0 576 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M304 240V16.6c0-9 7-16.6 16-16.6C443.7 0 544 100.3 544 224c0 9-7.6 16-16.6 16H304zM32 272C32 150.7 122.1 50.3 239 34.3c9.2-1.3 17 6.1 17 15.4V288L412.5 444.5c6.7 6.7 6.2 17.7-1.5 23.1C371.8 495.6 323.8 512 272 512C139.5 512 32 404.6 32 272zm526.4 16c9.3 0 16.6 7.8 15.4 17c-7.7 55.9-34.6 105.6-73.9 142.3c-6 5.6-15.4 5.2-21.2-.7L320 288H558.4z" /></svg></i>
                         <span>لوحة الإحصائيات</span>
                     </a>
                     <a href="#" class="sidebar-link" id="btn-show-settings" data-tab="settings-tab">
-                        <i class="fas fa-cog"></i>
+                        <i class="fas fa-cog"><svg viewBox="0 0 512 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z" /></svg></i>
                         <span>إدارة الصفحة الرئيسية</span>
                     </a>
                     <a href="#" class="sidebar-link" id="btn-show-add-modal">
-                        <i class="fas fa-user-plus"></i>
+                        <i class="fas fa-user-plus"><svg viewBox="0 0 640 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" /></svg></i>
                         <span>تسجيل طالب جديد</span>
                     </a>
                     <a href="#" class="sidebar-link" data-tab="depts-tab" id="btn-show-depts">
-                        <i class="fas fa-graduation-cap"></i>
+                        <i class="fas fa-graduation-cap"><svg viewBox="0 0 640 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9v28.1c0 28.4-10.8 57.7-22.3 80.8c-6.5 13-13.9 25.8-22.5 37.6C0 442.7-.9 448.3 .9 453.4s6 8.9 11.2 10.2l64 16c4.2 1.1 8.7 .3 12.4-2s6.3-6.1 7.1-10.4c8.6-42.8 4.3-81.2-2.1-108.7C90.3 344.3 86 329.8 80 316.5V291.9c0-30.2 10.2-58.7 27.9-81.5c12.9-15.5 29.6-28 49.2-35.7l157-61.7c8.2-3.2 17.5 .8 20.7 9s-.8 17.5-9 20.7l-157 61.7c-12.4 4.9-23.3 12.4-32.2 21.6l159.6 57.6c7.6 2.7 15.6 4.1 23.7 4.1s16.1-1.4 23.7-4.1L624.2 182.6c9.5-3.4 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 408c0 35.3 86 72 192 72s192-36.7 192-72L496.7 262.6 354.5 314c-11.1 4-22.8 6-34.5 6s-23.5-2-34.5-6L143.3 262.6 128 408z" /></svg></i>
                         <span>إدارة التخصصات</span>
                     </a>
                     <a href="#" class="sidebar-link" data-tab="labs-tab" id="btn-show-labs">
-                        <i class="fas fa-microscope"></i>
+                        <i class="fas fa-microscope"><svg viewBox="0 0 512 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M160 32c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32c17.7 0 32 14.3 32 32V288c0 17.7-14.3 32-32 32c0 17.7-14.3 32-32 32H192c-17.7 0-32-14.3-32-32c-17.7 0-32-14.3-32-32V64c0-17.7 14.3-32 32-32zM32 448H320c70.7 0 128-57.3 128-128s-57.3-128-128-128V128c106 0 192 86 192 192c0 49.2-18.5 94-48.9 128H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H320 32c-17.7 0-32-14.3-32-32s14.3-32 32-32zm80-64H304c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16z" /></svg></i>
                         <span>إدارة المعامل</span>
                     </a>
                     <a href="#" class="sidebar-link" data-tab="fees-tab" id="btn-show-fees">
-                        <i class="fas fa-hand-holding-usd"></i>
+                        <i class="fas fa-hand-holding-usd"><svg viewBox="0 0 576 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M312 24V34.5c6.4 1.2 12.6 2.7 18.2 4.2c12.8 3.4 20.4 16.6 17 29.4s-16.6 20.4-29.4 17c-10.9-2.9-21.1-4.9-30.2-5c-7.3-.1-14.7 1.7-19.4 4.4c-2.1 1.3-3.1 2.4-3.5 3c-.3 .5-.7 1.2-.7 2.8c0 .3 0 .5 0 .6c.2 .2 .9 1.2 3.3 2.6c5.8 3.5 14.4 6.2 27.4 10.1l.9 .3 0 0c11.1 3.3 25.9 7.8 37.9 15.3c13.7 8.6 26.1 22.9 26.4 44.9c.3 22.5-11.4 38.9-26.7 48.5c-6.7 4.1-13.9 7-21.3 8.8V232c0 13.3-10.7 24-24 24s-24-10.7-24-24V220.6c-9.5-2.3-18.2-5.3-25.6-7.8c-2.1-.7-4.1-1.4-6-2c-12.6-4.2-19.4-17.8-15.2-30.4s17.8-19.4 30.4-15.2c2.6 .9 5 1.7 7.3 2.5c13.6 4.6 23.4 7.9 33.9 8.3c8 .3 15.1-1.6 19.2-4.1c1.9-1.2 2.8-2.2 3.2-2.9c.4-.6 .9-1.8 .8-4.1l0-.2c0-1 0-2.1-4-4.6c-5.7-3.6-14.3-6.4-27.1-10.3l-1.9-.6c-10.8-3.2-25-7.5-36.4-14.4c-13.5-8.1-26.5-22-26.6-44.1c-.1-22.9 12.9-38.6 27.7-47.4c6.4-3.8 13.3-6.4 20.2-8.2V24c0-13.3 10.7-24 24-24s24 10.7 24 24zM568.2 336.3c13.1 17.8 9.3 42.8-8.5 55.9L433.1 485.5c-23.4 17.2-51.6 26.5-80.7 26.5H192 32c-17.7 0-32-14.3-32-32V416c0-17.7 14.3-32 32-32H68.8l44.9-36c22.7-18.2 50.9-28 80-28H272h16 64c17.7 0 32 14.3 32 32s-14.3 32-32 32H288 272c-8.8 0-16 7.2-16 16s7.2 16 16 16H392.6l119.7-88.2c17.8-13.1 42.8-9.3 55.9 8.5zM193.6 384l0 0-.9 0c.3 0 .6 0 .9 0z" /></svg></i>
                         <span>إدارة الرسوم الدراسية</span>
                     </a>
                     <a href="#" class="sidebar-link" data-tab="about-tab" id="btn-show-about">
-                        <i class="fas fa-info-circle"></i>
+                        <i class="fas fa-info-circle"><svg viewBox="0 0 512 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" /></svg></i>
                         <span>إدارة عن الكلية</span>
                     </a>
                     <a href="#" class="sidebar-link" data-tab="contacts-tab" id="btn-show-contacts">
-                        <i class="fas fa-envelope-open-text"></i>
+                        <i class="fas fa-envelope-open-text"><svg viewBox="0 0 512 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M215.4 96H144 107.8 96v8.8V144v40.4 89L.2 202.5c1.6-18.1 10.9-34.9 25.7-45.8L48 140.3V96c0-26.5 21.5-48 48-48h76.6l49.9-36.9C232.2 3.9 243.9 0 256 0s23.8 3.9 33.5 11L339.4 48H416c26.5 0 48 21.5 48 48v44.3l22.1 16.4c14.8 10.9 24.1 27.7 25.7 45.8L416 273.4v-89V144 104.8 96H404.2 368 296.6 215.4zM0 448V242.1L217.6 403.3c11.1 8.2 24.6 12.7 38.4 12.7s27.3-4.4 38.4-12.7L512 242.1V448v0c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64v0zM176 160H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16s7.2-16 16-16z" /></svg></i>
                         <span>رسائل تواصل معنا</span>
                     </a>
                     <a href="#" class="sidebar-link" data-tab="applicants-tab" id="btn-show-applicants">
-                        <i class="fas fa-user-graduate"></i>
+                        <i class="fas fa-user-graduate"><svg viewBox="0 0 448 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M219.3 .5c3.1-.6 6.3-.6 9.4 0l200 40C439.9 42.7 448 52.6 448 64s-8.1 21.3-19.3 23.5L352 102.9V160c0 70.7-57.3 128-128 128s-128-57.3-128-128V102.9L48 93.3v65.1l15.7 78.4c.9 4.7-.3 9.6-3.3 13.3s-7.6 5.9-12.4 5.9H16c-4.8 0-9.3-2.1-12.4-5.9s-4.3-8.6-3.3-13.3L16 158.4V86.6C6.5 83.3 0 74.3 0 64C0 52.6 8.1 42.7 19.3 40.5l200-40zM111.9 327.7c10.5-3.4 21.8 .4 29.4 8.5l71 75.5c6.3 6.7 17 6.7 23.3 0l71-75.5c7.6-8.1 18.9-11.9 29.4-8.5C401 348.6 448 409.4 448 481.3c0 17-13.8 30.7-30.7 30.7H30.7C13.8 512 0 498.2 0 481.3c0-71.9 47-132.7 111.9-153.6z" /></svg></i>
                         <span>الطلاب المتقدمين</span>
                     </a>
-                    <a href="../sadara/index.html" class="sidebar-link">
-                        <i class="fas fa-globe"></i>
+                    <a href="/" class="sidebar-link">
+                        <i class="fas fa-globe"><svg viewBox="0 0 512 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M352 256c0 22.2-1.2 43.6-3.3 64H163.3c-2.2-20.4-3.3-41.8-3.3-64s1.2-43.6 3.3-64H348.7c2.2 20.4 3.3 41.8 3.3 64zm28.8-64H503.9c5.3 20.5 8.1 41.9 8.1 64s-2.8 43.5-8.1 64H380.8c2.1-20.6 3.2-42 3.2-64s-1.1-43.4-3.2-64zm112.6-32H376.7c-10-63.9-29.8-117.4-55.3-151.6c78.3 20.7 142 77.5 171.9 151.6zm-149.1 0H167.7c6.1-36.4 15.5-68.6 27-94.7c10.5-23.6 22.2-40.7 33.5-51.5C239.4 3.2 248.7 0 256 0s16.6 3.2 27.8 13.8c11.3 10.8 23 27.9 33.5 51.5c11.6 26 20.9 58.2 27 94.7zm-209 0H18.6C48.6 85.9 112.2 29.1 190.6 8.4C165.1 42.6 145.3 96.1 135.3 160zM8.1 192H131.2c-2.1 20.6-3.2 42-3.2 64s1.1 43.4 3.2 64H8.1C2.8 299.5 0 278.1 0 256s2.8-43.5 8.1-64zM194.7 446.6c-11.6-26-20.9-58.2-27-94.6H344.3c-6.1 36.4-15.5 68.6-27 94.6c-10.5 23.6-22.2 40.7-33.5 51.5C272.6 508.8 263.3 512 256 512s-16.6-3.2-27.8-13.8c-11.3-10.8-23-27.9-33.5-51.5zM135.3 352c10 63.9 29.8 117.4 55.3 151.6C112.2 482.9 48.6 426.1 18.6 352H135.3zm358.1 0c-30 74.1-93.6 130.9-171.9 151.6c25.5-34.2 45.2-87.7 55.3-151.6H493.4z" /></svg></i>
                         <span>عرض الموقع الرئيسي</span>
                     </a>
                 </nav>
@@ -903,11 +94,12 @@
 
             <!-- Profile and settings footer -->
             <div class="sidebar-footer">
+                <button type="button" class="btn btn-secondary" id="btn-logout" style="width:100%;margin-bottom:12px">تسجيل الخروج</button>
                 <div class="admin-profile">
-                    <img src="assets/images/file.png" alt="مدير النظام" class="admin-avatar" onerror="this.src='https://placehold.co/100x100?text=Admin'">
+                    <img src="assets/images/file.png" alt="مدير النظام" class="admin-avatar">
                     <div class="admin-info">
-                        <h4>أ.د. فيصل عائض</h4>
-                        <p>عميد الكلية / المدير العام</p>
+                        <h4>إدارة الكلية</h4>
+                        <p>حساب الإدارة</p>
                     </div>
                 </div>
             </div>
@@ -922,67 +114,68 @@
                 <!-- Dashboard Welcome Header -->
                 <header class="main-header-dashboard">
                     <div class="welcome-section">
-                        <h1 id="dashboard-welcome-title">مرحباً بك، أ.د. فيصل عائض</h1>
+                        <span class="dashboard-eyebrow">مساحة الإدارة</span>
+                        <h1 id="dashboard-welcome-title">مرحباً بك في الصدارة</h1>
                     <p>إليك نظرة شاملة على مستجدات وأداء كلية الصدارة اليوم.</p>
                 </div>
-                
+
                 <div class="header-controls">
                     <!-- Polished Theme Switcher -->
                     <div class="theme-switch-wrapper" style="margin-left: 0;">
-                        <label class="theme-toggle-label" id="theme-toggle" aria-label="تبديل الثيم">
-                            <i class="fas fa-sun" style="opacity: 0.8;"></i>
-                            <i class="fas fa-moon" style="opacity: 0.8;"></i>
+                        <button type="button" class="theme-toggle-label" id="theme-toggle" aria-label="تبديل المظهر">
+                            <i class="fas fa-sun" style="opacity: 0.8;"><svg viewBox="0 0 512 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M361.5 1.2c5 2.1 8.6 6.6 9.6 11.9L391 121l107.9 19.8c5.3 1 9.8 4.6 11.9 9.6s1.5 10.7-1.6 15.2L446.9 256l62.3 90.3c3.1 4.5 3.7 10.2 1.6 15.2s-6.6 8.6-11.9 9.6L391 391 371.1 498.9c-1 5.3-4.6 9.8-9.6 11.9s-10.7 1.5-15.2-1.6L256 446.9l-90.3 62.3c-4.5 3.1-10.2 3.7-15.2 1.6s-8.6-6.6-9.6-11.9L121 391 13.1 371.1c-5.3-1-9.8-4.6-11.9-9.6s-1.5-10.7 1.6-15.2L65.1 256 2.8 165.7c-3.1-4.5-3.7-10.2-1.6-15.2s6.6-8.6 11.9-9.6L121 121 140.9 13.1c1-5.3 4.6-9.8 9.6-11.9s10.7-1.5 15.2 1.6L256 65.1 346.3 2.8c4.5-3.1 10.2-3.7 15.2-1.6zM160 256a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zm224 0a128 128 0 1 0 -256 0 128 128 0 1 0 256 0z" /></svg></i>
+                            <i class="fas fa-moon" style="opacity: 0.8;"><svg viewBox="0 0 384 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z" /></svg></i>
                             <span class="theme-toggle-ball"></span>
-                        </label>
+                        </button>
                     </div>
-                    <button class="btn btn-secondary btn-sm" id="btn-quick-add"><i class="fas fa-plus"></i> تسجيل سريع</button>
+                    <button class="btn btn-secondary btn-sm" id="btn-quick-add"><i class="fas fa-plus"><svg viewBox="0 0 448 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" /></svg></i> تسجيل سريع</button>
                 </div>
             </header>
 
             <!-- 3. Metrics Counters Row -->
             <section class="stats-grid-dashboard">
-                
+
                 <!-- Stat Card 1 -->
                 <div class="stat-card-dashboard">
                     <div class="stat-card-info">
-                        <h3 id="stat-total-students">1,248</h3>
+                        <h3 id="stat-total-students">—</h3>
                         <p>الطلاب المقبولين</p>
                     </div>
                     <div class="stat-card-icon-wrapper">
-                        <i class="fas fa-user-graduate"></i>
+                        <i class="fas fa-user-graduate"><svg viewBox="0 0 448 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M219.3 .5c3.1-.6 6.3-.6 9.4 0l200 40C439.9 42.7 448 52.6 448 64s-8.1 21.3-19.3 23.5L352 102.9V160c0 70.7-57.3 128-128 128s-128-57.3-128-128V102.9L48 93.3v65.1l15.7 78.4c.9 4.7-.3 9.6-3.3 13.3s-7.6 5.9-12.4 5.9H16c-4.8 0-9.3-2.1-12.4-5.9s-4.3-8.6-3.3-13.3L16 158.4V86.6C6.5 83.3 0 74.3 0 64C0 52.6 8.1 42.7 19.3 40.5l200-40zM111.9 327.7c10.5-3.4 21.8 .4 29.4 8.5l71 75.5c6.3 6.7 17 6.7 23.3 0l71-75.5c7.6-8.1 18.9-11.9 29.4-8.5C401 348.6 448 409.4 448 481.3c0 17-13.8 30.7-30.7 30.7H30.7C13.8 512 0 498.2 0 481.3c0-71.9 47-132.7 111.9-153.6z" /></svg></i>
                     </div>
                 </div>
 
                 <!-- Stat Card 2 -->
                 <div class="stat-card-dashboard">
                     <div class="stat-card-info">
-                        <h3 id="stat-pending-requests">8</h3>
+                        <h3 id="stat-pending-requests">—</h3>
                         <p>طلبات بانتظار المراجعة</p>
                     </div>
                     <div class="stat-card-icon-wrapper" style="color: var(--secondary); background: rgba(212, 175, 55, 0.08);">
-                        <i class="fas fa-file-medical-alt"></i>
+                        <i class="fas fa-file-medical-alt"><svg viewBox="0 0 384 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0H64zM256 0V128H384L256 0zM160 240c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v48h48c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H224v48c0 8.8-7.2 16-16 16H176c-8.8 0-16-7.2-16-16V352H112c-8.8 0-16-7.2-16-16V304c0-8.8 7.2-16 16-16h48V240z" /></svg></i>
                     </div>
                 </div>
 
                 <!-- Stat Card 3 -->
                 <div class="stat-card-dashboard">
                     <div class="stat-card-info">
-                        <h3>11</h3>
-                        <p>تخصصاً معتمداً</p>
+                        <h3 id="stat-departments">—</h3>
+                        <p>التخصصات المتاحة</p>
                     </div>
                     <div class="stat-card-icon-wrapper">
-                        <i class="fas fa-scroll"></i>
+                        <i class="fas fa-scroll"><svg viewBox="0 0 576 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M0 80v48c0 17.7 14.3 32 32 32H48 96V80c0-26.5-21.5-48-48-48S0 53.5 0 80zM112 32c10 13.4 16 30 16 48V384c0 35.3 28.7 64 64 64s64-28.7 64-64v-5.3c0-32.4 26.3-58.7 58.7-58.7H480V128c0-53-43-96-96-96H112zM464 480c61.9 0 112-50.1 112-112c0-8.8-7.2-16-16-16H314.7c-14.7 0-26.7 11.9-26.7 26.7V384c0 53-43 96-96 96H368h96z" /></svg></i>
                     </div>
                 </div>
 
                 <!-- Stat Card 4 -->
                 <div class="stat-card-dashboard">
                     <div class="stat-card-info">
-                        <h3>42</h3>
-                        <p>عضو هيئة تدريس</p>
+                        <h3 id="stat-total-applicants">—</h3>
+                        <p>إجمالي طلبات التسجيل</p>
                     </div>
                     <div class="stat-card-icon-wrapper" style="color: var(--secondary); background: rgba(212, 175, 55, 0.08);">
-                        <i class="fas fa-chalkboard-teacher"></i>
+                        <i class="fas fa-chalkboard-teacher"><svg viewBox="0 0 640 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M160 64c0-35.3 28.7-64 64-64H576c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H336.8c-11.8-25.5-29.9-47.5-52.4-64H384V320c0-17.7 14.3-32 32-32h64c17.7 0 32 14.3 32 32v32h64V64L224 64v49.1C205.2 102.2 183.3 96 160 96V64zm0 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zM133.3 352h53.3C260.3 352 320 411.7 320 485.3c0 14.7-11.9 26.7-26.7 26.7H26.7C11.9 512 0 500.1 0 485.3C0 411.7 59.7 352 133.3 352z" /></svg></i>
                     </div>
                 </div>
 
@@ -990,110 +183,25 @@
 
             <!-- 4. Interactive Charts Area -->
             <section class="analytics-grid">
-                
+
                 <!-- Registration Stats Chart -->
                 <div class="analytics-card">
                     <div class="analytics-header">
                         <h3>إحصائيات التسجيل الأسبوعية</h3>
-                        <span style="color: var(--text-secondary); font-size: 0.85rem;"><i class="fas fa-calendar-alt"></i> الأيام السبعة الأخيرة</span>
+                        <span style="color: var(--text-secondary); font-size: 0.85rem;"><i class="fas fa-calendar-alt"><svg viewBox="0 0 448 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zm64 80v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm128 0v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H208c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H336zM64 400v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H208zm112 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H336c-8.8 0-16 7.2-16 16z" /></svg></i> الأيام السبعة الأخيرة</span>
                     </div>
-                    
-                    <div class="chart-container">
-                        <!-- SVG Line Chart -->
-                        <svg class="svg-chart" viewBox="0 0 600 220">
-                            <defs>
-                                <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stop-color="var(--primary)" stop-opacity="0.3"></stop>
-                                    <stop offset="100%" stop-color="var(--primary)" stop-opacity="0"></stop>
-                                </linearGradient>
-                            </defs>
-                            <!-- Grid lines -->
-                            <line class="chart-grid-line" x1="50" y1="30" x2="550" y2="30"></line>
-                            <line class="chart-grid-line" x1="50" y1="80" x2="550" y2="80"></line>
-                            <line class="chart-grid-line" x1="50" y1="130" x2="550" y2="130"></line>
-                            <line class="chart-grid-line" x1="50" y1="180" x2="550" y2="180"></line>
 
-                            <!-- Gradient Area path -->
-                            <path class="chart-area" d="M 50,180 Q 130,80 210,120 T 370,50 T 550,60 L 550,180 Z"></path>
-
-                            <!-- Drawing Line -->
-                            <path class="chart-line" d="M 50,180 Q 130,80 210,120 T 370,50 T 550,60"></path>
-
-                            <!-- Points on Chart -->
-                            <circle class="chart-point" cx="50" cy="180" r="6" data-value="12 طالب" data-day="السبت"></circle>
-                            <circle class="chart-point" cx="130" cy="80" r="6" data-value="45 طالب" data-day="الأحد"></circle>
-                            <circle class="chart-point" cx="210" cy="120" r="6" data-value="32 طالب" data-day="الإثنين"></circle>
-                            <circle class="chart-point" cx="290" cy="90" r="6" data-value="38 طالب" data-day="الثلاثاء"></circle>
-                            <circle class="chart-point" cx="370" cy="50" r="6" data-value="52 طالب" data-day="الأربعاء"></circle>
-                            <circle class="chart-point" cx="460" cy="75" r="6" data-value="41 طالب" data-day="الخميس"></circle>
-                            <circle class="chart-point" cx="550" cy="60" r="6" data-value="48 طالب" data-day="الجمعة"></circle>
-
-                            <!-- Labels -->
-                            <text x="50" y="205" fill="var(--text-secondary)" font-size="10" text-anchor="middle">السبت</text>
-                            <text x="130" y="205" fill="var(--text-secondary)" font-size="10" text-anchor="middle">الأحد</text>
-                            <text x="210" y="205" fill="var(--text-secondary)" font-size="10" text-anchor="middle">الإثنين</text>
-                            <text x="290" y="205" fill="var(--text-secondary)" font-size="10" text-anchor="middle">الثلاثاء</text>
-                            <text x="370" y="205" fill="var(--text-secondary)" font-size="10" text-anchor="middle">الأربعاء</text>
-                            <text x="460" y="205" fill="var(--text-secondary)" font-size="10" text-anchor="middle">الخميس</text>
-                            <text x="550" y="205" fill="var(--text-secondary)" font-size="10" text-anchor="middle">الجمعة</text>
-                        </svg>
-                        <div class="chart-tooltip" id="chart-tooltip"></div>
-                    </div>
+                    <div class="chart-container" id="weekly-chart" aria-label="طلبات التسجيل في الأيام السبعة الأخيرة"><p class="empty-state">تظهر الإحصائيات بعد تسجيل الدخول.</p></div>
                 </div>
 
                 <!-- Registration distribution by division -->
                 <div class="analytics-card">
                     <div class="analytics-header">
-                        <h3>توزيع الطلاب حسب الأقسام</h3>
+                        <h3>توزيع الطلبات حسب التخصص</h3>
                     </div>
-                    
-                    <div class="dept-stat-list">
-                        <!-- Stat 1 -->
-                        <div class="dept-stat-item">
-                            <div class="dept-stat-info">
-                                <span class="dept-stat-name">صيدلة ومختبرات طبية</span>
-                                <span class="dept-stat-count">480 طالب</span>
-                            </div>
-                            <div class="dept-stat-bar-bg">
-                                <div class="dept-stat-bar-fill" style="width: 78%; background: var(--gradient-primary);"></div>
-                            </div>
-                        </div>
 
-                        <!-- Stat 2 -->
-                        <div class="dept-stat-item">
-                            <div class="dept-stat-info">
-                                <span class="dept-stat-name">فني أسنان رقمي</span>
-                                <span class="dept-stat-count">350 طالب</span>
-                            </div>
-                            <div class="dept-stat-bar-bg">
-                                <div class="dept-stat-bar-fill" style="width: 62%; background: var(--gradient-gold);"></div>
-                            </div>
-                        </div>
-
-                        <!-- Stat 3 -->
-                        <div class="dept-stat-item">
-                            <div class="dept-stat-info">
-                                <span class="dept-stat-name">تقنية معلومات وبرمجيات</span>
-                                <span class="dept-stat-count">290 طالب</span>
-                            </div>
-                            <div class="dept-stat-bar-bg">
-                                <div class="dept-stat-bar-fill" style="width: 48%; background: var(--gradient-primary);"></div>
-                            </div>
-                        </div>
-
-                        <!-- Stat 4 -->
-                        <div class="dept-stat-item">
-                            <div class="dept-stat-info">
-                                <span class="dept-stat-name">إدارة أعمال وتجارة إلكترونية</span>
-                                <span class="dept-stat-count">128 طالب</span>
-                            </div>
-                            <div class="dept-stat-bar-bg">
-                                <div class="dept-stat-bar-fill" style="width: 25%; background: var(--gradient-gold);"></div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="dept-stat-list" id="department-distribution"><p class="empty-state">تظهر البيانات بعد تسجيل الدخول.</p></div>
                 </div>
-
             </section>
 
             <!-- 5. Latest Application Requests Table -->
@@ -1101,9 +209,9 @@
                 <div class="table-header-area">
                     <div>
                         <h3>طلبات التسجيل الأخيرة</h3>
-                        <p style="color: var(--text-secondary); margin: 5px 0 0; font-size: 0.85rem;">طلبات تسجيل معلقة واردة من نموذج الموقع بحاجة إلى تدقيق.</p>
+                        <p style="color: var(--text-secondary); margin: 5px 0 0; font-size: 0.85rem;">أحدث الطلبات الواردة من الموقع، مع متابعة حالة كل طلب.</p>
                     </div>
-                    <button class="btn btn-primary btn-sm" id="btn-add-student"><i class="fas fa-plus"></i> إضافة طالب جديد</button>
+                    <button class="btn btn-primary btn-sm" id="btn-add-student"><i class="fas fa-plus"><svg viewBox="0 0 448 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" /></svg></i> إضافة طالب جديد</button>
                 </div>
 
                 <div class="table-responsive">
@@ -1118,112 +226,7 @@
                                 <th>الإجراءات الإدارية</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <!-- Request Row 1 -->
-                            <tr class="table-row-animate" id="row-1">
-                                <td style="font-weight: bold; color: var(--primary);">خالد عبد الوهاب المرادي</td>
-                                <td>صيدلة</td>
-                                <td>89.5%</td>
-                                <td>+967 771 234 567</td>
-                                <td>
-                                    <span class="badge-status status-pending">
-                                        <i class="fas fa-spinner fa-spin"></i> قيد المراجعة
-                                    </span>
-                                </td>
-                                <td>
-                                    <button class="row-action-btn btn-approve" onclick="manageRequest(1, 'approve', 'خالد عبد الوهاب المرادي')" title="قبول الطلب">
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                                    <button class="row-action-btn btn-reject" onclick="manageRequest(1, 'reject', 'خالد عبد الوهاب المرادي')" title="رفض الطلب">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Request Row 2 -->
-                            <tr class="table-row-animate" id="row-2">
-                                <td style="font-weight: bold; color: var(--primary);">هدى أحمد الشرفي</td>
-                                <td>تقنية معلومات (IT)</td>
-                                <td>94.2%</td>
-                                <td>+967 775 987 654</td>
-                                <td>
-                                    <span class="badge-status status-pending">
-                                        <i class="fas fa-spinner fa-spin"></i> قيد المراجعة
-                                    </span>
-                                </td>
-                                <td>
-                                    <button class="row-action-btn btn-approve" onclick="manageRequest(2, 'approve', 'هدى أحمد الشرفي')" title="قبول الطلب">
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                                    <button class="row-action-btn btn-reject" onclick="manageRequest(2, 'reject', 'هدى أحمد الشرفي')" title="رفض الطلب">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Request Row 3 -->
-                            <tr class="table-row-animate" id="row-3">
-                                <td style="font-weight: bold; color: var(--primary);">علي يحيى الذماري</td>
-                                <td>فني أسنان</td>
-                                <td>81.0%</td>
-                                <td>+967 773 456 789</td>
-                                <td>
-                                    <span class="badge-status status-pending">
-                                        <i class="fas fa-spinner fa-spin"></i> قيد المراجعة
-                                    </span>
-                                </td>
-                                <td>
-                                    <button class="row-action-btn btn-approve" onclick="manageRequest(3, 'approve', 'علي يحيى الذماري')" title="قبول الطلب">
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                                    <button class="row-action-btn btn-reject" onclick="manageRequest(3, 'reject', 'علي يحيى الذماري')" title="رفض الطلب">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Request Row 4 -->
-                            <tr class="table-row-animate" id="row-4">
-                                <td style="font-weight: bold; color: var(--primary);">بلقيس صالح المطري</td>
-                                <td>قبالة وتوليد</td>
-                                <td>88.4%</td>
-                                <td>+967 770 111 222</td>
-                                <td>
-                                    <span class="badge-status status-pending">
-                                        <i class="fas fa-spinner fa-spin"></i> قيد المراجعة
-                                    </span>
-                                </td>
-                                <td>
-                                    <button class="row-action-btn btn-approve" onclick="manageRequest(4, 'approve', 'بلقيس صالح المطري')" title="قبول الطلب">
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                                    <button class="row-action-btn btn-reject" onclick="manageRequest(4, 'reject', 'بلقيس صالح المطري')" title="رفض الطلب">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Request Row 5 -->
-                            <tr class="table-row-animate" id="row-5">
-                                <td style="font-weight: bold; color: var(--primary);">مازن محمد الخولاني</td>
-                                <td>مساعد طبي</td>
-                                <td>85.7%</td>
-                                <td>+967 777 999 888</td>
-                                <td>
-                                    <span class="badge-status status-pending">
-                                        <i class="fas fa-spinner fa-spin"></i> قيد المراجعة
-                                    </span>
-                                </td>
-                                <td>
-                                    <button class="row-action-btn btn-approve" onclick="manageRequest(5, 'approve', 'مازن محمد الخولاني')" title="قبول الطلب">
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                                    <button class="row-action-btn btn-reject" onclick="manageRequest(5, 'reject', 'مازن محمد الخولاني')" title="رفض الطلب">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody><tr><td colspan="6" class="empty-state">سجّل الدخول لعرض طلبات التسجيل.</td></tr></tbody>
                     </table>
                 </div>
             </section>
@@ -1242,10 +245,10 @@
 
                 <form id="settings-form" class="glass" style="padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); margin-top: 20px;">
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
-                        
+
                         <!-- Col 1: Contacts & Socials -->
                         <div class="settings-section" style="background: var(--bg-body); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); text-align: right;">
-                            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;"><i class="fas fa-address-book"></i> شريط الاتصال العلوي والشبكات</h3>
+                            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;"><i class="fas fa-address-book"><svg viewBox="0 0 512 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M96 0C60.7 0 32 28.7 32 64V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H96zM208 288h64c44.2 0 80 35.8 80 80c0 8.8-7.2 16-16 16H144c-8.8 0-16-7.2-16-16c0-44.2 35.8-80 80-80zm-32-96a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM512 80c0-8.8-7.2-16-16-16s-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V80zM496 192c-8.8 0-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm16 144c0-8.8-7.2-16-16-16s-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V336z" /></svg></i> شريط الاتصال العلوي والشبكات</h3>
                             <div class="form-group" style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 5px;">رقم الهاتف</label>
                                 <input type="text" id="setting-top-phone" class="form-control">
@@ -1275,10 +278,10 @@
                                 <input type="text" id="setting-social-yt" class="form-control">
                             </div>
                         </div>
-                        
+
                         <!-- Col 2: Hero Section Settings -->
                         <div class="settings-section" style="background: var(--bg-body); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); text-align: right;">
-                            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;"><i class="fas fa-graduation-cap"></i> قسم الترحيب الرئيسي والعداد</h3>
+                            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;"><i class="fas fa-graduation-cap"><svg viewBox="0 0 640 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9v28.1c0 28.4-10.8 57.7-22.3 80.8c-6.5 13-13.9 25.8-22.5 37.6C0 442.7-.9 448.3 .9 453.4s6 8.9 11.2 10.2l64 16c4.2 1.1 8.7 .3 12.4-2s6.3-6.1 7.1-10.4c8.6-42.8 4.3-81.2-2.1-108.7C90.3 344.3 86 329.8 80 316.5V291.9c0-30.2 10.2-58.7 27.9-81.5c12.9-15.5 29.6-28 49.2-35.7l157-61.7c8.2-3.2 17.5 .8 20.7 9s-.8 17.5-9 20.7l-157 61.7c-12.4 4.9-23.3 12.4-32.2 21.6l159.6 57.6c7.6 2.7 15.6 4.1 23.7 4.1s16.1-1.4 23.7-4.1L624.2 182.6c9.5-3.4 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 408c0 35.3 86 72 192 72s192-36.7 192-72L496.7 262.6 354.5 314c-11.1 4-22.8 6-34.5 6s-23.5-2-34.5-6L143.3 262.6 128 408z" /></svg></i> قسم الترحيب الرئيسي والعداد</h3>
                             <div class="form-group" style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 5px;">العبارة الترحيبية (Badge)</label>
                                 <input type="text" id="setting-hero-tag" class="form-control">
@@ -1303,7 +306,7 @@
 
                         <!-- Col 3: Statistics Counters -->
                         <div class="settings-section" style="background: var(--bg-body); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); text-align: right;">
-                            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;"><i class="fas fa-chart-bar"></i> إحصائيات الصفحة الرئيسية</h3>
+                            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;"><i class="fas fa-chart-bar"><svg viewBox="0 0 512 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M32 32c17.7 0 32 14.3 32 32V400c0 8.8 7.2 16 16 16H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H80c-44.2 0-80-35.8-80-80V64C0 46.3 14.3 32 32 32zm96 96c0-17.7 14.3-32 32-32l192 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-192 0c-17.7 0-32-14.3-32-32zm32 64H288c17.7 0 32 14.3 32 32s-14.3 32-32 32H160c-17.7 0-32-14.3-32-32s14.3-32 32-32zm0 96H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H160c-17.7 0-32-14.3-32-32s14.3-32 32-32z" /></svg></i> إحصائيات الصفحة الرئيسية</h3>
                             <div class="form-group" style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 5px;">عدد الطلاب والخريجين</label>
                                 <input type="number" id="setting-stat-students" class="form-control">
@@ -1325,7 +328,7 @@
                     </div>
 
                     <div style="margin-top: 30px; display: flex; gap: 15px; justify-content: flex-end;">
-                        <button type="submit" class="btn btn-primary" style="padding: 10px 30px;">حفظ الإعدادات والتحديث فوراً <i class="fas fa-save"></i></button>
+                        <button type="submit" class="btn btn-primary" style="padding: 10px 30px;">حفظ الإعدادات والتحديث فوراً <i class="fas fa-save"><svg viewBox="0 0 448 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V173.3c0-17-6.7-33.3-18.7-45.3L352 50.7C340 38.7 323.7 32 306.7 32H64zm0 96c0-17.7 14.3-32 32-32H288c17.7 0 32 14.3 32 32v64c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V128zM224 288a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" /></svg></i></button>
                         <button type="button" id="btn-cancel-settings" class="btn btn-secondary" style="padding: 10px 30px;">إلغاء</button>
                     </div>
                 </form>
@@ -1340,7 +343,7 @@
                         <p>إضافة، تعديل، وحذف التخصصات ومساقاتها ومجالات عملها التي تظهر في الموقع الرئيسي.</p>
                     </div>
                     <div class="header-controls">
-                        <button class="btn btn-primary" id="btn-add-dept"><i class="fas fa-plus-circle"></i> إضافة تخصص جديد</button>
+                        <button class="btn btn-primary" id="btn-add-dept"><i class="fas fa-plus-circle"><svg viewBox="0 0 512 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" /></svg></i> إضافة تخصص جديد</button>
                     </div>
                 </header>
 
@@ -1375,7 +378,7 @@
                         <p>إضافة، تعديل، وحذف المعامل والمختبرات ومواصفاتها وتجهيزاتها التي تظهر في صفحة المعامل والبيئة.</p>
                     </div>
                     <div class="header-controls">
-                        <button class="btn btn-primary" id="btn-add-lab"><i class="fas fa-plus-circle"></i> إضافة معمل جديد</button>
+                        <button class="btn btn-primary" id="btn-add-lab"><i class="fas fa-plus-circle"><svg viewBox="0 0 512 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" /></svg></i> إضافة معمل جديد</button>
                     </div>
                 </header>
 
@@ -1409,7 +412,7 @@
                         <p>إضافة، تعديل، وحذف الرسوم وتفاصيل الأقساط للتخصصات والبرامج الدراسية المختلفة المتاحة بالكلية.</p>
                     </div>
                     <div class="header-controls">
-                        <button class="btn btn-primary" id="btn-add-fee"><i class="fas fa-plus-circle"></i> إضافة رسوم جديدة</button>
+                        <button class="btn btn-primary" id="btn-add-fee"><i class="fas fa-plus-circle"><svg viewBox="0 0 512 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" /></svg></i> إضافة رسوم جديدة</button>
                     </div>
                 </header>
 
@@ -1447,16 +450,16 @@
 
                 <form id="about-form" class="glass" style="padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); margin-top: 20px;">
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
-                        
+
                         <!-- Col 1: Who We Are & Images -->
                         <div class="settings-section" style="background: var(--bg-body); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); text-align: right;">
-                            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;"><i class="fas fa-info-circle"></i> قسم من نحن؟ والصورة التعريفية</h3>
-                            
+                            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;"><i class="fas fa-info-circle"><svg viewBox="0 0 512 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" /></svg></i> قسم من نحن؟ والصورة التعريفية</h3>
+
                             <div class="form-group" style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: bold;">من نحن (الفقرة الأولى)</label>
                                 <textarea id="about-us-p1-input" class="form-control" rows="4" required style="resize: vertical;"></textarea>
                             </div>
-                            
+
                             <div class="form-group" style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: bold;">من نحن (الفقرة الثانية)</label>
                                 <textarea id="about-us-p2-input" class="form-control" rows="4" required style="resize: vertical;"></textarea>
@@ -1464,7 +467,7 @@
 
                             <div class="form-group" style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: bold;">الصورة التوضيحية للكلية</label>
-                                <input type="file" id="about-image-file" class="form-control" accept="image/*" style="padding: 5px; background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color);">
+                                <input type="file" id="about-image-file" class="form-control" accept="image/png,image/jpeg,image/gif,image/webp" style="padding: 5px; background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color);">
                                 <input type="hidden" id="about-image-url">
                                 <div id="about-image-preview-wrap" style="margin-top: 10px; display: none;">
                                     <img id="about-image-preview" src="" style="height: 60px; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.05); padding: 2px;">
@@ -1475,13 +478,13 @@
 
                         <!-- Col 2: Vision, Mission & Goals -->
                         <div class="settings-section" style="background: var(--bg-body); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); text-align: right;">
-                            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;"><i class="fas fa-bullseye"></i> الرؤية والرسالة والأهداف</h3>
-                            
+                            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;"><i class="fas fa-bullseye"><svg viewBox="0 0 512 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M448 256A192 192 0 1 0 64 256a192 192 0 1 0 384 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm256 80a80 80 0 1 0 0-160 80 80 0 1 0 0 160zm0-224a144 144 0 1 1 0 288 144 144 0 1 1 0-288zM224 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" /></svg></i> الرؤية والرسالة والأهداف</h3>
+
                             <div class="form-group" style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: bold;">رؤيتنا</label>
                                 <textarea id="about-vision-input" class="form-control" rows="4" required style="resize: vertical;"></textarea>
                             </div>
-                            
+
                             <div class="form-group" style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: bold;">رسالتنا</label>
                                 <textarea id="about-mission-input" class="form-control" rows="4" required style="resize: vertical;"></textarea>
@@ -1495,8 +498,8 @@
 
                         <!-- Col 3: Dean Message -->
                         <div class="settings-section" style="background: var(--bg-body); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); text-align: right;">
-                            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;"><i class="fas fa-user-tie"></i> كلمة العميد والعمادة</h3>
-                            
+                            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;"><i class="fas fa-user-tie"><svg viewBox="0 0 448 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M224 256A128 128 0 1 1 224 0a128 128 0 1 1 0 256zM209.1 359.2l-18.6-31c-6.4-10.7 1.3-24.2 13.7-24.2H224h19.7c12.4 0 20.1 13.6 13.7 24.2l-18.6 31 33.4 123.9 36-146.9c2-8.1 9.8-13.4 17.9-11.3c70.1 17.6 121.9 81 121.9 156.4c0 17-13.8 30.7-30.7 30.7H285.5c-2.1 0-4-.4-5.8-1.1l.3 1.1H168l.3-1.1c-1.8 .7-3.8 1.1-5.8 1.1H30.7C13.8 512 0 498.2 0 481.3c0-75.5 51.9-138.9 121.9-156.4c8.1-2 15.9 3.3 17.9 11.3l36 146.9 33.4-123.9z" /></svg></i> كلمة العميد والعمادة</h3>
+
                             <div class="form-group" style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: bold;">اسم عميد الكلية</label>
                                 <input type="text" id="dean-name-input" class="form-control" required>
@@ -1509,7 +512,7 @@
 
                             <div class="form-group" style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: bold;">صورة العميد</label>
-                                <input type="file" id="dean-avatar-file" class="form-control" accept="image/*" style="padding: 5px; background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color);">
+                                <input type="file" id="dean-avatar-file" class="form-control" accept="image/png,image/jpeg,image/gif,image/webp" style="padding: 5px; background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color);">
                                 <input type="hidden" id="dean-avatar-url">
                                 <div id="dean-avatar-preview-wrap" style="margin-top: 10px; display: none;">
                                     <img id="dean-avatar-preview" src="" style="height: 60px; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.05); padding: 2px;">
@@ -1531,7 +534,7 @@
                     </div>
 
                     <div style="margin-top: 30px; display: flex; gap: 15px; justify-content: flex-end;">
-                        <button type="submit" class="btn btn-primary" style="padding: 10px 30px;">حفظ البيانات والتحديث فوراً <i class="fas fa-save"></i></button>
+                        <button type="submit" class="btn btn-primary" style="padding: 10px 30px;">حفظ البيانات والتحديث فوراً <i class="fas fa-save"><svg viewBox="0 0 448 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V173.3c0-17-6.7-33.3-18.7-45.3L352 50.7C340 38.7 323.7 32 306.7 32H64zm0 96c0-17.7 14.3-32 32-32H288c17.7 0 32 14.3 32 32v64c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V128zM224 288a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" /></svg></i></button>
                         <button type="button" id="btn-cancel-about" class="btn btn-secondary" style="padding: 10px 30px;">إلغاء</button>
                     </div>
                 </form>
@@ -1547,7 +550,7 @@
                         <p>عرض وإدارة جميع الرسائل والاستفسارات التي أرسلها الزوار عبر نموذج "تواصل معنا" بالموقع الرئيسي.</p>
                     </div>
                     <div class="header-controls">
-                        <span id="contacts-unread-count" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: bold;"><i class="fas fa-envelope"></i> 0 رسالة جديدة</span>
+                        <span id="contacts-unread-count" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: bold;"><i class="fas fa-envelope"><svg viewBox="0 0 512 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z" /></svg></i> 0 رسالة جديدة</span>
                     </div>
                 </header>
 
@@ -1583,28 +586,28 @@
                         <p>عرض جميع طلبات التسجيل والالتحاق بالكلية، مع إمكانية القبول أو الرفض وحذف الطلبات.</p>
                     </div>
                     <div class="header-controls">
-                        <button class="btn btn-primary" id="btn-add-applicant-from-tab"><i class="fas fa-plus-circle"></i> إضافة طالب جديد</button>
+                        <button class="btn btn-primary" id="btn-add-applicant-from-tab"><i class="fas fa-plus-circle"><svg viewBox="0 0 512 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" /></svg></i> إضافة طالب جديد</button>
                     </div>
                 </header>
 
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px;">
                     <div class="glass" style="padding: 18px; border-radius: 14px; text-align: center; border: 1px solid var(--border-color);">
-                        <i class="fas fa-users" style="font-size: 1.5rem; color: var(--primary); margin-bottom: 8px;"></i>
+                        <i class="fas fa-users" style="font-size: 1.5rem; color: var(--primary); margin-bottom: 8px;"><svg viewBox="0 0 640 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M144 0a80 80 0 1 1 0 160A80 80 0 1 1 144 0zM512 0a80 80 0 1 1 0 160A80 80 0 1 1 512 0zM0 298.7C0 239.8 47.8 192 106.7 192h42.7c15.9 0 31 3.5 44.6 9.7c-1.3 7.2-1.9 14.7-1.9 22.3c0 38.2 16.8 72.5 43.3 96c-.2 0-.4 0-.7 0H21.3C9.6 320 0 310.4 0 298.7zM405.3 320c-.2 0-.4 0-.7 0c26.6-23.5 43.3-57.8 43.3-96c0-7.6-.7-15-1.9-22.3c13.6-6.3 28.7-9.7 44.6-9.7h42.7C592.2 192 640 239.8 640 298.7c0 11.8-9.6 21.3-21.3 21.3H405.3zM224 224a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zM128 485.3C128 411.7 187.7 352 261.3 352H378.7C452.3 352 512 411.7 512 485.3c0 14.7-11.9 26.7-26.7 26.7H154.7c-14.7 0-26.7-11.9-26.7-26.7z" /></svg></i>
                         <div id="app-stat-total" style="font-size: 1.8rem; font-weight: bold; color: var(--text-primary);">0</div>
                         <div style="font-size: 0.8rem; color: var(--text-muted);">إجمالي الطلبات</div>
                     </div>
                     <div class="glass" style="padding: 18px; border-radius: 14px; text-align: center; border: 1px solid var(--border-color);">
-                        <i class="fas fa-hourglass-half" style="font-size: 1.5rem; color: #f39c12; margin-bottom: 8px;"></i>
+                        <i class="fas fa-hourglass-half" style="font-size: 1.5rem; color: #f39c12; margin-bottom: 8px;"><svg viewBox="0 0 384 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M32 0C14.3 0 0 14.3 0 32S14.3 64 32 64V75c0 42.4 16.9 83.1 46.9 113.1L146.7 256 78.9 323.9C48.9 353.9 32 394.6 32 437v11c-17.7 0-32 14.3-32 32s14.3 32 32 32H64 320h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V437c0-42.4-16.9-83.1-46.9-113.1L237.3 256l67.9-67.9c30-30 46.9-70.7 46.9-113.1V64c17.7 0 32-14.3 32-32s-14.3-32-32-32H320 64 32zM96 75V64H288V75c0 19-5.6 37.4-16 53H112c-10.3-15.6-16-34-16-53zm16 309c3.5-5.3 7.6-10.3 12.1-14.9L192 301.3l67.9 67.9c4.6 4.6 8.6 9.6 12.1 14.9H112z" /></svg></i>
                         <div id="app-stat-pending" style="font-size: 1.8rem; font-weight: bold; color: #f39c12;">0</div>
                         <div style="font-size: 0.8rem; color: var(--text-muted);">قيد المراجعة</div>
                     </div>
                     <div class="glass" style="padding: 18px; border-radius: 14px; text-align: center; border: 1px solid var(--border-color);">
-                        <i class="fas fa-check-circle" style="font-size: 1.5rem; color: #2ecc71; margin-bottom: 8px;"></i>
+                        <i class="fas fa-check-circle" style="font-size: 1.5rem; color: #2ecc71; margin-bottom: 8px;"><svg viewBox="0 0 512 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z" /></svg></i>
                         <div id="app-stat-approved" style="font-size: 1.8rem; font-weight: bold; color: #2ecc71;">0</div>
                         <div style="font-size: 0.8rem; color: var(--text-muted);">تم القبول</div>
                     </div>
                     <div class="glass" style="padding: 18px; border-radius: 14px; text-align: center; border: 1px solid var(--border-color);">
-                        <i class="fas fa-times-circle" style="font-size: 1.5rem; color: #ff4c4c; margin-bottom: 8px;"></i>
+                        <i class="fas fa-times-circle" style="font-size: 1.5rem; color: #ff4c4c; margin-bottom: 8px;"><svg viewBox="0 0 512 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z" /></svg></i>
                         <div id="app-stat-rejected" style="font-size: 1.8rem; font-weight: bold; color: #ff4c4c;">0</div>
                         <div style="font-size: 0.8rem; color: var(--text-muted);">تم الرفض</div>
                     </div>
@@ -1644,11 +647,16 @@
                 <h3>إضافة وتسجيل طالب جديد</h3>
                 <button class="modal-close" id="modal-close-btn">&times;</button>
             </div>
-            
+
             <form id="add-student-form">
                 <div class="form-group">
                     <label for="student-name">اسم الطالب كاملاً</label>
                     <input type="text" id="student-name" class="form-control" placeholder="مثال: أحمد عبد الله اليماني" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="student-stream">قسم الثانوية</label>
+                    <select id="student-stream" class="form-control" required><option value="scientific">علمي</option><option value="literary">أدبي</option></select>
                 </div>
 
                 <div class="form-group">
@@ -1690,7 +698,7 @@
                 <h3 id="dept-modal-title">إضافة تخصص جديد</h3>
                 <button class="modal-close" id="dept-modal-close-btn">&times;</button>
             </div>
-            
+
             <form id="dept-form" style="max-height: 75vh; overflow-y: auto; padding: 5px;">
                 <input type="hidden" id="dept-id">
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
@@ -1715,7 +723,7 @@
                     </div>
                     <div class="form-group">
                         <label for="dept-icon-file">أيقونة التخصص (صورة من الجهاز)</label>
-                        <input type="file" id="dept-icon-file" class="form-control" accept="image/*" style="padding: 5px;">
+                        <input type="file" id="dept-icon-file" class="form-control" accept="image/png,image/jpeg,image/gif,image/webp" style="padding: 5px;">
                         <input type="hidden" id="dept-icon">
                         <div id="dept-icon-preview-wrap" style="margin-top: 5px; display: none;">
                             <img id="dept-icon-preview" src="" style="height: 35px; border-radius: 6px; background: rgba(255,255,255,0.1); padding: 2px; vertical-align: middle;">
@@ -1724,7 +732,7 @@
                     </div>
                     <div class="form-group">
                         <label for="dept-image-file">الصورة التوضيحية (من الجهاز)</label>
-                        <input type="file" id="dept-image-file" class="form-control" accept="image/*" style="padding: 5px;">
+                        <input type="file" id="dept-image-file" class="form-control" accept="image/png,image/jpeg,image/gif,image/webp" style="padding: 5px;">
                         <input type="hidden" id="dept-image">
                         <div id="dept-image-preview-wrap" style="margin-top: 5px; display: none;">
                             <img id="dept-image-preview" src="" style="height: 35px; border-radius: 6px; background: rgba(255,255,255,0.1); padding: 2px; vertical-align: middle;">
@@ -1746,8 +754,8 @@
                 <!-- Dynamic Course Inputs -->
                 <div style="margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 15px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h4 style="color: var(--primary); margin: 0;"><i class="fas fa-book"></i> المساقات الدراسية المميزة</h4>
-                        <button type="button" class="btn btn-secondary btn-sm" id="btn-add-course-row" style="padding: 6px 16px; border-radius: 8px; font-size: 0.85rem; cursor: pointer;"><i class="fas fa-plus"></i> إضافة مساق دراسي</button>
+                        <h4 style="color: var(--primary); margin: 0;"><i class="fas fa-book"><svg viewBox="0 0 448 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z" /></svg></i> المساقات الدراسية المميزة</h4>
+                        <button type="button" class="btn btn-secondary btn-sm" id="btn-add-course-row" style="padding: 6px 16px; border-radius: 8px; font-size: 0.85rem; cursor: pointer;"><i class="fas fa-plus"><svg viewBox="0 0 448 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" /></svg></i> إضافة مساق دراسي</button>
                     </div>
 
                     <div id="courses-list-container">
@@ -1763,55 +771,6 @@
         </div>
     </div>
 
-                <div class="form-group" style="margin-top: 15px;">
-                    <label for="dept-description">وصف التخصص</label>
-                    <textarea id="dept-description" class="form-control" rows="3" placeholder="اكتب وصفاً تعريفياً موجزاً للتخصص..." required></textarea>
-                </div>
-
-                <div class="form-group" style="margin-top: 15px;">
-                    <label for="dept-careers">مجالات العمل المستقبلية</label>
-                    <textarea id="dept-careers" class="form-control" rows="2" placeholder="مثال: معامل تصنيع الأسنان الخاصة، المشافي التخصصية للأسنان..." required></textarea>
-                </div>
-
-                <!-- Course Table Inputs inside Modal -->
-                <div style="margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 15px;">
-                    <h4 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-book"></i> المساقات الدراسية المميزة (3 مساقات رئيسية)</h4>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 5px; font-weight: bold; font-size: 0.85rem; color: var(--text-secondary);">
-                        <div>رمز المساق</div>
-                        <div>اسم المساق الدراسي</div>
-                        <div>نوع التدريب</div>
-                    </div>
-
-                    <!-- Course 1 -->
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px;">
-                        <input type="text" id="course-1-code" class="form-control" placeholder="مثال: DT-101" required>
-                        <input type="text" id="course-1-name" class="form-control" placeholder="مثال: تشريح الأسنان" required>
-                        <input type="text" id="course-1-type" class="form-control" placeholder="مثال: نظري + عملي" required>
-                    </div>
-
-                    <!-- Course 2 -->
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px;">
-                        <input type="text" id="course-2-code" class="form-control" placeholder="مثال: DT-203" required>
-                        <input type="text" id="course-2-name" class="form-control" placeholder="مثال: تصميم الأسنان الرقمي" required>
-                        <input type="text" id="course-2-type" class="form-control" placeholder="مثال: عملي تطبيقي" required>
-                    </div>
-
-                    <!-- Course 3 -->
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
-                        <input type="text" id="course-3-code" class="form-control" placeholder="مثال: DT-205" required>
-                        <input type="text" id="course-3-name" class="form-control" placeholder="مثال: صناعة أطقم الخزف" required>
-                        <input type="text" id="course-3-type" class="form-control" placeholder="مثال: تدريب إكلينيكي" required>
-                    </div>
-                </div>
-
-                <div style="display: flex; gap: 15px; margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 15px;">
-                    <button type="submit" class="btn btn-primary" style="flex: 1;">حفظ التخصص</button>
-                    <button type="button" class="btn btn-secondary" id="dept-modal-cancel-btn" style="flex: 1;">إلغاء</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <!-- Add/Edit Lab Modal -->
     <div class="modal-overlay" id="lab-modal">
@@ -1820,7 +779,7 @@
                 <h3 id="lab-modal-title">إضافة معمل جديد</h3>
                 <button class="modal-close" id="lab-modal-close-btn">&times;</button>
             </div>
-            
+
             <form id="lab-form" style="max-height: 75vh; overflow-y: auto; padding: 5px;">
                 <input type="hidden" id="lab-id">
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
@@ -1837,7 +796,7 @@
                     </div>
                     <div class="form-group" style="grid-column: 1 / -1;">
                         <label for="lab-image-file">صورة المعمل التوضيحية (من الجهاز)</label>
-                        <input type="file" id="lab-image-file" class="form-control" accept="image/*" style="padding: 5px;">
+                        <input type="file" id="lab-image-file" class="form-control" accept="image/png,image/jpeg,image/gif,image/webp" style="padding: 5px;">
                         <input type="hidden" id="lab-image">
                         <div id="lab-image-preview-wrap" style="margin-top: 5px; display: none;">
                             <img id="lab-image-preview" src="" style="height: 50px; border-radius: 6px; background: rgba(255,255,255,0.1); padding: 2px; vertical-align: middle;">
@@ -1854,8 +813,8 @@
                 <!-- Dynamic Specs/Tadjihzat Inputs -->
                 <div style="margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 15px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h4 style="color: var(--primary); margin: 0;"><i class="fas fa-tools"></i> التجهيزات والمواصفات المميزة</h4>
-                        <button type="button" class="btn btn-secondary btn-sm" id="btn-add-spec-row" style="padding: 6px 16px; border-radius: 8px; font-size: 0.85rem; cursor: pointer;"><i class="fas fa-plus"></i> إضافة تجهيز/مواصفة</button>
+                        <h4 style="color: var(--primary); margin: 0;"><i class="fas fa-tools"><svg viewBox="0 0 512 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M78.6 5C69.1-2.4 55.6-1.5 47 7L7 47c-8.5 8.5-9.4 22-2.1 31.6l80 104c4.5 5.9 11.6 9.4 19 9.4h54.1l109 109c-14.7 29-10 65.4 14.3 89.6l112 112c12.5 12.5 32.8 12.5 45.3 0l64-64c12.5-12.5 12.5-32.8 0-45.3l-112-112c-24.2-24.2-60.6-29-89.6-14.3l-109-109V104c0-7.5-3.5-14.5-9.4-19L78.6 5zM19.9 396.1C7.2 408.8 0 426.1 0 444.1C0 481.6 30.4 512 67.9 512c18 0 35.3-7.2 48-19.9L233.7 374.3c-7.8-20.9-9-43.6-3.6-65.1l-61.7-61.7L19.9 396.1zM512 144c0-10.5-1.1-20.7-3.2-30.5c-2.4-11.2-16.1-14.1-24.2-6l-63.9 63.9c-3 3-7.1 4.7-11.3 4.7H352c-8.8 0-16-7.2-16-16V102.6c0-4.2 1.7-8.3 4.7-11.3l63.9-63.9c8.1-8.1 5.2-21.8-6-24.2C388.7 1.1 378.5 0 368 0C288.5 0 224 64.5 224 144l0 .8 85.3 85.3c36-9.1 75.8 .5 104 28.7L429 274.5c49-23 83-72.8 83-130.5zM56 432a24 24 0 1 1 48 0 24 24 0 1 1 -48 0z" /></svg></i> التجهيزات والمواصفات المميزة</h4>
+                        <button type="button" class="btn btn-secondary btn-sm" id="btn-add-spec-row" style="padding: 6px 16px; border-radius: 8px; font-size: 0.85rem; cursor: pointer;"><i class="fas fa-plus"><svg viewBox="0 0 448 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" /></svg></i> إضافة تجهيز/مواصفة</button>
                     </div>
 
                     <div id="specs-list-container">
@@ -1878,15 +837,15 @@
                 <h3 id="fee-modal-title">إضافة رسوم تخصص جديدة</h3>
                 <button class="modal-close" id="fee-modal-close-btn">&times;</button>
             </div>
-            
+
             <form id="fee-form" style="padding: 10px 0 0 0;">
                 <input type="hidden" id="fee-id">
-                
+
                 <div class="form-group" style="margin-bottom: 15px;">
                     <label for="fee-dept-name">اسم التخصص الدراسي</label>
                     <input type="text" id="fee-dept-name" class="form-control" placeholder="مثال: فني أسنان أو تقنية معلومات (IT)" required style="background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color);">
                 </div>
-                
+
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
                     <div class="form-group">
                         <label for="fee-official">الرسوم السنوية الرسمية</label>
@@ -1908,7 +867,7 @@
                         <input type="text" id="fee-payment-options" class="form-control" placeholder="مثال: تقسيط شهري ميسر (8 دفعات)" required style="background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color);">
                     </div>
                 </div>
-                
+
                 <div style="display: flex; gap: 15px; margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 15px;">
                     <button type="submit" class="btn btn-primary" style="flex: 1;">حفظ البيانات</button>
                     <button type="button" class="btn btn-secondary" id="fee-modal-cancel-btn" style="flex: 1;">إلغاء</button>
@@ -1923,1677 +882,27 @@
             <img src="assets/logo.jpg" alt="Logo" style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 20px; box-shadow: 0 0 20px var(--primary);">
             <h2 style="color: #fff; margin-bottom: 10px; font-family: 'Outfit', sans-serif;">تسجيل الدخول للنظام</h2>
             <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 30px; font-size: 0.9rem;">لوحة التحكم الإدارية لكلية الصدارة</p>
+            <a class="login-back" href="/">العودة إلى موقع الكلية ←</a>
             <form id="login-form">
                 <div class="form-group" style="text-align: right; margin-bottom: 20px;">
-                    <label style="color: #fff; display: block; margin-bottom: 8px;">اسم المستخدم</label>
-                    <input type="text" id="login-username" class="form-control" required>
+                    <label for="login-username">اسم المستخدم</label>
+                    <input type="text" id="login-username" class="form-control" autocomplete="username" required>
                 </div>
                 <div class="form-group" style="text-align: right; margin-bottom: 30px;">
-                    <label style="color: #fff; display: block; margin-bottom: 8px;">كلمة المرور</label>
-                    <input type="password" id="login-password" class="form-control" required>
+                    <label for="login-password">كلمة المرور</label>
+                    <input type="password" id="login-password" class="form-control" autocomplete="current-password" required>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px;">دخول <i class="fas fa-sign-in-alt"></i></button>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px;">دخول <i class="fas fa-sign-in-alt"><svg viewBox="0 0 512 512" class="svg-icon" fill="currentColor" aria-hidden="true"><path d="M217.9 105.9L340.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L217.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1L32 320c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM352 416l64 0c17.7 0 32-14.3 32-32l0-256c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64 0c53 0 96 43 96 96l0 256c0 53-43 96-96 96l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32z" /></svg></i></button>
             </form>
         </div>
     </div>
 
     <!-- Toast Notifications Container -->
-    <div class="toast-container" id="toast-container"></div>
+    <div class="toast-container" id="toast-container" role="status" aria-live="polite"></div>
 
     <!-- ==========================================
        7. Interactive Admin Logic Script
        ========================================== -->
-    <script>
-        const API_BASE = (() => {
-            const p = window.location.port;
-            const h = window.location.hostname || '127.0.0.1';
-            // In production (no port) or when running locally on Flask (5000) or Django (5001), use relative paths
-            if (!p || p === '5000' || p === '5001') return '';
-            return `http://${h}:5001`;
-        })();
-        // Global State counts
-        let totalStudents = 1248;
-        let pendingRequests = 5;
-
-        // Elements
-        const statTotalStudents = document.getElementById('stat-total-students');
-        const statPendingRequests = document.getElementById('stat-pending-requests');
-        const modalOverlay = document.getElementById('add-student-modal');
-        const addStudentForm = document.getElementById('add-student-form');
-        const applicantsTableBody = document.querySelector('#applicants-table tbody');
-
-        // Theme Toggle Handler
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        if (themeToggleBtn) {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                document.documentElement.setAttribute('data-theme', 'dark');
-            } else {
-                document.documentElement.setAttribute('data-theme', 'light');
-            }
-            themeToggleBtn.addEventListener('click', () => {
-                const currentTheme = document.documentElement.getAttribute('data-theme');
-                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-                document.documentElement.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-            });
-        }
-
-        // Sidebar Mobile Toggle
-        const dashboardMenuToggle = document.getElementById('dashboard-menu-toggle');
-        const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
-        const sidebar = document.querySelector('.sidebar');
-        const sidebarOverlay = document.getElementById('sidebar-overlay');
-        const sidebarLinks = document.querySelectorAll('.sidebar-link');
-
-        function toggleSidebar() {
-            sidebar.classList.toggle('active');
-            sidebarOverlay.classList.toggle('active');
-        }
-
-        function closeSidebar() {
-            sidebar.classList.remove('active');
-            sidebarOverlay.classList.remove('active');
-        }
-
-        if (dashboardMenuToggle) {
-            dashboardMenuToggle.addEventListener('click', toggleSidebar);
-        }
-        if (sidebarCloseBtn) {
-            sidebarCloseBtn.addEventListener('click', closeSidebar);
-        }
-        if (sidebarOverlay) {
-            sidebarOverlay.addEventListener('click', closeSidebar);
-        }
-        sidebarLinks.forEach(link => {
-            link.addEventListener('click', closeSidebar);
-        });
-
-        // SVG Chart Tooltip interactivity
-        const chartPoints = document.querySelectorAll('.chart-point');
-        const chartTooltip = document.getElementById('chart-tooltip');
-
-        chartPoints.forEach(point => {
-            point.addEventListener('mouseenter', (e) => {
-                const val = point.getAttribute('data-value');
-                const day = point.getAttribute('data-day');
-                chartTooltip.innerHTML = `<strong>${day}:</strong> ${val}`;
-                chartTooltip.style.opacity = '1';
-                
-                // Position tooltip
-                const rect = point.getBoundingClientRect();
-                const containerRect = point.parentNode.getBoundingClientRect();
-                chartTooltip.style.left = `${rect.left - containerRect.left + 15}px`;
-                chartTooltip.style.top = `${rect.top - containerRect.top - 40}px`;
-            });
-
-            point.addEventListener('mouseleave', () => {
-                chartTooltip.style.opacity = '0';
-            });
-        });
-
-        // Trigger Add Student Modal
-        document.getElementById('btn-add-student').addEventListener('click', () => toggleModal(true));
-        document.getElementById('btn-show-add-modal').addEventListener('click', () => toggleModal(true));
-        document.getElementById('btn-quick-add').addEventListener('click', () => toggleModal(true));
-        document.getElementById('modal-close-btn').addEventListener('click', () => toggleModal(false));
-        document.getElementById('modal-cancel-btn').addEventListener('click', () => toggleModal(false));
-
-        function toggleModal(show) {
-            if (show) {
-                modalOverlay.classList.add('active');
-            } else {
-                modalOverlay.classList.remove('active');
-                addStudentForm.reset();
-            }
-        }
-
-        // Create Custom Toast
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = `toast toast-${type}`;
-            
-            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
-            const iconColor = type === 'success' ? '#27d366' : '#ff4c4c';
-            
-            toast.innerHTML = `
-                <i class="fas ${icon}" style="color: ${iconColor}; font-size: 1.2rem;"></i>
-                <span>${message}</span>
-            `;
-            
-            container.appendChild(toast);
-            
-            // Remove toast after 4s
-            setTimeout(() => {
-                toast.style.animation = 'toastIn 0.4s reverse forwards';
-                setTimeout(() => toast.remove(), 400);
-            }, 4000);
-        }
-
-        // Tab switching logic
-        const tabLinks = document.querySelectorAll('.sidebar-link[data-tab]');
-        const statsTabContent = document.getElementById('stats-tab-content');
-        const settingsTabContent = document.getElementById('settings-tab-content');
-        const deptsTabContent = document.getElementById('depts-tab-content');
-        const labsTabContent = document.getElementById('labs-tab-content');
-        const feesTabContent = document.getElementById('fees-tab-content');
-        const aboutTabContent = document.getElementById('about-tab-content');
-        const contactsTabContent = document.getElementById('contacts-tab-content');
-        const applicantsTabContent = document.getElementById('applicants-tab-content');
-
-        const allTabContents = [statsTabContent, settingsTabContent, deptsTabContent, labsTabContent, feesTabContent, aboutTabContent, contactsTabContent, applicantsTabContent];
-
-        function hideAllTabs() {
-            allTabContents.forEach(t => { if (t) t.style.display = 'none'; });
-        }
-        
-        tabLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                
-                // Remove active from all sidebar-links
-                document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-                link.classList.add('active');
-                
-                const tab = link.getAttribute('data-tab');
-                hideAllTabs();
-
-                if (tab === 'stats-tab') {
-                    statsTabContent.style.display = 'block';
-                } else if (tab === 'settings-tab') {
-                    settingsTabContent.style.display = 'block';
-                    loadSettingsToForm();
-                } else if (tab === 'depts-tab') {
-                    deptsTabContent.style.display = 'block';
-                    loadDeptsDashboard();
-                } else if (tab === 'labs-tab') {
-                    labsTabContent.style.display = 'block';
-                    loadLabsDashboard();
-                } else if (tab === 'fees-tab') {
-                    feesTabContent.style.display = 'block';
-                    loadFeesDashboard();
-                } else if (tab === 'about-tab') {
-                    aboutTabContent.style.display = 'block';
-                    loadAboutToForm();
-                } else if (tab === 'contacts-tab') {
-                    contactsTabContent.style.display = 'block';
-                    loadContactsDashboard();
-                } else if (tab === 'applicants-tab') {
-                    applicantsTabContent.style.display = 'block';
-                    loadApplicantsDashboard();
-                }
-            });
-        });
-        
-        document.getElementById('btn-cancel-settings').addEventListener('click', () => {
-            // Switch back to stats tab
-            document.querySelector('.sidebar-link[data-tab="stats-tab"]').click();
-        });
-
-        // ==========================================
-        // ==========================================
-        // Department Management CRUD Logic
-        // ==========================================
-        let globalDepts = [];
-
-        // Upload helper function
-        function setupFileUpload(fileInputId, hiddenInputId, previewWrapId, previewImgId) {
-            const fileInput = document.getElementById(fileInputId);
-            const hiddenInput = document.getElementById(hiddenInputId);
-            const previewWrap = document.getElementById(previewWrapId);
-            const previewImg = document.getElementById(previewImgId);
-
-            if (!fileInput) return;
-
-            fileInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-
-                const formData = new FormData();
-                formData.append('file', file);
-
-                showToast('جاري رفع الملف...', 'info');
-
-                fetch(API_BASE + '/api/upload', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
-                    },
-                    body: formData
-                })
-                .then(res => {
-                    if (!res.ok) throw new Error('Upload failed');
-                    return res.json();
-                })
-                .then(data => {
-                    hiddenInput.value = data.url;
-                    previewImg.src = data.url.startsWith('http') ? data.url : (API_BASE + data.url);
-                    previewWrap.style.display = 'block';
-                    showToast('تم رفع الملف بنجاح!', 'success');
-                })
-                .catch(err => {
-                    console.error('File upload error:', err);
-                    showToast('فشل رفع الملف. يرجى إعادة المحاولة.', 'danger');
-                });
-            });
-        }
-
-        setupFileUpload('dept-icon-file', 'dept-icon', 'dept-icon-preview-wrap', 'dept-icon-preview');
-        setupFileUpload('dept-image-file', 'dept-image', 'dept-image-preview-wrap', 'dept-image-preview');
-
-        // Dynamic Course Rows Logic
-        function addCourseRow(code = '', name = '', type = '') {
-            const container = document.getElementById('courses-list-container');
-            if (!container) return;
-
-            const row = document.createElement('div');
-            row.className = 'course-row';
-            row.style = 'display: grid; grid-template-columns: 1fr 2fr 1fr auto; gap: 10px; margin-bottom: 10px; align-items: center;';
-            
-            row.innerHTML = `
-                <input type="text" class="form-control course-code" placeholder="رمز المساق" value="${code}" required>
-                <input type="text" class="form-control course-name" placeholder="اسم المساق" value="${name}" required>
-                <input type="text" class="form-control course-type" placeholder="نوع التدريب" value="${type}" required>
-                <button type="button" class="btn-delete-course-row" title="حذف المساق" style="padding: 8px 12px; background: rgba(255, 76, 76, 0.1); color: #ff4c4c; border: 1px solid #ff4c4c; border-radius: 6px; cursor: pointer;">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-            `;
-            
-            row.querySelector('.btn-delete-course-row').addEventListener('click', () => {
-                row.remove();
-            });
-            
-            container.appendChild(row);
-        }
-
-        const addCourseBtn = document.getElementById('btn-add-course-row');
-        if (addCourseBtn) {
-            addCourseBtn.addEventListener('click', () => {
-                addCourseRow();
-            });
-        }
-
-        function loadDeptsDashboard() {
-            fetch(API_BASE + '/api/departments?_t=' + new Date().getTime())
-                .then(res => res.json())
-                .then(depts => {
-                    globalDepts = depts;
-                    const tbody = document.querySelector('#depts-table tbody');
-                    if (!tbody) return;
-
-                    tbody.innerHTML = '';
-                    
-                    if (depts.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-secondary); padding: 20px;">لا توجد تخصصات مضافة حالياً.</td></tr>';
-                        return;
-                    }
-                    
-                    depts.forEach(d => {
-                        const tr = document.createElement('tr');
-                        tr.className = 'table-row-animate';
-                        
-                        const catLabel = d.category === 'medical' ? 'طبي وصحي' : 'إداري وتقني';
-                        const catColor = d.category === 'medical' ? '#27d366' : '#a22ed3';
-
-                        let iconDisplay = '';
-                        if (d.icon && (d.icon.startsWith('/') || d.icon.startsWith('http'))) {
-                            const resolvedIcon = d.icon.startsWith('http') ? d.icon : (API_BASE + d.icon);
-                            iconDisplay = `<img src="${resolvedIcon}" style="width: 28px; height: 28px; object-fit: contain; vertical-align: middle; border-radius: 4px; background: rgba(255,255,255,0.05); padding: 2px;">`;
-                        } else {
-                            iconDisplay = `<i class="fa-solid ${d.icon || 'fa-graduation-cap'}" style="font-size: 1.2rem; color: var(--primary);"></i>`;
-                        }
-                        
-                        tr.innerHTML = `
-                            <td style="font-weight: bold; color: var(--primary);">${d.name}</td>
-                            <td><code>${d.code}</code></td>
-                            <td><span style="color: ${catColor}; font-weight: bold;">${catLabel}</span></td>
-                            <td>${d.duration}</td>
-                            <td>${iconDisplay}</td>
-                            <td>
-                                <button type="button" class="row-action-btn btn-edit" onclick="editDept(${d.id})" title="تعديل التخصص">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button type="button" class="row-action-btn btn-delete" onclick="deleteDept(${d.id})" title="حذف التخصص">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </td>
-                        `;
-                        tbody.appendChild(tr);
-                    });
-                })
-                .catch(err => {
-                    console.error('Error loading depts:', err);
-                    showToast('فشل تحميل قائمة التخصصات.', 'danger');
-                });
-        }
-
-        window.editDept = function(id) {
-            const dept = globalDepts.find(d => d.id === id);
-            if (!dept) return;
-            openDeptModal(dept);
-        }
-
-        window.deleteDept = function(id) {
-            if (!confirm('هل أنت متأكد من حذف هذا التخصص نهائياً؟ سيتم حذفه من الموقع الرئيسي أيضاً.')) {
-                return;
-            }
-            
-            fetch(API_BASE + '/api/departments/' + id, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
-                }
-            })
-            .then(res => {
-                if (!res.ok) throw new Error('Delete failed');
-                return res.json();
-            })
-            .then(data => {
-                showToast('تم حذف التخصص بنجاح!', 'success');
-                loadDeptsDashboard();
-            })
-            .catch(err => {
-                console.error(err);
-                showToast('فشل حذف التخصص. يرجى التحقق من الصلاحيات.', 'danger');
-            });
-        }
-
-        const deptModal = document.getElementById('dept-modal');
-        const deptForm = document.getElementById('dept-form');
-
-        const btnAddDept = document.getElementById('btn-add-dept');
-        if (btnAddDept) {
-            btnAddDept.addEventListener('click', () => {
-                openDeptModal(null);
-            });
-        }
-
-        const closeBtn = document.getElementById('dept-modal-close-btn');
-        if (closeBtn) closeBtn.addEventListener('click', closeDeptModal);
-
-        const cancelBtn = document.getElementById('dept-modal-cancel-btn');
-        if (cancelBtn) cancelBtn.addEventListener('click', closeDeptModal);
-
-        function openDeptModal(dept = null) {
-            deptForm.reset();
-            const coursesContainer = document.getElementById('courses-list-container');
-            if (coursesContainer) coursesContainer.innerHTML = '';
-
-            const iconWrap = document.getElementById('dept-icon-preview-wrap');
-            const imgWrap = document.getElementById('dept-image-preview-wrap');
-            if (iconWrap) iconWrap.style.display = 'none';
-            if (imgWrap) imgWrap.style.display = 'none';
-
-            if (dept) {
-                document.getElementById('dept-modal-title').innerText = 'تعديل بيانات التخصص';
-                document.getElementById('dept-id').value = dept.id;
-                document.getElementById('dept-name').value = dept.name;
-                document.getElementById('dept-code').value = dept.code;
-                document.getElementById('dept-category').value = dept.category;
-                document.getElementById('dept-duration').value = dept.duration;
-                document.getElementById('dept-icon').value = dept.icon || '';
-                document.getElementById('dept-image').value = dept.image_url || '';
-                document.getElementById('dept-description').value = dept.description;
-                document.getElementById('dept-careers').value = dept.careers;
-
-                if (dept.icon) {
-                    const iconPreview = document.getElementById('dept-icon-preview');
-                    if (iconPreview) iconPreview.src = dept.icon.startsWith('http') || !dept.icon.startsWith('/') ? dept.icon : (API_BASE + dept.icon);
-                    if (iconWrap) iconWrap.style.display = 'block';
-                }
-                if (dept.image_url) {
-                    const imgPreview = document.getElementById('dept-image-preview');
-                    if (imgPreview) imgPreview.src = dept.image_url.startsWith('http') ? dept.image_url : (API_BASE + dept.image_url);
-                    if (imgWrap) imgWrap.style.display = 'block';
-                }
-
-                const courses = Array.isArray(dept.courses) ? dept.courses : [];
-                if (courses.length > 0) {
-                    courses.forEach(c => addCourseRow(c.code, c.name, c.type));
-                } else {
-                    addCourseRow();
-                }
-            } else {
-                document.getElementById('dept-modal-title').innerText = 'إضافة تخصص جديد';
-                document.getElementById('dept-id').value = '';
-                addCourseRow();
-            }
-            if (deptModal) deptModal.classList.add('active');
-        }
-
-        function closeDeptModal() {
-            if (deptModal) deptModal.classList.remove('active');
-            deptForm.reset();
-        }
-
-        if (deptForm) {
-            deptForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                
-                const id = document.getElementById('dept-id').value;
-                const isEdit = !id;
-                
-                const submitBtn = deptForm.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
-                
-                const courses = [];
-                document.querySelectorAll('.course-row').forEach(row => {
-                    const cCode = row.querySelector('.course-code').value.trim();
-                    const cName = row.querySelector('.course-name').value.trim();
-                    const cType = row.querySelector('.course-type').value.trim();
-                    if (cCode || cName || cType) {
-                        courses.push({ code: cCode, name: cName, type: cType });
-                    }
-                });
-                
-                const data = {
-                    name: document.getElementById('dept-name').value.trim(),
-                    code: document.getElementById('dept-code').value.trim(),
-                    category: document.getElementById('dept-category').value,
-                    duration: document.getElementById('dept-duration').value.trim(),
-                    icon: document.getElementById('dept-icon').value.trim(),
-                    image_url: document.getElementById('dept-image').value.trim(),
-                    description: document.getElementById('dept-description').value.trim(),
-                    careers: document.getElementById('dept-careers').value.trim(),
-                    courses: courses
-                };
-                
-                const url = id ? `${API_BASE}/api/departments/${id}` : `${API_BASE}/api/departments`;
-                const method = id ? 'PUT' : 'POST';
-                
-                fetch(url, {
-                    method: method,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(res => {
-                    if (!res.ok) {
-                        return res.json().then(errData => {
-                            throw new Error(errData.message || 'Save failed');
-                        });
-                    }
-                    return res.json();
-                })
-                .then(resData => {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalText;
-                    showToast(id ? 'تم تحديث التخصص بنجاح!' : 'تم إضافة التخصص الجديد بنجاح!', 'success');
-                    closeDeptModal();
-                    loadDeptsDashboard();
-                })
-                .catch(err => {
-                    console.error(err);
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalText;
-                    showToast(err.message || 'حدث خطأ أثناء حفظ التخصص.', 'danger');
-                });
-            });
-        }
-
-        // ==========================================
-        // Lab Management CRUD Logic
-        // ==========================================
-        let globalLabs = [];
-
-        setupFileUpload('lab-image-file', 'lab-image', 'lab-image-preview-wrap', 'lab-image-preview');
-
-        // Dynamic Spec Rows Logic
-        function addSpecRow(val = '') {
-            const container = document.getElementById('specs-list-container');
-            if (!container) return;
-
-            const row = document.createElement('div');
-            row.className = 'spec-row';
-            row.style = 'display: grid; grid-template-columns: 1fr auto; gap: 10px; margin-bottom: 10px; align-items: center;';
-            
-            row.innerHTML = `
-                <input type="text" class="form-control spec-value" placeholder="مثال: ماسح ثلاثي الأبعاد" value="${val}" required>
-                <button type="button" class="btn-delete-spec-row" title="حذف المواصفة" style="padding: 8px 12px; background: rgba(255, 76, 76, 0.1); color: #ff4c4c; border: 1px solid #ff4c4c; border-radius: 6px; cursor: pointer;">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-            `;
-            
-            row.querySelector('.btn-delete-spec-row').addEventListener('click', () => {
-                row.remove();
-            });
-            
-            container.appendChild(row);
-        }
-
-        const addSpecBtn = document.getElementById('btn-add-spec-row');
-        if (addSpecBtn) {
-            addSpecBtn.addEventListener('click', () => {
-                addSpecRow();
-            });
-        }
-
-        function loadLabsDashboard() {
-            fetch(API_BASE + '/api/labs?_t=' + new Date().getTime())
-                .then(res => res.json())
-                .then(labs => {
-                    globalLabs = labs;
-                    const tbody = document.querySelector('#labs-table tbody');
-                    if (!tbody) return;
-
-                    tbody.innerHTML = '';
-                    
-                    if (labs.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-secondary); padding: 20px;">لا توجد معامل مضافة حالياً.</td></tr>';
-                        return;
-                    }
-                    
-                    labs.forEach(l => {
-                        const tr = document.createElement('tr');
-                        tr.className = 'table-row-animate';
-                        
-                        const catLabel = l.category === 'medical' ? 'معمل طبي' : 'معمل تقني';
-                        const catColor = l.category === 'medical' ? '#27d366' : '#a22ed3';
-
-                        const specs = Array.isArray(l.specs) ? l.specs : [];
-                        const specsBadges = specs.map(s => `<span class="badge" style="background: rgba(var(--primary-rgb), 0.1); color: var(--primary); margin: 2px; padding: 4px 8px; border-radius: 4px; display: inline-block; font-size: 0.8rem;">${s}</span>`).join(' ');
-                        
-                        tr.innerHTML = `
-                            <td style="font-weight: bold; color: var(--primary);">${l.name}</td>
-                            <td><span style="color: ${catColor}; font-weight: bold;">${catLabel}</span></td>
-                            <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${l.description}">${l.description}</td>
-                            <td>${specsBadges}</td>
-                            <td>
-                                <button type="button" class="row-action-btn btn-edit" onclick="editLab(${l.id})" title="تعديل المعمل">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button type="button" class="row-action-btn btn-delete" onclick="deleteLab(${l.id})" title="حذف المعمل">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </td>
-                        `;
-                        tbody.appendChild(tr);
-                    });
-                })
-                .catch(err => {
-                    console.error('Error loading labs:', err);
-                    showToast('فشل تحميل قائمة المعامل.', 'danger');
-                });
-        }
-
-        window.editLab = function(id) {
-            const lab = globalLabs.find(l => l.id === id);
-            if (!lab) return;
-            openLabModal(lab);
-        }
-
-        window.deleteLab = function(id) {
-            if (!confirm('هل أنت متأكد من حذف هذا المعمل نهائياً؟ سيتم حذفه من الموقع الرئيسي أيضاً.')) {
-                return;
-            }
-            
-            fetch(API_BASE + '/api/labs/' + id, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
-                }
-            })
-            .then(res => {
-                if (!res.ok) throw new Error('Delete failed');
-                return res.json();
-            })
-            .then(data => {
-                showToast('تم حذف المعمل بنجاح!', 'success');
-                loadLabsDashboard();
-            })
-            .catch(err => {
-                console.error(err);
-                showToast('فشل حذف المعمل. يرجى التحقق من الصلاحيات.', 'danger');
-            });
-        }
-
-        const labModal = document.getElementById('lab-modal');
-        const labForm = document.getElementById('lab-form');
-
-        const btnAddLab = document.getElementById('btn-add-lab');
-        if (btnAddLab) {
-            btnAddLab.addEventListener('click', () => {
-                openLabModal(null);
-            });
-        }
-
-        const labCloseBtn = document.getElementById('lab-modal-close-btn');
-        if (labCloseBtn) labCloseBtn.addEventListener('click', closeLabModal);
-
-        const labCancelBtn = document.getElementById('lab-modal-cancel-btn');
-        if (labCancelBtn) labCancelBtn.addEventListener('click', closeLabModal);
-
-        function openLabModal(lab = null) {
-            labForm.reset();
-            const specsContainer = document.getElementById('specs-list-container');
-            if (specsContainer) specsContainer.innerHTML = '';
-
-            const imgWrap = document.getElementById('lab-image-preview-wrap');
-            if (imgWrap) imgWrap.style.display = 'none';
-
-            if (lab) {
-                document.getElementById('lab-modal-title').innerText = 'تعديل بيانات المعمل';
-                document.getElementById('lab-id').value = lab.id;
-                document.getElementById('lab-name').value = lab.name;
-                document.getElementById('lab-category').value = lab.category;
-                document.getElementById('lab-image').value = lab.image_url || '';
-                document.getElementById('lab-description').value = lab.description;
-
-                if (lab.image_url) {
-                    const imgPreview = document.getElementById('lab-image-preview');
-                    if (imgPreview) imgPreview.src = lab.image_url.startsWith('http') ? lab.image_url : (API_BASE + lab.image_url);
-                    if (imgWrap) imgWrap.style.display = 'block';
-                }
-
-                const specs = Array.isArray(lab.specs) ? lab.specs : [];
-                if (specs.length > 0) {
-                    specs.forEach(s => addSpecRow(s));
-                } else {
-                    addSpecRow();
-                }
-            } else {
-                document.getElementById('lab-modal-title').innerText = 'إضافة معمل جديد';
-                document.getElementById('lab-id').value = '';
-                addSpecRow();
-            }
-            if (labModal) labModal.classList.add('active');
-        }
-
-        function closeLabModal() {
-            if (labModal) labModal.classList.remove('active');
-            labForm.reset();
-        }
-
-        if (labForm) {
-            labForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                
-                const id = document.getElementById('lab-id').value;
-                const submitBtn = labForm.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
-                
-                const specs = [];
-                document.querySelectorAll('.spec-row').forEach(row => {
-                    const val = row.querySelector('.spec-value').value.trim();
-                    if (val) {
-                        specs.push(val);
-                    }
-                });
-                
-                const data = {
-                    name: document.getElementById('lab-name').value.trim(),
-                    category: document.getElementById('lab-category').value,
-                    image_url: document.getElementById('lab-image').value.trim(),
-                    description: document.getElementById('lab-description').value.trim(),
-                    specs: specs
-                };
-                
-                const url = id ? `${API_BASE}/api/labs/${id}` : `${API_BASE}/api/labs`;
-                const method = id ? 'PUT' : 'POST';
-                
-                fetch(url, {
-                    method: method,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(res => {
-                    if (!res.ok) {
-                        return res.json().then(errData => {
-                            throw new Error(errData.message || 'Save failed');
-                        });
-                    }
-                    return res.json();
-                })
-                .then(resData => {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalText;
-                    showToast(id ? 'تم تحديث المعمل بنجاح!' : 'تم إضافة المعمل الجديد بنجاح!', 'success');
-                    closeLabModal();
-                    loadLabsDashboard();
-                })
-                .catch(err => {
-                    console.error(err);
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalText;
-                    showToast(err.message || 'حدث خطأ أثناء حفظ المعمل.', 'danger');
-                });
-            });
-        }
-
-        // ==========================================
-        // Tuition Fees Management CRUD Logic
-        // ==========================================
-        let globalFees = [];
-
-        window.loadFeesDashboard = function() {
-            const tbody = document.querySelector('#fees-table tbody');
-            if (!tbody) return;
-            
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 30px;">
-                        <i class="fas fa-spinner fa-spin fa-2x" style="margin-bottom: 10px; color: var(--primary);"></i><br>
-                        جاري تحميل قائمة الرسوم الدراسية...
-                    </td>
-                </tr>
-            `;
-
-            fetch(API_BASE + '/api/fees')
-                .then(res => res.json())
-                .then(fees => {
-                    globalFees = fees;
-                    tbody.innerHTML = '';
-                    if (fees.length === 0) {
-                        tbody.innerHTML = `
-                            <tr>
-                                <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 30px;">لا توجد رسوم دراسية مضافة حالياً.</td>
-                            </tr>
-                        `;
-                        return;
-                    }
-
-                    fees.forEach(f => {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td style="font-weight: bold; color: var(--primary);">${f.department_name}</td>
-                            <td>${f.official_fee}</td>
-                            <td style="font-weight: bold; color: #2ecc71;">${f.discounted_fee}</td>
-                            <td>${f.installment}</td>
-                            <td>${f.payment_options}</td>
-                            <td>
-                                <button type="button" class="row-action-btn btn-edit" onclick="editFee(${f.id})" title="تعديل الرسوم">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button type="button" class="row-action-btn btn-delete" onclick="deleteFee(${f.id})" title="حذف الرسوم">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </td>
-                        `;
-                        tbody.appendChild(tr);
-                    });
-                })
-                .catch(err => {
-                    console.error('Error loading tuition fees:', err);
-                    showToast('فشل تحميل قائمة الرسوم الدراسية.', 'danger');
-                });
-        }
-
-        window.editFee = function(id) {
-            const fee = globalFees.find(f => f.id === id);
-            if (!fee) return;
-            openFeeModal(fee);
-        }
-
-        window.deleteFee = function(id) {
-            if (!confirm('هل أنت متأكد من حذف رسوم هذا التخصص؟ سيتم حذفها من الموقع الرئيسي أيضاً.')) {
-                return;
-            }
-            
-            fetch(API_BASE + '/api/fees/' + id, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
-                }
-            })
-            .then(res => {
-                if (!res.ok) throw new Error('Delete failed');
-                return res.json();
-            })
-            .then(data => {
-                showToast('تم حذف رسوم التخصص بنجاح!', 'success');
-                loadFeesDashboard();
-            })
-            .catch(err => {
-                console.error(err);
-                showToast('فشل حذف الرسوم. يرجى التحقق من الصلاحيات.', 'danger');
-            });
-        }
-
-        const feeModal = document.getElementById('fee-modal');
-        const feeForm = document.getElementById('fee-form');
-
-        const btnAddFee = document.getElementById('btn-add-fee');
-        if (btnAddFee) {
-            btnAddFee.addEventListener('click', () => {
-                openFeeModal(null);
-            });
-        }
-
-        const feeCloseBtn = document.getElementById('fee-modal-close-btn');
-        if (feeCloseBtn) feeCloseBtn.addEventListener('click', closeFeeModal);
-
-        const feeCancelBtn = document.getElementById('fee-modal-cancel-btn');
-        if (feeCancelBtn) feeCancelBtn.addEventListener('click', closeFeeModal);
-
-        function openFeeModal(fee = null) {
-            feeForm.reset();
-            if (fee) {
-                document.getElementById('fee-modal-title').innerText = 'تعديل رسوم التخصص';
-                document.getElementById('fee-id').value = fee.id;
-                document.getElementById('fee-dept-name').value = fee.department_name;
-                document.getElementById('fee-official').value = fee.official_fee;
-                document.getElementById('fee-discounted').value = fee.discounted_fee;
-                document.getElementById('fee-installment').value = fee.installment;
-                document.getElementById('fee-payment-options').value = fee.payment_options;
-            } else {
-                document.getElementById('fee-modal-title').innerText = 'إضافة رسوم تخصص جديدة';
-                document.getElementById('fee-id').value = '';
-            }
-            if (feeModal) feeModal.classList.add('active');
-        }
-
-        function closeFeeModal() {
-            if (feeModal) feeModal.classList.remove('active');
-            feeForm.reset();
-        }
-
-        if (feeForm) {
-            feeForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                
-                const id = document.getElementById('fee-id').value;
-                const submitBtn = feeForm.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
-                
-                const data = {
-                    department_name: document.getElementById('fee-dept-name').value.trim(),
-                    official_fee: document.getElementById('fee-official').value.trim(),
-                    discounted_fee: document.getElementById('fee-discounted').value.trim(),
-                    installment: document.getElementById('fee-installment').value.trim(),
-                    payment_options: document.getElementById('fee-payment-options').value.trim()
-                };
-                
-                const url = id ? `${API_BASE}/api/fees/${id}` : `${API_BASE}/api/fees`;
-                const method = id ? 'PUT' : 'POST';
-                
-                fetch(url, {
-                    method: method,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(res => {
-                    if (!res.ok) {
-                        return res.json().then(errData => {
-                            throw new Error(errData.message || 'Save failed');
-                        });
-                    }
-                    return res.json();
-                })
-                .then(resData => {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalText;
-                    showToast(id ? 'تم تحديث الرسوم الدراسية بنجاح!' : 'تم إضافة الرسوم الدراسية بنجاح!', 'success');
-                    closeFeeModal();
-                    loadFeesDashboard();
-                })
-                .catch(err => {
-                    console.error(err);
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalText;
-                    showToast(err.message || 'حدث خطأ أثناء حفظ الرسوم.', 'danger');
-                });
-            });
-        }
-
-        // Authentication & Session validation
-        function checkAuth() {
-            const token = localStorage.getItem('sadara_token');
-            const loginOverlay = document.getElementById('login-overlay');
-            if (!token) {
-                loginOverlay.style.display = 'flex';
-                return;
-            }
-            
-            fetch(API_BASE + '/api/auth/me', {
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                }
-            })
-            .then(res => {
-                if (!res.ok) throw new Error('Unauthorized');
-                return res.json();
-            })
-            .then(user => {
-                loginOverlay.style.display = 'none';
-                document.querySelector('.admin-profile h4').innerText = user.full_name;
-                document.getElementById('dashboard-welcome-title').innerText = `مرحباً بك، ${user.full_name}`;
-                fetchDashboardData();
-            })
-            .catch(err => {
-                console.warn('Session expired or invalid', err);
-                localStorage.removeItem('sadara_token');
-                loginOverlay.style.display = 'flex';
-            });
-        }
-
-        // Login form submit handler
-        const loginForm = document.getElementById('login-form');
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const username = document.getElementById('login-username').value.trim();
-            const password = document.getElementById('login-password').value;
-            const submitBtn = loginForm.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري تسجيل الدخول...';
-            
-            fetch(API_BASE + '/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password })
-            })
-            .then(res => {
-                if (!res.ok) throw new Error('Invalid credentials');
-                return res.json();
-            })
-            .then(data => {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalText;
-                localStorage.setItem('sadara_token', data.token);
-                showToast('تم تسجيل الدخول بنجاح! مرحباً بك.', 'success');
-                checkAuth();
-            })
-            .catch(err => {
-                console.error(err);
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalText;
-                alert('فشل تسجيل الدخول. يرجى التحقق من اسم المستخدم وكلمة المرور.');
-            });
-        });
-
-        // Load DB data for dashboard metrics and applicant tables
-        function fetchDashboardData() {
-            fetch(API_BASE + '/api/applicants?_t=' + new Date().getTime(), {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
-                }
-            })
-            .then(res => res.json())
-            .then(applicants => {
-                applicantsTableBody.innerHTML = '';
-                
-                let pendingCount = 0;
-                let approvedCount = 0;
-                
-                applicants.forEach(app => {
-                    if (app.status === 'pending') pendingCount++;
-                    if (app.status === 'approved') approvedCount++;
-                    
-                    const row = document.createElement('tr');
-                    row.className = 'table-row-animate';
-                    row.id = `row-${app.id}`;
-                    
-                    let statusBadge = '';
-                    let actionButtons = '';
-                    
-                    if (app.status === 'pending') {
-                        statusBadge = `
-                            <span class="badge-status status-pending">
-                                <i class="fas fa-spinner fa-spin"></i> قيد المراجعة
-                            </span>
-                        `;
-                        actionButtons = `
-                            <button class="row-action-btn btn-approve" onclick="manageRequest(${app.id}, 'approve', '${app.name}')" title="قبول الطلب">
-                                <i class="fas fa-check"></i>
-                            </button>
-                            <button class="row-action-btn btn-reject" onclick="manageRequest(${app.id}, 'reject', '${app.name}')" title="رفض الطلب">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        `;
-                    } else if (app.status === 'approved') {
-                        statusBadge = `
-                            <span class="badge-status status-approved">
-                                <i class="fas fa-check-circle"></i> تم القبول
-                            </span>
-                        `;
-                        actionButtons = `
-                            <span style="color: #27d366; font-weight: 600; font-size: 0.85rem;"><i class="fas fa-user-check"></i> جاهز للنظام</span>
-                        `;
-                    } else {
-                        statusBadge = `
-                            <span class="badge-status status-rejected" style="background: rgba(255, 76, 76, 0.1); color: #ff4c4c; border: 1px solid rgba(255, 76, 76, 0.2);">
-                                <i class="fas fa-times-circle"></i> تم الرفض
-                            </span>
-                        `;
-                        actionButtons = `
-                            <span style="color: #ff4c4c; font-weight: 600; font-size: 0.85rem;"><i class="fas fa-user-times"></i> مرفوض</span>
-                        `;
-                    }
-                    
-                    row.innerHTML = `
-                        <td style="font-weight: bold; color: var(--primary);">${app.name}</td>
-                        <td>${app.department}</td>
-                        <td>${app.gpa}%</td>
-                        <td>${app.phone}</td>
-                        <td>${statusBadge}</td>
-                        <td>${actionButtons}</td>
-                    `;
-                    
-                    applicantsTableBody.appendChild(row);
-                });
-                
-                statTotalStudents.innerText = (1248 + approvedCount).toLocaleString();
-                statPendingRequests.innerText = pendingCount;
-                
-                totalStudents = 1248 + approvedCount;
-                pendingRequests = pendingCount;
-            })
-            .catch(err => {
-                console.error('Error fetching dashboard data:', err);
-                showToast('فشل تحديث بيانات الإحصائيات والطلبات.', 'danger');
-            });
-        }
-
-        // Manage student requests (Approve / Reject) via API
-        function manageRequest(appId, action, studentName) {
-            const row = document.getElementById(`row-${appId}`);
-            if (!row) return;
-            
-            const newStatus = action === 'approve' ? 'approved' : 'rejected';
-            
-            fetch(API_BASE + `/api/applicants/${appId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
-                },
-                body: JSON.stringify({ status: newStatus })
-            })
-            .then(res => {
-                if (!res.ok) throw new Error('Failed to update status');
-                return res.json();
-            })
-            .then(data => {
-                if (action === 'approve') {
-                    row.classList.add('row-fade-success');
-                    
-                    const badgeContainer = row.querySelector('td:nth-child(5)');
-                    badgeContainer.innerHTML = `
-                        <span class="badge-status status-approved">
-                            <i class="fas fa-check-circle"></i> تم القبول
-                        </span>
-                    `;
-                    
-                    row.querySelector('td:nth-child(6)').innerHTML = `
-                        <span style="color: #27d366; font-weight: 600; font-size: 0.85rem;"><i class="fas fa-user-check"></i> جاهز للنظام</span>
-                    `;
-                    
-                    totalStudents++;
-                    pendingRequests = Math.max(0, pendingRequests - 1);
-                    statTotalStudents.innerText = totalStudents.toLocaleString();
-                    statPendingRequests.innerText = pendingRequests;
-                    
-                    showToast(`تم قبول ملف الطالب "${studentName}" بنجاح وجارٍ إعداد سجله الأكاديمي.`, 'success');
-                } else {
-                    row.classList.add('row-fade-out');
-                    pendingRequests = Math.max(0, pendingRequests - 1);
-                    statPendingRequests.innerText = pendingRequests;
-                    
-                    showToast(`تم رفض طلب الطالب "${studentName}".`, 'warning');
-                    
-                    setTimeout(() => {
-                        row.remove();
-                    }, 600);
-                }
-            })
-            .catch(err => {
-                console.error(err);
-                showToast('فشل تعديل حالة الطلب.', 'danger');
-            });
-        }
-
-        // Form Submit Handler for Registering New Student
-        addStudentForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const name = document.getElementById('student-name').value.trim();
-            const dept = document.getElementById('student-dept').value;
-            const grade = parseFloat(document.getElementById('student-grade').value);
-            const phone = document.getElementById('student-phone').value.trim();
-            
-            const submitBtn = addStudentForm.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري تسجيل الطلب...';
-            
-            fetch(API_BASE + '/api/applicants', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: name,
-                    phone: phone,
-                    gpa: grade,
-                    stream: 'scientific',
-                    department: dept
-                })
-            })
-            .then(res => {
-                if (!res.ok) throw new Error('Failed to register student');
-                return res.json();
-            })
-            .then(data => {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalText;
-                
-                toggleModal(false);
-                showToast(`تم تقديم طلب تسجيل الطالب "${name}" بنجاح!`, 'success');
-                
-                fetchDashboardData();
-            })
-            .catch(err => {
-                console.error(err);
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalText;
-                showToast('حدث خطأ أثناء تسجيل الطالب.', 'danger');
-            });
-        });
-
-        // Settings load settings from DB to Form inputs
-        function loadSettingsToForm() {
-            fetch(API_BASE + '/api/settings?_t=' + new Date().getTime())
-                .then(res => res.json())
-                .then(settings => {
-                    document.getElementById('setting-top-phone').value = settings.top_phone || '';
-                    document.getElementById('setting-top-email').value = settings.top_email || '';
-                    document.getElementById('setting-top-address').value = settings.top_address || '';
-                    document.getElementById('setting-social-fb').value = settings.social_facebook || '';
-                    document.getElementById('setting-social-tw').value = settings.social_twitter || '';
-                    document.getElementById('setting-social-li').value = settings.social_linkedin || '';
-                    document.getElementById('setting-social-yt').value = settings.social_youtube || '';
-                    
-                    document.getElementById('setting-hero-tag').value = settings.hero_tag || '';
-                    document.getElementById('setting-hero-title').value = settings.hero_title || '';
-                    document.getElementById('setting-hero-subtitle').value = settings.hero_subtitle || '';
-                    document.getElementById('setting-hero-desc').value = settings.hero_desc || '';
-                    
-                    if (settings.countdown_end) {
-                        document.getElementById('setting-countdown-end').value = settings.countdown_end.slice(0, 16);
-                    }
-                    
-                    document.getElementById('setting-stat-students').value = settings.stat_students || '5000';
-                    document.getElementById('setting-stat-depts').value = settings.stat_depts || '11';
-                    document.getElementById('setting-stat-employment').value = settings.stat_employment || '98';
-                    document.getElementById('setting-stat-labs').value = settings.stat_labs || '16';
-                })
-                .catch(err => {
-                    console.error('Error fetching settings for form:', err);
-                    showToast('فشل تحميل الإعدادات من الخادم.', 'danger');
-                });
-        }
-
-        // Settings Save to DB Form submit handler
-        const settingsForm = document.getElementById('settings-form');
-        settingsForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const submitBtn = settingsForm.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري حفظ التعديلات...';
-            
-            const data = {
-                top_phone: document.getElementById('setting-top-phone').value.trim(),
-                top_email: document.getElementById('setting-top-email').value.trim(),
-                top_address: document.getElementById('setting-top-address').value.trim(),
-                social_facebook: document.getElementById('setting-social-fb').value.trim(),
-                social_twitter: document.getElementById('setting-social-tw').value.trim(),
-                social_linkedin: document.getElementById('setting-social-li').value.trim(),
-                social_youtube: document.getElementById('setting-social-yt').value.trim(),
-                hero_tag: document.getElementById('setting-hero-tag').value.trim(),
-                hero_title: document.getElementById('setting-hero-title').value.trim(),
-                hero_subtitle: document.getElementById('setting-hero-subtitle').value.trim(),
-                hero_desc: document.getElementById('setting-hero-desc').value.trim(),
-                countdown_end: document.getElementById('setting-countdown-end').value,
-                stat_students: document.getElementById('setting-stat-students').value,
-                stat_depts: document.getElementById('setting-stat-depts').value,
-                stat_employment: document.getElementById('setting-stat-employment').value,
-                stat_labs: document.getElementById('setting-stat-labs').value
-            };
-            
-            fetch(API_BASE + '/api/settings', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
-                },
-                body: JSON.stringify(data)
-            })
-            .then(res => {
-                if (!res.ok) throw new Error('Failed to save settings');
-                return res.json();
-            })
-            .then(data => {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalText;
-                showToast('تم حفظ إعدادات الصفحة الرئيسية وتحديث الموقع فوراً!', 'success');
-                document.querySelector('.sidebar-link[data-tab="stats-tab"]').click();
-            })
-            .catch(err => {
-                console.error(err);
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalText;
-                showToast('حدث خطأ أثناء حفظ الإعدادات، يرجى التحقق من تسجيل الدخول.', 'danger');
-            });
-        });
-
-        // ==========================================
-        // About College Management Logic
-        // ==========================================
-        window.loadAboutToForm = function() {
-            fetch(API_BASE + '/api/settings?_t=' + new Date().getTime())
-                .then(res => res.json())
-                .then(settings => {
-                    document.getElementById('about-us-p1-input').value = settings.about_us_p1 || '';
-                    document.getElementById('about-us-p2-input').value = settings.about_us_p2 || '';
-                    
-                    const aboutImgUrl = settings.about_image || '';
-                    document.getElementById('about-image-url').value = aboutImgUrl;
-                    if (aboutImgUrl) {
-                        document.getElementById('about-image-preview').src = aboutImgUrl.startsWith('http') ? aboutImgUrl : (API_BASE + aboutImgUrl);
-                        document.getElementById('about-image-preview-wrap').style.display = 'block';
-                    } else {
-                        document.getElementById('about-image-preview-wrap').style.display = 'none';
-                    }
-
-                    document.getElementById('about-vision-input').value = settings.about_vision || '';
-                    document.getElementById('about-mission-input').value = settings.about_mission || '';
-                    document.getElementById('about-goals-input').value = settings.about_goals || '';
-                    
-                    document.getElementById('dean-name-input').value = settings.dean_name || '';
-                    document.getElementById('dean-title-input').value = settings.dean_title || '';
-                    
-                    const deanAvatarUrl = settings.dean_avatar || '';
-                    document.getElementById('dean-avatar-url').value = deanAvatarUrl;
-                    if (deanAvatarUrl) {
-                        document.getElementById('dean-avatar-preview').src = deanAvatarUrl.startsWith('http') ? deanAvatarUrl : (API_BASE + deanAvatarUrl);
-                        document.getElementById('dean-avatar-preview-wrap').style.display = 'block';
-                    } else {
-                        document.getElementById('dean-avatar-preview-wrap').style.display = 'none';
-                    }
-
-                    document.getElementById('dean-message-quote-input').value = settings.dean_message_quote || '';
-                    document.getElementById('dean-message-p2-input').value = settings.dean_message_p2 || '';
-                })
-                .catch(err => {
-                    console.error('Error fetching about settings for form:', err);
-                    showToast('فشل تحميل بيانات الكلية من الخادم.', 'danger');
-                });
-        }
-
-        // Setup uploads for about tab
-        setupFileUpload('about-image-file', 'about-image-url', 'about-image-preview-wrap', 'about-image-preview');
-        setupFileUpload('dean-avatar-file', 'dean-avatar-url', 'dean-avatar-preview-wrap', 'dean-avatar-preview');
-
-        // Form submit
-        const aboutForm = document.getElementById('about-form');
-        if (aboutForm) {
-            aboutForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                
-                const submitBtn = aboutForm.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري حفظ التغييرات...';
-                
-                const data = {
-                    about_us_p1: document.getElementById('about-us-p1-input').value.trim(),
-                    about_us_p2: document.getElementById('about-us-p2-input').value.trim(),
-                    about_image: document.getElementById('about-image-url').value.trim(),
-                    about_vision: document.getElementById('about-vision-input').value.trim(),
-                    about_mission: document.getElementById('about-mission-input').value.trim(),
-                    about_goals: document.getElementById('about-goals-input').value.trim(),
-                    dean_name: document.getElementById('dean-name-input').value.trim(),
-                    dean_title: document.getElementById('dean-title-input').value.trim(),
-                    dean_avatar: document.getElementById('dean-avatar-url').value.trim(),
-                    dean_message_quote: document.getElementById('dean-message-quote-input').value.trim(),
-                    dean_message_p2: document.getElementById('dean-message-p2-input').value.trim()
-                };
-                
-                fetch(API_BASE + '/api/settings', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(res => {
-                    if (!res.ok) throw new Error('Failed to save about settings');
-                    return res.json();
-                })
-                .then(data => {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalText;
-                    showToast('تم حفظ بيانات "عن الكلية" وتحديث الموقع الرئيسي بنجاح!', 'success');
-                    document.querySelector('.sidebar-link[data-tab="stats-tab"]').click();
-                })
-                .catch(err => {
-                    console.error(err);
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalText;
-                    showToast('حدث خطأ أثناء حفظ بيانات الكلية.', 'danger');
-                });
-            });
-        }
-
-        const btnCancelAbout = document.getElementById('btn-cancel-about');
-        if (btnCancelAbout) {
-            btnCancelAbout.addEventListener('click', () => {
-                document.querySelector('.sidebar-link[data-tab="stats-tab"]').click();
-            });
-        }
-
-        // ==========================================
-        // Contact Messages Management Logic
-        // ==========================================
-        window.loadContactsDashboard = function() {
-            const tbody = document.querySelector('#contacts-table tbody');
-            if (!tbody) return;
-            
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 30px;">
-                        <i class="fas fa-spinner fa-spin fa-2x" style="margin-bottom: 10px; color: var(--primary);"></i><br>
-                        جاري تحميل الرسائل...
-                    </td>
-                </tr>
-            `;
-
-            fetch(API_BASE + '/api/contact', {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
-                }
-            })
-            .then(res => res.json())
-            .then(messages => {
-                tbody.innerHTML = '';
-                
-                let unreadCount = 0;
-                messages.forEach(m => { if (!m.is_read) unreadCount++; });
-                
-                const unreadEl = document.getElementById('contacts-unread-count');
-                if (unreadEl) unreadEl.innerHTML = `<i class="fas fa-envelope"></i> ${unreadCount} رسالة جديدة`;
-                
-                if (messages.length === 0) {
-                    tbody.innerHTML = `
-                        <tr>
-                            <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 30px;">
-                                <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 10px; opacity: 0.5;"></i><br>
-                                لا توجد رسائل واردة حالياً.
-                            </td>
-                        </tr>
-                    `;
-                    return;
-                }
-
-                messages.forEach(m => {
-                    const tr = document.createElement('tr');
-                    tr.style.background = m.is_read ? '' : 'rgba(138, 46, 118, 0.04)';
-                    tr.innerHTML = `
-                        <td style="text-align: center;">
-                            ${m.is_read 
-                                ? '<i class="fas fa-envelope-open" style="color: var(--text-muted); opacity: 0.5;"></i>' 
-                                : '<i class="fas fa-envelope" style="color: var(--primary); font-size: 1.1rem;"></i>'}
-                        </td>
-                        <td style="font-weight: bold; color: var(--primary);">${m.name}</td>
-                        <td>
-                            <div style="font-size: 0.85rem;">${m.email}</div>
-                            ${m.phone ? `<div style="font-size: 0.8rem; color: var(--text-muted);">${m.phone}</div>` : ''}
-                        </td>
-                        <td style="font-weight: 600;">${m.subject}</td>
-                        <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.85rem; color: var(--text-secondary);" title="${m.message}">${m.message}</td>
-                        <td style="font-size: 0.8rem; color: var(--text-muted); white-space: nowrap;">${m.created_at}</td>
-                        <td>
-                            ${!m.is_read ? `
-                                <button type="button" class="row-action-btn btn-approve" onclick="markContactRead(${m.id})" title="تعيين كمقروءة">
-                                    <i class="fas fa-check"></i>
-                                </button>
-                            ` : ''}
-                            <button type="button" class="row-action-btn btn-delete" onclick="deleteContact(${m.id})" title="حذف الرسالة">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            })
-            .catch(err => {
-                console.error('Error loading contact messages:', err);
-                showToast('فشل تحميل الرسائل.', 'danger');
-            });
-        }
-
-        window.markContactRead = function(id) {
-            fetch(API_BASE + '/api/contact/' + id, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
-                },
-                body: JSON.stringify({ is_read: true })
-            })
-            .then(res => {
-                if (!res.ok) throw new Error('Failed');
-                return res.json();
-            })
-            .then(() => {
-                showToast('تم تعيين الرسالة كمقروءة.', 'success');
-                loadContactsDashboard();
-            })
-            .catch(err => {
-                console.error(err);
-                showToast('فشل تحديث حالة الرسالة.', 'danger');
-            });
-        }
-
-        window.deleteContact = function(id) {
-            if (!confirm('هل أنت متأكد من حذف هذه الرسالة نهائياً؟')) return;
-            
-            fetch(API_BASE + '/api/contact/' + id, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
-                }
-            })
-            .then(res => {
-                if (!res.ok) throw new Error('Failed');
-                return res.json();
-            })
-            .then(() => {
-                showToast('تم حذف الرسالة بنجاح.', 'success');
-                loadContactsDashboard();
-            })
-            .catch(err => {
-                console.error(err);
-                showToast('فشل حذف الرسالة.', 'danger');
-            });
-        }
-
-        // ==========================================
-        // Applicants Full Management Logic
-        // ==========================================
-        window.loadApplicantsDashboard = function() {
-            const tbody = document.querySelector('#applicants-full-table tbody');
-            if (!tbody) return;
-            
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 30px;">
-                        <i class="fas fa-spinner fa-spin fa-2x" style="margin-bottom: 10px; color: var(--primary);"></i><br>
-                        جاري تحميل قائمة الطلاب المتقدمين...
-                    </td>
-                </tr>
-            `;
-
-            fetch(API_BASE + '/api/applicants?_t=' + new Date().getTime(), {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
-                }
-            })
-            .then(res => res.json())
-            .then(applicants => {
-                tbody.innerHTML = '';
-                
-                let totalCount = applicants.length;
-                let pendingCount = 0, approvedCount = 0, rejectedCount = 0;
-                
-                applicants.forEach(app => {
-                    if (app.status === 'pending') pendingCount++;
-                    else if (app.status === 'approved') approvedCount++;
-                    else rejectedCount++;
-                });
-                
-                const elTotal = document.getElementById('app-stat-total');
-                const elPend = document.getElementById('app-stat-pending');
-                const elAppr = document.getElementById('app-stat-approved');
-                const elRej = document.getElementById('app-stat-rejected');
-                if (elTotal) elTotal.innerText = totalCount;
-                if (elPend) elPend.innerText = pendingCount;
-                if (elAppr) elAppr.innerText = approvedCount;
-                if (elRej) elRej.innerText = rejectedCount;
-                
-                if (applicants.length === 0) {
-                    tbody.innerHTML = `
-                        <tr>
-                            <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 30px;">لا توجد طلبات تسجيل حالياً.</td>
-                        </tr>
-                    `;
-                    return;
-                }
-
-                applicants.forEach(app => {
-                    const tr = document.createElement('tr');
-                    tr.className = 'table-row-animate';
-                    
-                    let statusBadge = '';
-                    let actionButtons = '';
-                    
-                    if (app.status === 'pending') {
-                        statusBadge = `<span class="badge-status status-pending"><i class="fas fa-hourglass-half"></i> قيد المراجعة</span>`;
-                        actionButtons = `
-                            <button class="row-action-btn btn-approve" onclick="manageApplicantTab(${app.id}, 'approve')" title="قبول الطلب">
-                                <i class="fas fa-check"></i>
-                            </button>
-                            <button class="row-action-btn btn-reject" onclick="manageApplicantTab(${app.id}, 'reject')" title="رفض الطلب">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        `;
-                    } else if (app.status === 'approved') {
-                        statusBadge = `<span class="badge-status status-approved"><i class="fas fa-check-circle"></i> تم القبول</span>`;
-                        actionButtons = `<span style="color: #2ecc71; font-weight: 600; font-size: 0.8rem;"><i class="fas fa-user-check"></i> مقبول</span>`;
-                    } else {
-                        statusBadge = `<span class="badge-status status-rejected" style="background: rgba(255,76,76,0.1); color: #ff4c4c; border: 1px solid rgba(255,76,76,0.2);"><i class="fas fa-times-circle"></i> تم الرفض</span>`;
-                        actionButtons = `<span style="color: #ff4c4c; font-weight: 600; font-size: 0.8rem;"><i class="fas fa-user-times"></i> مرفوض</span>`;
-                    }
-                    
-                    // Add delete button for all statuses
-                    actionButtons += `
-                        <button class="row-action-btn btn-delete" onclick="deleteApplicantTab(${app.id})" title="حذف الطلب">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    `;
-                    
-                    const createdAt = app.created_at ? new Date(app.created_at).toLocaleDateString('ar-YE', { year: 'numeric', month: 'short', day: 'numeric' }) : '-';
-                    
-                    tr.innerHTML = `
-                        <td style="font-weight: bold; color: var(--primary);">${app.name}</td>
-                        <td>${app.department}</td>
-                        <td>${app.gpa}%</td>
-                        <td style="direction: ltr; text-align: right;">${app.phone}</td>
-                        <td style="font-size: 0.8rem; color: var(--text-muted); white-space: nowrap;">${createdAt}</td>
-                        <td>${statusBadge}</td>
-                        <td>${actionButtons}</td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            })
-            .catch(err => {
-                console.error('Error loading applicants:', err);
-                showToast('فشل تحميل قائمة الطلاب.', 'danger');
-            });
-        }
-
-        window.manageApplicantTab = function(appId, action) {
-            const newStatus = action === 'approve' ? 'approved' : 'rejected';
-            
-            fetch(API_BASE + `/api/applicants/${appId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
-                },
-                body: JSON.stringify({ status: newStatus })
-            })
-            .then(res => {
-                if (!res.ok) throw new Error('Failed');
-                return res.json();
-            })
-            .then(() => {
-                showToast(action === 'approve' ? 'تم قبول الطالب بنجاح!' : 'تم رفض الطلب.', action === 'approve' ? 'success' : 'danger');
-                loadApplicantsDashboard();
-                fetchDashboardData(); // Also refresh the stats tab
-            })
-            .catch(err => {
-                console.error(err);
-                showToast('فشل تحديث حالة الطلب.', 'danger');
-            });
-        }
-
-        window.deleteApplicantTab = function(appId) {
-            if (!confirm('هل أنت متأكد من حذف هذا الطلب نهائياً؟')) return;
-            
-            fetch(API_BASE + `/api/applicants/${appId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('sadara_token')
-                }
-            })
-            .then(res => {
-                if (!res.ok) throw new Error('Failed');
-                return res.json();
-            })
-            .then(() => {
-                showToast('تم حذف طلب الطالب بنجاح.', 'success');
-                loadApplicantsDashboard();
-                fetchDashboardData();
-            })
-            .catch(err => {
-                console.error(err);
-                showToast('فشل حذف الطلب.', 'danger');
-            });
-        }
-
-        // Wire up "Add Applicant" button from the applicants tab
-        const btnAddFromTab = document.getElementById('btn-add-applicant-from-tab');
-        if (btnAddFromTab) {
-            btnAddFromTab.addEventListener('click', () => {
-                toggleModal(true);
-            });
-        }
-
-        // Initialize Authentication Check
-        checkAuth();
-    </script>
+    <script src="js/main.js?v=3.0.0" defer></script>
 </body>
 </html>
